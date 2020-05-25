@@ -15,9 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls import include
 from django.views.generic import TemplateView
+from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', TemplateView.as_view(template_name='index.html')),
+	# 127.0.0.1:8000/admin/
+	path('admin/', admin.site.urls),
+	# 127.0.0.1:8000/ , currently linked to ReactJS's index.html
+	path('', TemplateView.as_view(template_name='index.html')),
+	# Route all api/ endpoints to djangomain/api/urls.py
+	path('api/', include('api.urls')),
+	# 127.0.0.1:8000/auth/ (Note that you can only do a POST request here to check on a user's token. You cannot do a GET. Also remember the last / in the url)
+	path('auth/', obtain_auth_token),
 ]
