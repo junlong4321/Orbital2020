@@ -1,9 +1,19 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
+from rest_framework.validators import UniqueValidator
+
 
 # Converts User data to JSON
 class UserSerializer(serializers.ModelSerializer):
+	# Make email unique and compulsory for all users
+	email = serializers.EmailField(
+		required=True,
+		validators=[
+			UniqueValidator(queryset=User.objects.all())
+		]
+	)
+
 	class Meta:
 		model = User
 		fields = ['id', 'username', 'password', 'email']
@@ -18,5 +28,3 @@ class UserSerializer(serializers.ModelSerializer):
 		# Generate a token for each user
 		Token.objects.create(user=user)
 		return user
-
-
