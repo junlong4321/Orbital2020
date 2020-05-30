@@ -1,7 +1,3 @@
-<p align="center">
-  <img width="300" height="300" src="images/the_free_market_logo.png">
-</p>
-
 # <center>Orbital Project 2020 (Apollo 11)</center>
 
 # Set Up Instructions :
