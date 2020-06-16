@@ -16,7 +16,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Link to ReactJS's template html and static css / js files
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'reactjs/build')
-STATIC_DIR = os.path.join(BASE_DIR, 'reactjs/build/static')
+# STATIC_DIR = os.path.join(BASE_DIR, 'reactjs/build/static')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -145,7 +145,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+MEDIA_URL = '/images/'
 
 STATICFILES_DIRS = [
-    STATIC_DIR,
+    os.path.join(BASE_DIR, 'static'),
 ]
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
+
+# Tells Django to use our Custom UserProfile Model for user registration
+AUTH_USER_MODEL = 'api.UserProfile'

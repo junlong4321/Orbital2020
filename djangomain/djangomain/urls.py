@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
 from django.conf.urls import include
+from django.conf.urls.static import static
 from django.views.generic import TemplateView
-from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework_swagger.views import get_swagger_view
 
 # Create swagger UI view
@@ -26,12 +27,17 @@ schema_view = get_swagger_view(title='Django Backend APIs')
 urlpatterns = [
 	# 127.0.0.1:8000/admin/
 	path('admin/', admin.site.urls),
-	# 127.0.0.1:8000/ , currently linked to ReactJS's index.html
-	# path('', TemplateView.as_view(template_name='index.html')),
+
+	# 127.0.0.1:8000/ View all of our backend APIs on Swagger
+	path('', schema_view),
+
 	# Route all api/ endpoints to djangomain/api/urls.py
 	path('api/', include('api.urls')),
-	# 127.0.0.1:8000/auth/ (Note that you can only do a POST request here to check on a user's token. You cannot do a GET. Also remember the last / in the url)
-	path('auth/', obtain_auth_token),
-	# View all of our backend APIs on Swagger
-	path('', schema_view),
+
+	# 127.0.0.1:8000/ , currently linked to ReactJS's index.html
+	# path('', TemplateView.as_view(template_name='index.html')),
 ]
+
+# 127.0.0.1:8000/images/<image>/ (This is for viewing individual image file in local filepath : djangomain/static/images)
+# e.g 127.0.0.1:8000/images/The Free Market Logo.png/
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
