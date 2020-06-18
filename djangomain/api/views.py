@@ -1,13 +1,13 @@
 from rest_framework import viewsets, filters
 from rest_framework.authentication import TokenAuthentication
-from .serializer import UserProfileSerializer
-from .models import UserProfile
-from .permissions import UpdateOwnProfile
+from .serializer import UserProfileSerializer, StockAnalysisSerializer, StockCounterSerializer
+from .models import UserProfile, StockAnalysis, StockCounter
+from .permissions import UserPermissions, IsSuperUser, IsUser
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
 
 
-# Allows Django Administrators to view API list
+# View API User list
 # 127.0.0.1:8000/api/users/
 class UserProfileViewSet(viewsets.ModelViewSet):
 	serializer_class = UserProfileSerializer
@@ -16,7 +16,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 	# Since users have been created already here, we can send a POST request for a token when user logs in
 	authentication_classes = (TokenAuthentication,)
 	# Only allow logged in users to send a PUT/PATCH to change their profile data
-	permission_classes = (UpdateOwnProfile,)
+	permission_classes = (UserPermissions,)
 	# Allow users to search/filter other users by their names or email
 	filter_backends = (filters.SearchFilter,)
 	search_fields = ('name', 'email')
@@ -29,3 +29,25 @@ class LoginViewSet(viewsets.ViewSet):
 
 	def create(self, request):
 		return ObtainAuthToken().post(request)
+
+
+# Shows list of stocks available
+class StockCounterViewSet(viewsets.ModelViewSet):
+	serializer_class = StockCounterSerializer
+	queryset = StockCounter.objects.all()
+	authentication_classes = (TokenAuthentication,)
+	# NOTE THAT WE ONLY ALLOW STOCK COUNTERS TO BE VIEWED BY SUPER USERS! (ie IsSuperUser)
+	# WE DO NOT WANT NORMAL USERS TO EDIT ANY STOCK COUNTERS!
+	permission_classes = (IsSuperUser,)
+	filter_backends = (filters.SearchFilter,)
+	search_fields = ('name', 'code', 'exchange')
+
+
+# View API Stock Analyses list
+class StockAnalysesViewSet(viewsets.ModelViewSet):
+	serializer_class = StockAnalysisSerializer
+	queryset = StockAnalysis.objects.all()
+	authentication_classes = (TokenAuthentication,)
+	permission_classes = (IsUser, UserPermissions,)
+	filter_backends = (filters.SearchFilter,)
+	search_fields = ('author__email', 'stock__name')

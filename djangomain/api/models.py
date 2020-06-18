@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.utils import timezone
 
 
 # Manages our Custom User Model
@@ -13,7 +14,6 @@ class UserProfileManager(BaseUserManager):
 		email = self.normalize_email(email)
 		# Create user profile object
 		user = self.model(email=email, name=name)
-		# Sets, hashes password, and save user
 		user.set_password(password)
 		user.save(using=self._db)
 		return user
@@ -31,11 +31,14 @@ class UserProfileManager(BaseUserManager):
 # Custom User Model
 class UserProfile(AbstractBaseUser, PermissionsMixin):
 	# Fields which our Custom User Model will have
+	# blank=True means that the field does not have to be filled up in the form. null=True means that we will fill,
+	# at the database level, the field with a null. (Filling the field with an empty string at the data base level
+	# causes a lot of problems)
 	email = models.EmailField(max_length=225, unique=True)
-	name = models.CharField(max_length=225, blank=True)
-	biography = models.TextField(max_length=500, blank=True)
-	linkedin = models.URLField(max_length=225, blank=True)
-	profile_picture = models.ImageField(blank=True)
+	name = models.CharField(max_length=225, blank=True, null=True)
+	biography = models.TextField(max_length=500, blank=True, null=True)
+	linkedin = models.URLField(max_length=225, blank=True, null=True)
+	profile_picture = models.ImageField(blank=True, null=True)
 	# is_active is used to determine if the user is currently active in the system
 	# Used for kicking out inactive users from the site
 	is_active = models.BooleanField(default=True)
@@ -50,4 +53,34 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 
 	# Show display name if user has input a display name, otherwise username.
 	def __str__(self):
-		return "%s's profile" % self.name
+		return self.name
+
+
+# Details of stock counter (e.g What is the name / code of stock, and which exchange it belongs to)
+# E.g name=COMFORTDELGRO CORPORATION LTD, code=C52, exchange=SGX)
+class StockCounter(models.Model):
+	name = models.CharField(max_length=200, blank=False, unique=True)
+	code = models.CharField(max_length=10, blank=False)
+	exchange = models.CharField(max_length=200, blank=True)
+
+	def __str__(self):
+		return self.name
+
+
+# Creates stock analyses written by users
+class StockAnalysis(models.Model):
+	# StockAnalyse has a One-To-Many relationship with User
+	# to_field declares what name (e.g Display Name / Stock Name) the ForeignKey will take on in JSON format
+	author = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field='email')
+	stock = models.ForeignKey(StockCounter, on_delete=models.CASCADE, null=True, blank=False, to_field='name')
+	text = models.TextField()
+	created_date = models.DateTimeField(default=timezone.now)
+
+	def __str__(self):
+		return "%s's %s Analysis" % (self.author, self.stock)
+
+
+# Stores images created in stock analyses
+class StockAnalysisImage(models.Model):
+	analysis = models.ForeignKey(StockAnalysis, related_name='images', on_delete=models.CASCADE)
+	image = models.ImageField()
