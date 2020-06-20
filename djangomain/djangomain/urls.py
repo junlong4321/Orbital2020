@@ -38,6 +38,6 @@ urlpatterns = [
 	# path('', TemplateView.as_view(template_name='index.html')),
 ]
 
-# 127.0.0.1:8000/images/<image>/ (This is for viewing individual image file in local filepath : djangomain/static/images)
+# 127.0.0.1:8000/images/{image}/ (This is for viewing individual image file in local filepath : djangomain/static/images)
 # e.g 127.0.0.1:8000/images/The Free Market Logo.png/
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

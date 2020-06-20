@@ -2,7 +2,7 @@ from rest_framework import viewsets, filters
 from rest_framework.authentication import TokenAuthentication
 from .serializer import UserProfileSerializer, StockAnalysisSerializer, StockCounterSerializer
 from .models import UserProfile, StockAnalysis, StockCounter
-from .permissions import UserPermissions, IsSuperUser, IsUser
+from .permissions import UserPermissions, IsSuperUser, IsUser, StockAnalysisPermissions
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
 
@@ -48,6 +48,6 @@ class StockAnalysesViewSet(viewsets.ModelViewSet):
 	serializer_class = StockAnalysisSerializer
 	queryset = StockAnalysis.objects.all()
 	authentication_classes = (TokenAuthentication,)
-	permission_classes = (IsUser, UserPermissions,)
+	permission_classes = (IsUser, StockAnalysisPermissions)
 	filter_backends = (filters.SearchFilter,)
 	search_fields = ('author__email', 'stock__name')

@@ -15,11 +15,11 @@ router.register('counters', StockCounterViewSet)
 
 urlpatterns = [
 	# 127.0.0.1:8000/api/users/ (Lets you see all users in database)
-	# 127.0.0.1:8000/api/users/<id>/ (Lets you see individual users)
+	# 127.0.0.1:8000/api/users/{id}/ (Lets you see individual users)
 	# 127.0.0.1:8000/api/auth/ (Shows all authentication tokens)
 	# 127.0.0.1:8000/api/analyses/ (Shows all stock analyses written)
-	# 127.0.0.1:8000/api/analyses/<id>/ (Lets you see individual stock analyses)
+	# 127.0.0.1:8000/api/analyses/{id}/ (Lets you see individual stock analyses)
 	# 127.0.0.1:8000/api/counters/ (Shows all stock counters)
-	# 127.0.0.1:8000/api/counters/<id>/ (Shows individual stock counters
+	# 127.0.0.1:8000/api/counters/{id}/ (Shows individual stock counters
 	path('', include(router.urls)),
 ]
