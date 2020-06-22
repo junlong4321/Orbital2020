@@ -1,0 +1,12 @@
+.App {
+    background-image: url(./assets/login-bg.jpg);
+    min-width: 100%;
+    min-height: 100%;
+    background-size: cover;
+    background-position: center;
+    list-style: none;
+}
+a {
+    text-decoration: none;
+    color: white;
+}

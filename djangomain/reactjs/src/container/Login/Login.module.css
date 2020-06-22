@@ -1,0 +1,74 @@
+.Login {
+
+}
+
+.Wrapper {
+    background-color: rgba(0, 0, 0, 0.75);
+    border-radius: 10px;
+    width: 300px;
+    padding: 40px 90px 40px 90px;
+    text-align: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.formWrapper {
+    margin-top: 25px;
+}
+
+.logo {
+    float: left;
+    width: 20%
+}
+
+.title {
+    color: white;
+    font-size: 2em;
+    font-weight: strong;
+}
+
+.inputFields {
+    background-color: #1F1F1F;
+    box-sizing: border-box;
+    width: 80%;
+    height: 35px;
+    padding: 5px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+}
+
+.loginButton {
+    background-color: #1B1661;
+    color: #979797;
+    border-radius: 10px;
+    height: 35px;
+    width: 120px;
+    margin-top: 15px;
+    padding: 0;
+    border: none;
+}
+
+.signUpMessage {
+    margin-top: 15px;
+    color: #979797;
+}
+
+ul {
+    list-style-type: none;
+    display: contents;
+}
+
+ul > li {
+
+    padding: 0;
+    margin: 0; 
+    text-align: center;
+}
+
+input, select, textarea{
+    color: #979797;
+}
+
