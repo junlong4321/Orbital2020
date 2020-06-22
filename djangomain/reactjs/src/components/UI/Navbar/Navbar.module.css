@@ -1,28 +1,11 @@
 .Navbar {
-    text-align: center;
+    background: black;
 }
 
-.Navbar ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.Navbar li {
-    display: inline-block;
-    margin: 20px;
-}
-
-.Navbar a {
-    text-decoration: none;
-    color: black;
-}
-
-.Navbar a:hover,
-.Navbar a:active,
-.Navbar a.active {
-    color: orange;
-}
-
+.list {
     
+}
 
+.list li {
+    padding: 0px 40px 0px 40px;
+}
