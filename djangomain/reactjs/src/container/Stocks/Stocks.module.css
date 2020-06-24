@@ -1,0 +1,21 @@
+.tableBackground {
+  background-color: rgba(20, 20, 20, 0.8);
+}
+
+.cardSpacing {
+  padding: 1em 2em 3em 2em;
+}
+
+.individualCardSpacing {
+  padding-bottom: 2em;
+}
+
+.searchBar {
+  padding-right: 3.5em;
+}
+
+@media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (-webkit-min-device-pixel-ratio: 3) and (orientation: portrait) {
+  .searchBar {
+    padding-right: 0em;
+  }
+}

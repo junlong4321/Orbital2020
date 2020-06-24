@@ -1,11 +1,13 @@
 .App {
-    background-image: url(./assets/login-bg.jpg);
+    background: url('./assets/login-bg.jpg') no-repeat;
     min-width: 100%;
     min-height: 100%;
     background-size: cover;
-    background-position: center;
+    background-position: center center;
+    background-attachment: fixed;
     list-style: none;
 }
+
 a {
     text-decoration: none;
     color: white;
