@@ -8,8 +8,8 @@ class UserPermissions(permissions.BasePermission):
 		if request.method in permissions.SAFE_METHODS:
 			return True
 		# If it is not a safe HTTP request (e.g POST / Update data), we check that object user is trying to
-		# change is the same id of the user currently authenticated in the system
-		return obj.id == request.user.id
+		# change is the same id of the user currently authenticated in the system. We allow admins as well
+		return obj.id == request.user.id or request.user.is_superuser
 
 
 class IsUser(permissions.IsAdminUser):
@@ -31,3 +31,14 @@ class StockAnalysisPermissions(permissions.BasePermission):
 		# If it is not a safe HTTP request (e.g POST / Update data), we check that object user is trying to
 		# change is the same id of the user currently authenticated in the system
 		return obj.author == request.user
+
+
+# Allow commenters to edit their own comments
+class CommentPermissions(permissions.BasePermission):
+	# Allows anyone to get data (ie view profiles) if its a safe HTTP request (e.g GET)
+	def has_object_permission(self, request, view, obj):
+		if request.method in permissions.SAFE_METHODS:
+			return True
+		# If it is not a safe HTTP request (e.g POST / Update data), we check that object user is trying to
+		# change is the same id of the user currently authenticated in the system
+		return obj.commenter == request.user

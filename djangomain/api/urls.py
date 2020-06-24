@@ -1,7 +1,7 @@
 from django.urls import path
 from django.conf.urls import include
 from rest_framework import routers
-from .views import UserProfileViewSet, LoginViewSet, StockAnalysesViewSet, StockCounterViewSet
+from .views import UserProfileViewSet, LoginViewSet, StockAnalysisViewSet, StockCounterViewSet, CommentViewSet
 
 router = routers.DefaultRouter()
 # Router now allows us to route to /users endpoints
@@ -10,8 +10,9 @@ router = routers.DefaultRouter()
 router.register('users', UserProfileViewSet)
 # Have to specify basename for LoginViewSet as LoginViewSet is not a ModalViewSet
 router.register('auth', LoginViewSet, basename='login')
-router.register('analyses', StockAnalysesViewSet)
+router.register('analyses', StockAnalysisViewSet)
 router.register('counters', StockCounterViewSet)
+router.register('comments', CommentViewSet)
 
 urlpatterns = [
 	# 127.0.0.1:8000/api/users/ (Lets you see all users in database)

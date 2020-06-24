@@ -1,8 +1,8 @@
 from rest_framework import viewsets, filters
 from rest_framework.authentication import TokenAuthentication
-from .serializer import UserProfileSerializer, StockAnalysisSerializer, StockCounterSerializer
-from .models import UserProfile, StockAnalysis, StockCounter
-from .permissions import UserPermissions, IsSuperUser, IsUser, StockAnalysisPermissions
+from .serializer import UserProfileSerializer, StockAnalysisSerializer, StockCounterSerializer, CommentSerializer
+from .models import UserProfile, StockAnalysis, StockCounter, Comment
+from .permissions import UserPermissions, IsSuperUser, IsUser, StockAnalysisPermissions, CommentPermissions
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
 
@@ -15,7 +15,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 	queryset = UserProfile.objects.all()
 	# Since users have been created already here, we can send a POST request for a token when user logs in
 	authentication_classes = (TokenAuthentication,)
-	# Only allow logged in users to send a PUT/PATCH to change their profile data
+	# Only allow logged in users / admins to send a PUT/PATCH to change their own profile data
 	permission_classes = (UserPermissions,)
 	# Allow users to search/filter other users by their names or email
 	filter_backends = (filters.SearchFilter,)
@@ -40,14 +40,24 @@ class StockCounterViewSet(viewsets.ModelViewSet):
 	# WE DO NOT WANT NORMAL USERS TO EDIT ANY STOCK COUNTERS!
 	permission_classes = (IsSuperUser,)
 	filter_backends = (filters.SearchFilter,)
-	search_fields = ('name', 'code', 'exchange')
+	search_fields = ('name', 'code', 'RIC')
 
 
 # View API Stock Analyses list
-class StockAnalysesViewSet(viewsets.ModelViewSet):
+class StockAnalysisViewSet(viewsets.ModelViewSet):
 	serializer_class = StockAnalysisSerializer
 	queryset = StockAnalysis.objects.all()
 	authentication_classes = (TokenAuthentication,)
 	permission_classes = (IsUser, StockAnalysisPermissions)
 	filter_backends = (filters.SearchFilter,)
 	search_fields = ('author__email', 'stock__name')
+
+
+# View API Comment list
+class CommentViewSet(viewsets.ModelViewSet):
+	serializer_class = CommentSerializer
+	queryset = Comment.objects.all()
+	authentication_classes = (TokenAuthentication,)
+	permission_classes = (IsUser, CommentPermissions)
+	filter_backends = (filters.SearchFilter,)
+	search_fields = ('commenter__email', 'article__author', 'article__stock')

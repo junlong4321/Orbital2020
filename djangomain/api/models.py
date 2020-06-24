@@ -43,6 +43,8 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 	# Used for kicking out inactive users from the site
 	is_active = models.BooleanField(default=True)
 	is_staff = models.BooleanField(default=False)
+	# Set number of total upvotes to 0 by default
+	total_upvotes = models.IntegerField(default=0)
 
 	# User profiles are handled by the UserProfileManager
 	objects = UserProfileManager()
@@ -61,7 +63,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 class StockCounter(models.Model):
 	name = models.CharField(max_length=200, blank=False, unique=True)
 	code = models.CharField(max_length=10, blank=False)
-	exchange = models.CharField(max_length=200, blank=True)
+	RIC = models.CharField(max_length=200, blank=True)
 
 	def __str__(self):
 		return self.name
@@ -75,6 +77,8 @@ class StockAnalysis(models.Model):
 	stock = models.ForeignKey(StockCounter, on_delete=models.CASCADE, null=True, blank=False, to_field='name')
 	text = models.TextField()
 	created_date = models.DateTimeField(default=timezone.now)
+	# Set number of upvotes to 0 by default
+	upvotes = models.IntegerField(default=0)
 
 	def __str__(self):
 		return "%s's %s Analysis" % (self.author, self.stock)
@@ -82,5 +86,23 @@ class StockAnalysis(models.Model):
 
 # Stores images created in stock analyses
 class StockAnalysisImage(models.Model):
+	# related_name='images' allows us to display the image on our viewset
 	analysis = models.ForeignKey(StockAnalysis, related_name='images', on_delete=models.CASCADE)
 	image = models.ImageField()
+
+
+class Comment(models.Model):
+	# A commenter is a person who commented on a stock analysis
+	commenter = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field='email')
+	# An article field tells us which article the comment was posted on
+	article_author = models.ForeignKey(StockAnalysis, on_delete=models.CASCADE, to_field='author',
+									   related_name='article_author')
+	article_stock = models.ForeignKey(StockAnalysis, on_delete=models.CASCADE, to_field='stock',
+									  related_name='article_stock')
+	comment = models.TextField()
+	created_date = models.DateTimeField(default=timezone.now)
+	# Set number of upvotes to 0 by default
+	upvotes = models.IntegerField(default=0)
+
+	def __str__(self):
+		return "%s's %s Comment on %s" % (self.commenter, self.article_author, self.article_stock)
