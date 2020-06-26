@@ -91,18 +91,24 @@ class StockAnalysisImage(models.Model):
 	image = models.ImageField()
 
 
+# Create comments to be rendered in stock analysis page
 class Comment(models.Model):
 	# A commenter is a person who commented on a stock analysis
 	commenter = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field='email')
-	# An article field tells us which article the comment was posted on
-	article_author = models.ForeignKey(StockAnalysis, on_delete=models.CASCADE, to_field='author',
-									   related_name='article_author')
-	article_stock = models.ForeignKey(StockAnalysis, on_delete=models.CASCADE, to_field='stock',
-									  related_name='article_stock')
+	analysis = models.ForeignKey(StockAnalysis, on_delete=models.CASCADE)
 	comment = models.TextField()
 	created_date = models.DateTimeField(default=timezone.now)
 	# Set number of upvotes to 0 by default
 	upvotes = models.IntegerField(default=0)
 
 	def __str__(self):
-		return "%s's %s Comment on %s" % (self.commenter, self.article_author, self.article_stock)
+		return "%s's %s Comment" % (self.commenter, self.analysis)
+
+
+# Stores analyses bookmarked by a User
+class Bookmark(models.Model):
+	user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field='email')
+	analysis = models.ForeignKey(StockAnalysis, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return "%s Bookmarked %s" % (self.user, self.analysis)

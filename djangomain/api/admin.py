@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import UserProfile, StockAnalysis, StockCounter, StockAnalysisImage, Comment
+from .models import UserProfile, StockAnalysis, StockCounter, StockAnalysisImage, Comment, Bookmark
 
 
 # Register your models here.
@@ -17,3 +17,4 @@ admin.site.register(StockCounter)
 # PostAdmin created allows us to upload multiple images on each stock analysis article in Django Admin page
 admin.site.register(StockAnalysis, PostAdmin)
 admin.site.register(Comment)
+admin.site.register(Bookmark)

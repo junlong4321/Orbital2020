@@ -1,8 +1,10 @@
 from rest_framework import viewsets, filters
 from rest_framework.authentication import TokenAuthentication
-from .serializer import UserProfileSerializer, StockAnalysisSerializer, StockCounterSerializer, CommentSerializer
-from .models import UserProfile, StockAnalysis, StockCounter, Comment
-from .permissions import UserPermissions, IsSuperUser, IsUser, StockAnalysisPermissions, CommentPermissions
+from .serializer import UserProfileSerializer, StockAnalysisSerializer, StockCounterSerializer, CommentSerializer, \
+	BookmarkSerializer
+from .models import UserProfile, StockAnalysis, StockCounter, Comment, Bookmark
+from .permissions import UserPermissions, IsSuperUser, IsUser, StockAnalysisPermissions, CommentPermissions, \
+	BookmarkPermissions
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
 
@@ -60,4 +62,14 @@ class CommentViewSet(viewsets.ModelViewSet):
 	authentication_classes = (TokenAuthentication,)
 	permission_classes = (IsUser, CommentPermissions)
 	filter_backends = (filters.SearchFilter,)
-	search_fields = ('commenter__email', 'article__author', 'article__stock')
+	search_fields = ('analysis__id')
+
+
+# View API Bookmark list
+class BookmarkViewSet(viewsets.ModelViewSet):
+	serializer_class = BookmarkSerializer
+	queryset = Bookmark.objects.all()
+	authentication_classes = (TokenAuthentication,)
+	permission_classes = (IsUser, BookmarkPermissions)
+	filter_backends = (filters.SearchFilter,)
+	search_fields = ('user__email')

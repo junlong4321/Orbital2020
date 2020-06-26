@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import UserProfile, StockAnalysis, StockAnalysisImage, StockCounter, Comment
+from .models import UserProfile, StockAnalysis, StockAnalysisImage, StockCounter, Comment, Bookmark
+
 
 # Converts User data to JSON
 class UserProfileSerializer(serializers.ModelSerializer):
@@ -85,4 +86,10 @@ class StockAnalysisSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Comment
+		fields = '__all__'
+
+
+class BookmarkSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Bookmark
 		fields = '__all__'

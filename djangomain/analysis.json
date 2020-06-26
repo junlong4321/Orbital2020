@@ -1,0 +1,54 @@
+[
+    {
+        "model":"api.stockanalysis",
+        "pk":2,
+        "fields":{
+            "author":"admin@gmail.com",
+            "stock":"YZJ Shipbldg SGD",
+            "text":"Hi This Is The Admin Testing",
+            "created_date":"2020-06-24T08:40:10Z",
+            "upvotes":5
+
+}
+
+},
+    {
+        "model":"api.stockanalysis",
+        "pk":3,
+        "fields":{
+            "author":"admin@gmail.com",
+            "stock":"YZJ Shipbldg SGD",
+            "text":"Hi This Is The Admin Testing Part 2",
+            "created_date":"2020-06-24T14:55:21.587Z",
+            "upvotes":0
+
+}
+
+},
+    {
+        "model":"api.stockanalysis",
+        "pk":4,
+        "fields":{
+            "author":"admin@gmail.com",
+            "stock":"Abterra",
+            "text":"Hi This Is Tester 2 Testing",
+            "created_date":"2020-06-24T14:56:23.882Z",
+            "upvotes":0
+
+}
+    
+},
+    {
+        "model":"api.stockanalysis",
+        "pk":5,
+        "fields":{
+            "author":"admin@gmail.com",
+            "stock":"Abterra",
+            "text":"Hi This Is Tester 2 Testing Part 2",
+            "created_date":"2020-06-24T14:57:09.297Z",
+            "upvotes":2
+
+}
+
+}
+]
