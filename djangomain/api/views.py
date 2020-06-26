@@ -62,7 +62,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 	authentication_classes = (TokenAuthentication,)
 	permission_classes = (IsUser, CommentPermissions)
 	filter_backends = (filters.SearchFilter,)
-	search_fields = ('analysis__id')
+	search_fields = ['analysis__id']
 
 
 # View API Bookmark list
@@ -72,4 +72,4 @@ class BookmarkViewSet(viewsets.ModelViewSet):
 	authentication_classes = (TokenAuthentication,)
 	permission_classes = (IsUser, BookmarkPermissions)
 	filter_backends = (filters.SearchFilter,)
-	search_fields = ('user__email')
+	search_fields = ['user__email']

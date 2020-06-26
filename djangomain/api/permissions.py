@@ -30,7 +30,7 @@ class StockAnalysisPermissions(permissions.BasePermission):
 			return True
 		# If it is not a safe HTTP request (e.g POST / Update data), check that author of the analysis is the
 		# same as the current user authenticated
-		return obj.author == request.user
+		return obj.author == request.user or request.user.is_superuser
 
 
 # Allow commenters to edit their own comments
@@ -41,7 +41,7 @@ class CommentPermissions(permissions.BasePermission):
 			return True
 		# If it is not a safe HTTP request (e.g POST / Update data), we check that commenter of the analysis is the
 		# same as the current user authenticated
-		return obj.commenter == request.user
+		return obj.commenter == request.user or request.user.is_superuser
 
 
 # Allow users to edit their own bookmarks
@@ -52,4 +52,4 @@ class BookmarkPermissions(permissions.BasePermission):
 			return True
 		# If it is not a safe HTTP request (e.g POST / Update data), we check that commenter of the analysis is the
 		# same as the current user authenticated
-		return obj.user == request.user
+		return obj.user == request.user or request.user.is_superuser

@@ -34,8 +34,8 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 	# blank=True means that the field does not have to be filled up in the form. null=True means that we will fill,
 	# at the database level, the field with a null. (Filling the field with an empty string at the data base level
 	# causes a lot of problems)
-	email = models.EmailField(max_length=225, unique=True)
-	name = models.CharField(max_length=225, blank=True, null=True)
+	email = models.EmailField(max_length=225, unique=True, null=False)
+	name = models.CharField(max_length=225, unique=True, null=False)
 	biography = models.TextField(max_length=500, blank=True, null=True)
 	linkedin = models.URLField(max_length=225, blank=True, null=True)
 	profile_picture = models.ImageField(blank=True, null=True)
@@ -53,7 +53,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 	USERNAME_FIELD = 'email'
 	REQUIRED_FIELDS = ['name']
 
-	# Show display name if user has input a display name, otherwise username.
+	# Show username of user
 	def __str__(self):
 		return self.name
 
@@ -73,7 +73,9 @@ class StockCounter(models.Model):
 class StockAnalysis(models.Model):
 	# StockAnalyse has a One-To-Many relationship with User
 	# to_field declares what name (e.g Display Name / Stock Name) the ForeignKey will take on in JSON format
-	author = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field='email')
+	author = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field='email', related_name='authors')
+	name = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field='name', related_name='names')
+	title = models.CharField(max_length=200, blank=False)
 	stock = models.ForeignKey(StockCounter, on_delete=models.CASCADE, null=True, blank=False, to_field='name')
 	text = models.TextField()
 	created_date = models.DateTimeField(default=timezone.now)
