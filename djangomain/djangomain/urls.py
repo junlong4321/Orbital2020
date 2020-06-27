@@ -22,7 +22,7 @@ from django.views.generic import TemplateView
 from rest_framework_swagger.views import get_swagger_view
 
 # Create swagger UI view
-schema_view = get_swagger_view(title='Django Backend APIs')
+schema_view = get_swagger_view(title='Django Backend APIs - The Free Market')
 
 urlpatterns = [
 	# 127.0.0.1:8000/admin/
