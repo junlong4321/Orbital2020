@@ -16,7 +16,7 @@
 <strong><font color='red'>npm install</font></strong>
 ### 5. (OPTIONAL) Run **npm run build** to install static html, css, and js files (You can skip this step if you don't plan to deploy yet)
 <strong><font color='red'>npm run build</font></strong>
-### 6. Your directory should look something like this. *If you did not run npm run build, you will not have the build folder so don't worry about that*
+### 6. Your directory should look something like this. (If you did not run npm run build, you will not have the build folder so don't worry about that)
 ![](images/directory_view.png)
 
 # Set Up Instructions (**Backend Django**) :
@@ -28,11 +28,13 @@
 
 # Django Model Entity Relationship Diagram
 ![](images/model.png)
-###### The above diagram shows the current structure of our SQLite database (Made using GraphViz on Python). The important tables to focus on are those bounded within **api**. Within API, we have 5 tables, UserProfile, StockCounter, (StockAnalysis + StockAnalysisImage), Comment, and Bookmark.
+###### The above diagram shows the current structure of our SQLite database (Made using GraphViz on Python). The important tables to focus on are those bounded within API. Within API, we have 5 tables, UserProfile, StockCounter, (StockAnalysis + StockAnalysisImage), Comment, and Bookmark. You can ignore PermissionMixin and AbstractBaseUser as those are classes inherited by the UserProfile model, and we consider StockAnalysis and StockAnalysisImage as one model as we nest images within the stock analysis in the database.
 
 ###### Notice that there are black lines linking the tables. These black lines represent relationships between the diagrams. When a black line links from one table to another, it means that some fields (To be more specific, those bolded within the individual tables) are used as fields in other tables.
 
-###### The key takeaway from this Entity Relationship Diagram is that StockCounter and UserProfile are our base models, and (StockAnalysis + StockAnalysisImage), Comment, and Bookmark are models leveraging on information from the base models. The diagram also gives you a better idea what kind of fields we have in our models. For example, StockModel holds unique ID, RIC, code and name fields. This will come in useful when you study our backend documentation further below the README. (Note that italic fields are fields which exist in the model and can be called using our backend endpoints, but are hidden when a response is returned in JSON format.)
+###### The key takeaway from this ERD is that StockCounter and UserProfile are our base models, while (StockAnalysis + StockAnalysisImage), Comment, and Bookmark are models leveraging on information from the base models.
+
+###### The diagram also gives you a better idea what kind of fields we have in our models. For example, StockModel holds unique ID, RIC, code and name fields. This will come in useful when you study our backend documentation further below the README. Note that italic fields in the database ERD are fields which exist in the model and can be called using our backend endpoints, but are hidden when a response is returned in JSON format. Grey fields, on the other hand, are fields which can be left blank when a request is made to the database.
 
 # Django API Endpoints
 | Resource Description                                                                                                                                                            | Endpoint            | Methods          | Remarks (Note that Admins are granted access to ALL endpoints)                                                                                                                                                                                                                                                                                                                                                                           |
