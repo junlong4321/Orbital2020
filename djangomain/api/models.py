@@ -34,8 +34,8 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 	# blank=True means that the field does not have to be filled up in the form. null=True means that we will fill,
 	# at the database level, the field with a null. (Filling the field with an empty string at the data base level
 	# causes a lot of problems)
-	email = models.EmailField(max_length=225, unique=True)
-	name = models.CharField(max_length=225, blank=True, null=True)
+	email = models.EmailField(max_length=225, unique=True, null=False)
+	name = models.CharField(max_length=225, unique=True, null=False)
 	biography = models.TextField(max_length=500, blank=True, null=True)
 	linkedin = models.URLField(max_length=225, blank=True, null=True)
 	profile_picture = models.ImageField(blank=True, null=True)
@@ -43,6 +43,8 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 	# Used for kicking out inactive users from the site
 	is_active = models.BooleanField(default=True)
 	is_staff = models.BooleanField(default=False)
+	# Set number of total upvotes to 0 by default
+	total_upvotes = models.IntegerField(default=0)
 
 	# User profiles are handled by the UserProfileManager
 	objects = UserProfileManager()
@@ -51,7 +53,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 	USERNAME_FIELD = 'email'
 	REQUIRED_FIELDS = ['name']
 
-	# Show display name if user has input a display name, otherwise username.
+	# Show username of user
 	def __str__(self):
 		return self.name
 
@@ -61,7 +63,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 class StockCounter(models.Model):
 	name = models.CharField(max_length=200, blank=False, unique=True)
 	code = models.CharField(max_length=10, blank=False)
-	exchange = models.CharField(max_length=200, blank=True)
+	RIC = models.CharField(max_length=200, blank=True)
 
 	def __str__(self):
 		return self.name
@@ -71,10 +73,14 @@ class StockCounter(models.Model):
 class StockAnalysis(models.Model):
 	# StockAnalyse has a One-To-Many relationship with User
 	# to_field declares what name (e.g Display Name / Stock Name) the ForeignKey will take on in JSON format
-	author = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field='email')
+	author = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field='email', related_name='authors')
+	name = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field='name', related_name='names')
+	title = models.CharField(max_length=200, blank=False)
 	stock = models.ForeignKey(StockCounter, on_delete=models.CASCADE, null=True, blank=False, to_field='name')
 	text = models.TextField()
 	created_date = models.DateTimeField(default=timezone.now)
+	# Set number of upvotes to 0 by default
+	upvotes = models.IntegerField(default=0)
 
 	def __str__(self):
 		return "%s's %s Analysis" % (self.author, self.stock)
@@ -82,5 +88,29 @@ class StockAnalysis(models.Model):
 
 # Stores images created in stock analyses
 class StockAnalysisImage(models.Model):
+	# related_name='images' allows us to display the image on our viewset
 	analysis = models.ForeignKey(StockAnalysis, related_name='images', on_delete=models.CASCADE)
 	image = models.ImageField()
+
+
+# Create comments to be rendered in stock analysis page
+class Comment(models.Model):
+	# A commenter is a person who commented on a stock analysis
+	commenter = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field='email')
+	analysis = models.ForeignKey(StockAnalysis, on_delete=models.CASCADE)
+	comment = models.TextField()
+	created_date = models.DateTimeField(default=timezone.now)
+	# Set number of upvotes to 0 by default
+	upvotes = models.IntegerField(default=0)
+
+	def __str__(self):
+		return "%s's %s Comment" % (self.commenter, self.analysis)
+
+
+# Stores analyses bookmarked by a User
+class Bookmark(models.Model):
+	user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field='email')
+	analysis = models.ForeignKey(StockAnalysis, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return "%s Bookmarked %s" % (self.user, self.analysis)

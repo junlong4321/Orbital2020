@@ -1,0 +1,191 @@
+[
+    {
+        "model":"api.userprofile",
+        "pk":1,
+        "fields":{
+            "password":"argon2$argon2i$v=19$m=512,t=2,p=2$MkFlWlJCa2RoVURt$LSJR/DBpsfVT5O4uSUiEdw",
+            "last_login":null,
+            "is_superuser":true,
+            "email":"admin@gmail.com",
+            "name":"admin",
+            "biography":null,
+            "linkedin":null,
+            "profile_picture":"",
+            "is_active":true,
+            "is_staff":true,
+            "total_upvotes":0,
+            "groups":[
+
+
+],
+            "user_permissions":[
+
+
+]
+
+}
+
+},
+    {
+        "model":"api.userprofile",
+        "pk":2,
+        "fields":{
+            "password":"argon2$argon2i$v=19$m=512,t=2,p=2$ZHVCYWthU0JLa1p5$tDwha6dEPdsDC4bM7PSShg",
+            "last_login":null,
+            "is_superuser":false,
+            "email":"test1@gmail.com",
+            "name":"test1",
+            "biography":"Hi i am Tester 1",
+            "linkedin":"https://www.linkedin.com/in/test1",
+            "profile_picture":"apple.jpg",
+            "is_active":true,
+            "is_staff":false,
+            "total_upvotes":0,
+            "groups":[
+
+
+],
+            "user_permissions":[
+
+
+]
+
+}
+
+},
+    {
+        "model":"api.userprofile",
+        "pk":3,
+        "fields":{
+            "password":"argon2$argon2i$v=19$m=512,t=2,p=2$TWZmM0RJR1hqZW5Z$WLQGrDqt1Y/Q8kUsq2nHfA",
+            "last_login":null,
+            "is_superuser":false,
+            "email":"test2@gmail.com",
+            "name":"test2",
+            "biography":"Hi I am Tester 2",
+            "linkedin":"https://www.linkedin.com/in/test2",
+            "profile_picture":"",
+            "is_active":true,
+            "is_staff":false,
+            "total_upvotes":0,
+            "groups":[
+
+
+],
+            "user_permissions":[
+
+
+]
+
+}
+
+},
+    {
+        "model":"api.userprofile",
+        "pk":4,
+        "fields":{
+            "password":"argon2$argon2i$v=19$m=512,t=2,p=2$MVhncEo3UWlUYmhQ$rpbeDiQN1fXXBhT4XfiXbA",
+            "last_login":null,
+            "is_superuser":false,
+            "email":"test3@gmail.com",
+            "name":"test3",
+            "biography":"Hi I am Tester 3",
+            "linkedin":"https://www.linkedin.com/in/test3",
+            "profile_picture":"banana.jpg",
+            "is_active":true,
+            "is_staff":false,
+            "total_upvotes":0,
+            "groups":[
+
+
+],
+            "user_permissions":[
+
+
+]
+
+}
+
+},
+    {
+        "model":"api.userprofile",
+        "pk":5,
+        "fields":{
+            "password":"argon2$argon2i$v=19$m=512,t=2,p=2$RnloeTViUFdGanp4$PxpGx5tlhmMzpCvSO/Tn0g",
+            "last_login":null,
+            "is_superuser":false,
+            "email":"test4@gmail.com",
+            "name":"test4",
+            "biography":"Hi I am Tester 4",
+            "linkedin":"https://www.linkedin.com/in/test4",
+            "profile_picture":"orange.jpg",
+            "is_active":true,
+            "is_staff":false,
+            "total_upvotes":0,
+            "groups":[
+
+
+],
+            "user_permissions":[
+
+
+]
+
+}
+
+},
+    {
+        "model":"api.userprofile",
+        "pk":6,
+        "fields":{
+            "password":"argon2$argon2i$v=19$m=512,t=2,p=2$ZG1WR1VkV3ZkZUFs$vGHxIbHhouGKBEaujkx0JA",
+            "last_login":null,
+            "is_superuser":false,
+            "email":"test5@gmail.com",
+            "name":"test5",
+            "biography":"Hi I am Tester 5",
+            "linkedin":"https://www.linkedin.com/in/test5",
+            "profile_picture":"pear.jpg",
+            "is_active":true,
+            "is_staff":false,
+            "total_upvotes":0,
+            "groups":[
+
+
+],
+            "user_permissions":[
+
+
+]
+
+}
+
+},
+    {
+        "model":"api.userprofile",
+        "pk":7,
+        "fields":{
+            "password":"argon2$argon2i$v=19$m=512,t=2,p=2$akNvUXN3a0NqenhE$u4WkOwgFuODE/cr7iq59Kw",
+            "last_login":null,
+            "is_superuser":false,
+            "email":"test6@gmail.com",
+            "name":"test6",
+            "biography":"Hi I am Tester 6",
+            "linkedin":"https://www.linkedin.com/in/test6",
+            "profile_picture":"strawberry.jpg",
+            "is_active":true,
+            "is_staff":false,
+            "total_upvotes":0,
+            "groups":[
+
+
+],
+            "user_permissions":[
+
+
+]
+
+}
+
+}
+]

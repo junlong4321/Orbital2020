@@ -1,0 +1,102 @@
+[
+    {
+        "model":"api.bookmark",
+        "pk":1,
+        "fields":{
+            "user":"admin@gmail.com",
+            "analysis":1
+
+}
+
+},
+    {
+        "model":"api.bookmark",
+        "pk":2,
+        "fields":{
+            "user":"admin@gmail.com",
+            "analysis":2
+
+}
+
+},
+    {
+        "model":"api.bookmark",
+        "pk":3,
+        "fields":{
+            "user":"admin@gmail.com",
+            "analysis":3
+
+}
+
+},
+    {
+        "model":"api.bookmark",
+        "pk":4,
+        "fields":{
+            "user":"admin@gmail.com",
+            "analysis":4
+
+}
+
+},
+    {
+        "model":"api.bookmark",
+        "pk":5,
+        "fields":{
+            "user":"admin@gmail.com",
+            "analysis":5
+
+}
+
+},
+    {
+        "model":"api.bookmark",
+        "pk":6,
+        "fields":{
+            "user":"test1@gmail.com",
+            "analysis":1
+
+}
+
+},
+    {
+        "model":"api.bookmark",
+        "pk":7,
+        "fields":{
+            "user":"test1@gmail.com",
+            "analysis":2
+
+}
+
+},
+    {
+        "model":"api.bookmark",
+        "pk":8,
+        "fields":{
+            "user":"test1@gmail.com",
+            "analysis":3
+        
+}
+
+},
+    {
+        "model":"api.bookmark",
+        "pk":9,
+        "fields":{
+            "user":"test1@gmail.com",
+            "analysis":4
+
+}
+
+},
+    {
+        "model":"api.bookmark",
+        "pk":10,
+        "fields":{
+            "user":"test1@gmail.com",
+            "analysis":5
+
+}
+
+}
+]
