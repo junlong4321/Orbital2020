@@ -22,9 +22,9 @@ class UserProfileSerializer(serializers.ModelSerializer):
 			email=validated_data['email'],
 			# User have to input a name when they attempt to register
 			name=validated_data['name'],
-			biography=validated_data['biography'],
-			linkedin=validated_data['linkedin'],
-			profile_picture=validated_data['profile_picture'],
+			# biography=validated_data['biography'],
+			# linkedin=validated_data['linkedin'],
+			# profile_picture=validated_data['profile_picture'],
 			total_upvotes=0,
 		)
 		# Set and hash password
