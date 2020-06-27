@@ -19,6 +19,8 @@ import Grid from '@material-ui/core/Grid';
 import pic from '../../../assets/the-free-market-logo.png';
 import styles from './Navbar.module.css';
 import SearchBar from '../SearchBar/SearchBar';
+import { useDispatch } from 'react-redux';
+import * as actions from '../../../store/Actions/Auth';
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -51,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function PrimarySearchAppBar() {
+const Navbar = () => {
     const classes = useStyles();
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -135,12 +137,9 @@ export default function PrimarySearchAppBar() {
     };
 
     // understand what this does
-    const [setAge] = React.useState('');
     const [open, setOpen] = React.useState(false);
 
-    const handleSelectChange = (event) => {
-        setAge(event.target.value);
-    };
+    const handleSelectChange = (event) => {};
 
     const handleSelectClose = () => {
         setOpen(false);
@@ -149,6 +148,9 @@ export default function PrimarySearchAppBar() {
     const handleSelectOpen = () => {
         setOpen(true);
     };
+
+    // redux mapDispatchToProps hook version
+    const dispatch = useDispatch();
 
     return (
         // DESKTOP USER PROFILE
@@ -269,6 +271,17 @@ export default function PrimarySearchAppBar() {
                                         <p>Your Analysis</p>
                                     </MenuItem>
                                 </Link>
+                                <Link to="/create-analysis">
+                                    <MenuItem>
+                                        <IconButton
+                                            aria-label="show 11 new notifications"
+                                            color="inherit"
+                                        >
+                                            <AssignmentIcon />
+                                        </IconButton>
+                                        <p>Create Analysis</p>
+                                    </MenuItem>
+                                </Link>
                                 <Link to="/bookmarked">
                                     <MenuItem>
                                         <IconButton
@@ -282,7 +295,9 @@ export default function PrimarySearchAppBar() {
                                         <p>Bookmarked</p>
                                     </MenuItem>
                                 </Link>
-                                <MenuItem>
+                                <MenuItem
+                                    onClick={() => dispatch(actions.logout())}
+                                >
                                     <IconButton
                                         aria-label="account of current user"
                                         aria-controls="primary-search-account-menu"
@@ -310,4 +325,6 @@ export default function PrimarySearchAppBar() {
             {renderMobileMenu}
         </div>
     );
-}
+};
+
+export default Navbar;

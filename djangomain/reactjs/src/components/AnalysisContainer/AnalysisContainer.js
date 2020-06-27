@@ -6,6 +6,7 @@ import { Typography } from '@material-ui/core';
 import '../UserProfileContainer/UserProfileContainer.module.css';
 import UserProfileNavigation from '../../components/UserProfileNavigation/UserProfileNavigation';
 import IndividualAnalysisCard from './IndividualAnalysisCard';
+import SearchBar from '../../components/UI/SearchBar/SearchBar';
 
 const useStyles = makeStyles((theme) => ({
     containerBackground: {
@@ -15,6 +16,9 @@ const useStyles = makeStyles((theme) => ({
     },
     typographyContainer: {
         margin: '1em 0em 1em 0em',
+    },
+    buttonColor: {
+        backgroundColor: '#1B1661',
     },
 }));
 
@@ -34,20 +38,36 @@ const AnalysisContainer = (props) => {
                 </Typography>
             </Grid>
             <Grid container item md={1} />
-            <Grid item md={2} container item>
+            <Grid item md={2} container>
                 <UserProfileNavigation />
             </Grid>
             <Grid
                 item
                 md={8}
                 container
-                item
                 direction="row"
                 justify="center"
                 alignContent="center"
                 className={styles.containerBackground}
             >
-                <IndividualAnalysisCard />
+                <Grid
+                    item
+                    container
+                    md={12}
+                    justify="flex-end"
+                    style={{ margin: '1em 1em 1em 0em' }}
+                >
+                    <SearchBar />
+                </Grid>
+                <Grid
+                    item
+                    container
+                    md={12}
+                    justify="center"
+                    style={{ marginBottom: '4em' }}
+                >
+                    <IndividualAnalysisCard />
+                </Grid>
             </Grid>
             <Grid container item md={1} />
         </React.Fragment>

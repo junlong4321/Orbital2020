@@ -1,0 +1,6 @@
+.Navigation a.active,
+.Navigation a:active,
+.Navigation a:hover {
+    color: black;
+    background-color: #1b1661;
+}

@@ -13,6 +13,9 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import moment from 'moment';
+import AnalysisModal from '../../components/AnalysisModal/AnalysisModal';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -27,48 +30,93 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const AnalysisCard = () => {
+const truncateLongAnalysis = (text) => {
+    let finalText = '';
+    if (text.length > 130) {
+        finalText = text.slice(0, 130) + '...';
+    } else {
+        finalText = text;
+    }
+    return finalText;
+};
+
+const AnalysisCard = (props) => {
     const classes = useStyles();
+
+    console.log(props.data.created_date);
+
+    // change time format
+    const timeNow = moment(props.data.created_date).format('D MMMM YYYY');
+
+    const finalText = truncateLongAnalysis(props.data.text);
+
+    // dialog handling
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     return (
-    <Card className={classes.root}>
-        <CardHeader
-            avatar={
-            <Avatar aria-label="recipe" className={classes.avatar}>
-                R
-            </Avatar>
-            }
-            action={
-            <IconButton aria-label="settings">
-                <MoreVertIcon />
-            </IconButton>
-            }
-            title="Shrimp and Chorizo Paella"
-            subheader="September 14, 2016"
-        />
-        <CardMedia
-            className={classes.media}
-            image="/static/images/cards/paella.jpg"
-            title="Paella dish"
-        />
-        <CardContent>
-            <Typography variant="body2" color="textSecondary" component="p">
-            This impressive paella is a perfect party dish and a fun meal to cook together with your
-            guests. Add 1 cup of frozen peas along with the mussels, if you like.
-            </Typography>
-        </CardContent>
-        <CardActions disableSpacing>
-            <IconButton aria-label="add to favorites">
-            <FavoriteIcon />
-            </IconButton>
-            <IconButton aria-label="share">
-            <ShareIcon />
-            </IconButton>
-            <IconButton>
-            <ExpandMoreIcon />
-            </IconButton>
-        </CardActions>
-    </Card>
+        <React.Fragment>
+            <Card className={classes.root}>
+                <CardHeader
+                    avatar={
+                        <Avatar aria-label="recipe" className={classes.avatar}>
+                            R
+                        </Avatar>
+                    }
+                    action={
+                        <IconButton aria-label="settings">
+                            <MoreVertIcon />
+                        </IconButton>
+                    }
+                    title={props.data.stock}
+                    subheader={timeNow}
+                />
+                <CardActionArea onClick={handleClickOpen}>
+                    <CardMedia
+                        className={classes.media}
+                        image={
+                            props.data.images[0] == null
+                                ? null
+                                : props.data.images[0].image
+                        }
+                    />
+                    <CardContent>
+                        <Typography
+                            variant="body2"
+                            color="textSecondary"
+                            component="p"
+                            align="justify"
+                        >
+                            {finalText}
+                        </Typography>
+                    </CardContent>
+                </CardActionArea>
+                <CardActions disableSpacing>
+                    <IconButton aria-label="add to favorites">
+                        <FavoriteIcon />
+                    </IconButton>
+                    <IconButton aria-label="share">
+                        <ShareIcon />
+                    </IconButton>
+                    <IconButton>
+                        <ExpandMoreIcon />
+                    </IconButton>
+                </CardActions>
+            </Card>
+            <AnalysisModal
+                open={open}
+                onClose={handleClose}
+                data={props.data}
+            />
+        </React.Fragment>
     );
-}
+};
 
 export default AnalysisCard;

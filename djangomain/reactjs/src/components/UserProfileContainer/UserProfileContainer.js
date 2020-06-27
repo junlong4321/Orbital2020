@@ -34,14 +34,13 @@ const UserProfileContainer = (props) => {
                 </Typography>
             </Grid>
             <Grid container item md={1} />
-            <Grid item md={2} container item>
+            <Grid item md={2} container>
                 <UserProfileNavigation />
             </Grid>
             <Grid
                 item
                 md={8}
                 container
-                item
                 direction="row"
                 justify="center"
                 alignContent="center"

@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import Table from '@material-ui/core/Table';
 import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
-import moment from 'moment';
-
+import { connect } from 'react-redux';
 import Navbar from '../../components/UI/Navbar/Navbar';
 import DataTitle from '../../components/DataTitle/DataTitle';
 import SummaryTableHead from '../../components/Tables/SummaryTableHead';
@@ -12,6 +11,7 @@ import AnalysisCard from '../../components/AnalysisCard/AnalysisCard';
 import styles from './Home.module.css';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import WhatshotIcon from '@material-ui/icons/Whatshot';
+import * as actions from '../../store/Actions/Analysis';
 
 class Home extends Component {
     state = {
@@ -24,8 +24,6 @@ class Home extends Component {
     };
 
     componentDidMount() {
-        const marketSummaryDataName = this.state.marketSummaryDataName;
-        const marketSummaryData = {};
         const marketSummaryDataUrl = this.state.marketSummaryDataName.map(
             (stock) => {
                 return `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${stock}&apikey=NSELWN19JOULLJJ9`;
@@ -47,44 +45,71 @@ class Home extends Component {
                     });
                 })
             )
-            .catch((errors) => console.log(errors));
+            .catch((errors) => {
+                console.log(errors);
+                this.setState({ marketSummaryDataError: true });
+            });
+
+        if (this.props.analysisData == null) {
+            this.props.onPullAnalysis(this.props.token);
+        }
     }
 
     render() {
-        const marketSummaryData1 = this.state.marketSummaryData1;
-        const marketSummaryData2 = this.state.marketSummaryData2;
-
+        // creating the data for market summary
         const createData = (id, name, price, change, changePercent) => {
             return { id, name, price, change, changePercent };
         };
 
-        let rows = [];
+        let rows = [
+            createData(0, 'SPY', 100, -20, -20 + '%'),
+            createData(1, 'SPY', 100, -20, -20 + '%'),
+        ];
 
-        if (marketSummaryData1 === null || marketSummaryData2 == null) {
-            rows = [
-                createData(0, 'SPY', 100, -20, -20 + '%'),
-                createData(1, 'SPY', 100, -20, -20 + '%'),
-            ];
-        } else {
-            rows = [
-                createData(
-                    0,
-                    marketSummaryData1['01. symbol'],
-                    marketSummaryData1['05. price'],
-                    marketSummaryData1['09. change'],
-                    marketSummaryData1['10. change percent']
-                ),
-                createData(
-                    1,
-                    marketSummaryData2['01. symbol'],
-                    marketSummaryData2['05. price'],
-                    marketSummaryData2['09. change'],
-                    marketSummaryData2['10. change percent']
-                ),
-            ];
+        if (!this.state.marketSummaryDataError) {
+            const marketSummaryData1 = this.state.marketSummaryData1;
+            const marketSummaryData2 = this.state.marketSummaryData2;
+            if (marketSummaryData1 === null || marketSummaryData2 == null) {
+            } else {
+                rows = [
+                    createData(
+                        0,
+                        marketSummaryData1['01. symbol'],
+                        marketSummaryData1['05. price'],
+                        marketSummaryData1['09. change'],
+                        marketSummaryData1['10. change percent']
+                    ),
+                    createData(
+                        1,
+                        marketSummaryData2['01. symbol'],
+                        marketSummaryData2['05. price'],
+                        marketSummaryData2['09. change'],
+                        marketSummaryData2['10. change percent']
+                    ),
+                ];
+            }
         }
 
+        // creating the analysisCard
         const headings = ['Name', 'Price', 'Change', '% Change'];
+        let analysisCard = null;
+        if (this.props.analysisData !== null) {
+            analysisCard = this.props.analysisData.slice(0, 3).map((data) => {
+                return (
+                    <Grid
+                        key={data.id}
+                        item
+                        xs={6}
+                        md={4}
+                        container
+                        justify="center"
+                        style={{ marginBottom: '3em' }}
+                    >
+                        <AnalysisCard data={data} />
+                    </Grid>
+                );
+            });
+        }
 
         return (
             <React.Fragment>
@@ -138,15 +163,7 @@ class Home extends Component {
                         >
                             Featured Posts
                         </DataTitle>
-                        <Grid item xs={6} md={4} container justify="center">
-                            <AnalysisCard />
-                        </Grid>
-                        <Grid item xs={6} md={4} container justify="center">
-                            <AnalysisCard />
-                        </Grid>
-                        <Grid item xs={6} md={4} container justify="center">
-                            <AnalysisCard />
-                        </Grid>
+                        {analysisCard}
                     </Grid>
                     <Grid container item md={1} />
                 </Grid>
@@ -155,4 +172,17 @@ class Home extends Component {
     }
 }
 
-export default Home;
+const mapStateToProps = (state) => {
+    return {
+        token: state.auth.token,
+        analysisData: state.analysis.analysisData,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onPullAnalysis: (token) => dispatch(actions.analysisData(token)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

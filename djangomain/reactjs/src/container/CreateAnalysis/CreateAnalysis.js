@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import Grid from '@material-ui/core/Grid';
-
 import Navbar from '../../components/UI/Navbar/Navbar';
-import UserProfileContainer from '../../components/UserProfileContainer/UserProfileContainer';
+import Grid from '@material-ui/core/Grid';
+import CreateAnalysisContainer from './CreateAnalysisContainer';
 
-class Profile extends Component {
+class CreateAnalysis extends Component {
     render() {
         return (
             <React.Fragment>
@@ -29,7 +28,7 @@ class Profile extends Component {
                         }}
                         md={10}
                     >
-                        <UserProfileContainer />
+                        <CreateAnalysisContainer />
                     </Grid>
                     <Grid container item md={1} />
                 </Grid>
@@ -38,4 +37,4 @@ class Profile extends Component {
     }
 }
 
-export default Profile;
+export default CreateAnalysis;
