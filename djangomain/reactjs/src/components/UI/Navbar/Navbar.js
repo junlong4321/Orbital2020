@@ -10,6 +10,7 @@ import Menu from '@material-ui/core/Menu';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
@@ -152,6 +153,11 @@ const Navbar = () => {
     // redux mapDispatchToProps hook version
     const dispatch = useDispatch();
 
+    // getting the name from localStorage and capitalizing the first letter
+    const username = localStorage.getItem('name');
+    const signedInUsername =
+        username.charAt(0).toUpperCase() + username.slice(1);
+
     return (
         // DESKTOP USER PROFILE
         <div className={classes.grow}>
@@ -229,10 +235,14 @@ const Navbar = () => {
                             <Button
                                 aria-controls="simple-menu"
                                 aria-haspopup="true"
-                                style={{ color: 'white', paddingLeft: '20px' }}
+                                style={{
+                                    color: 'white',
+                                    paddingLeft: '20px',
+                                    textTransform: 'none',
+                                }}
                                 onClick={handleUserMenuClick}
                             >
-                                User12345
+                                {signedInUsername}
                             </Button>
                             <Menu
                                 id="simple-menu"
@@ -244,7 +254,7 @@ const Navbar = () => {
                                 <MenuItem>
                                     <Avatar></Avatar>
                                     <p style={{ paddingLeft: '0.6em' }}>
-                                        User123
+                                        {signedInUsername}
                                     </p>
                                 </MenuItem>
                                 <Link to="/profile">
@@ -303,8 +313,12 @@ const Navbar = () => {
                                         aria-controls="primary-search-account-menu"
                                         aria-haspopup="true"
                                         color="inherit"
-                                    ></IconButton>
-                                    <p style={{ color: '#797979' }}>Sign out</p>
+                                    >
+                                        <ExitToAppIcon
+                                            style={{ color: '#000000' }}
+                                        />
+                                    </IconButton>
+                                    <p style={{ color: '#000000' }}>Sign out</p>
                                 </MenuItem>
                             </Menu>
                         </div>

@@ -7,10 +7,11 @@ export const authStart = () => {
     };
 };
 
-export const authSuccess = (token) => {
+export const authSuccess = (token, email) => {
     return {
         type: actionTypes.AUTH_SUCCESS,
         token: token,
+        email: email,
     };
 };
 
@@ -23,18 +24,19 @@ export const authFail = (error) => {
 
 export const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('email');
     return {
         type: actionTypes.LOGOUT,
     };
 };
 
-export const signUp = (username, email, password) => {
+export const signUp = (email, password, username) => {
     return (dispatch) => {
         dispatch(authStart());
         const signUpData = {
-            username: email,
+            email: email,
             password: password,
-            displayedName: username,
+            name: username,
         };
         const authData = {
             username: email,
@@ -47,8 +49,12 @@ export const signUp = (username, email, password) => {
                     .post('http://127.0.0.1:8000/api/auth/', authData)
                     .then((response1) => {
                         const userToken = response1.data.token;
+                        const id = response.data.id;
                         localStorage.setItem('token', userToken);
-                        dispatch(authSuccess(userToken));
+                        localStorage.setItem('email', email);
+                        localStorage.setItem('name', username);
+                        localStorage.setItem('userId', id);
+                        dispatch(authSuccess(userToken, email));
                     })
                     .catch((error) => {
                         dispatch(authFail(error));
@@ -71,9 +77,19 @@ export const auth = (email, password) => {
         axios
             .post('http://127.0.0.1:8000/api/auth/', authData)
             .then((response) => {
-                const userToken = response.data.token;
-                localStorage.setItem('token', userToken);
-                dispatch(authSuccess(userToken));
+                axios
+                    .get(`http://127.0.0.1:8000/api/users/?search=${email}`)
+                    .then((response1) => {
+                        const name = response1.data[0].name;
+                        const id = response1.data[0].id;
+                        const userToken = response.data.token;
+                        localStorage.setItem('token', userToken);
+                        localStorage.setItem('email', email);
+                        localStorage.setItem('name', name);
+                        localStorage.setItem('userId', id);
+                        dispatch(authSuccess(userToken, email));
+                    })
+                    .catch((error) => dispatch(authFail(error)));
             })
             .catch((error) => {
                 dispatch(authFail(error));

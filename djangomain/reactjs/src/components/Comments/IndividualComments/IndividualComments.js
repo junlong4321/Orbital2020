@@ -5,15 +5,18 @@ import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
+import moment from '../../moment/moment';
 
 const IndividualComments = (props) => {
+    // converting to appropriate date time format
+    const date = moment(props.data.created_date);
     return (
         <React.Fragment>
             <Card variant="outlined" style={{ margin: '0.5em 0em 0.5em 0em' }}>
                 <CardHeader
                     avatar={<Avatar src={userImage} />}
-                    title="admin123"
-                    subheader="Jun 26"
+                    title={props.data.commenter}
+                    subheader={date}
                 />
                 <CardContent>
                     <Typography
@@ -22,9 +25,7 @@ const IndividualComments = (props) => {
                         component="p"
                         align="justify"
                     >
-                        Praesent commodo cursus magna, vel scelerisque nisl
-                        consectetur et. Vivamus sagittis lacus vel augue laoreet
-                        rutrum faucibus dolor auctor.
+                        {props.data.comment}
                     </Typography>
                 </CardContent>
             </Card>

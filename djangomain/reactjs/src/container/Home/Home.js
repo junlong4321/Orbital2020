@@ -19,20 +19,22 @@ class Home extends Component {
         marketSummaryData1: null,
         marketSummaryData2: null,
         analysisSummaryData: null,
-        marketSummaryDataError: null,
-        analysisSummaryDataError: null,
+        marketSummaryDataError: false,
     };
 
     componentDidMount() {
+        // populating an array with all the URLs to call a get request on alphavantage api
         const marketSummaryDataUrl = this.state.marketSummaryDataName.map(
             (stock) => {
                 return `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${stock}&apikey=NSELWN19JOULLJJ9`;
             }
         );
+        // populate the array with all the promises
         let promises = [];
         marketSummaryDataUrl.forEach((url) => {
             promises.push(axios.get(url));
         });
+        // calling the api
         axios
             .all(promises)
             .then(
@@ -50,6 +52,7 @@ class Home extends Component {
                 this.setState({ marketSummaryDataError: true });
             });
 
+        // pulls the analysis data to home page
         if (this.props.analysisData == null) {
             this.props.onPullAnalysis(this.props.token);
         }
@@ -61,11 +64,10 @@ class Home extends Component {
             return { id, name, price, change, changePercent };
         };
 
-        let rows = [
-            createData(0, 'SPY', 100, -20, -20 + '%'),
-            createData(1, 'SPY', 100, -20, -20 + '%'),
-        ];
+        // fake data while waiting calling api for data
+        let rows = [];
 
+        // populating the rows array with actual data once api returns data
         if (!this.state.marketSummaryDataError) {
             const marketSummaryData1 = this.state.marketSummaryData1;
             const marketSummaryData2 = this.state.marketSummaryData2;
@@ -90,7 +92,7 @@ class Home extends Component {
             }
         }
 
-        // creating the analysisCard
+        // creating the analysisCards
         const headings = ['Name', 'Price', 'Change', '% Change'];
         let analysisCard = null;
         if (this.props.analysisData !== null) {
@@ -141,7 +143,10 @@ class Home extends Component {
                     <Grid container item md={4} />
                     <Grid container item md={1} />
                 </Grid>
-                <Grid container style={{ marginTop: '20px' }}>
+                <Grid
+                    container
+                    style={{ marginTop: '20px', marginBottom: '2em' }}
+                >
                     <Grid container item md={1} />
                     <Grid
                         className={styles.tableBackground}
@@ -176,6 +181,7 @@ const mapStateToProps = (state) => {
     return {
         token: state.auth.token,
         analysisData: state.analysis.analysisData,
+        analysisDataLoading: state.analysis.loading,
     };
 };
 

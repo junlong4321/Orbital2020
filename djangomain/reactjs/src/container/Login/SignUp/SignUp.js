@@ -17,7 +17,6 @@ import * as actions from '../../../store/Actions/Auth';
 
 const styles = (theme) => ({
     paper: {
-        marginTop: theme.spacing(8),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -51,12 +50,14 @@ class SignUp extends Component {
             },
         });
 
+        // redirects user to home page once sign up is successful
         if (this.props.auth) {
             this.props.history.replace('/home');
         }
 
         return (
             <ThemeProvider theme={theme}>
+                <div style={{ height: '8vh' }} />
                 <Container
                     style={{ backgroundColor: 'rgba(0, 0, 0, 0.75)' }}
                     component="main"

@@ -11,16 +11,15 @@ import styles from './Stocks.module.css';
 
 class Stocks extends Component {
     componentDidMount() {
-        if (this.props.analysisData == null) {
-            this.props.history.replace('/home');
-        }
+        // if (this.props.analysisData == null) {
+        //     this.props.history.replace('/home');
+        // }
     }
 
     render() {
-        console.log('stocks page');
         let analysisCard = null;
         if (this.props.analysisData !== null) {
-            analysisCard = this.props.analysisData.slice(0, 2).map((data) => {
+            analysisCard = this.props.analysisData.map((data) => {
                 return (
                     <Grid
                         key={data.id}
@@ -39,7 +38,10 @@ class Stocks extends Component {
         return (
             <React.Fragment>
                 <Navbar />
-                <Grid container style={{ marginTop: '3em' }}>
+                <Grid
+                    container
+                    style={{ marginTop: '3em', marginBottom: '2em' }}
+                >
                     <Grid container item md={1} />
                     <Grid
                         className={styles.tableBackground}

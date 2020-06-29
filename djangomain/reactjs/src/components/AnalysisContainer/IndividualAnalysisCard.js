@@ -11,6 +11,8 @@ import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Button from '@material-ui/core/Button';
 import CommentIcon from '@material-ui/icons/Comment';
+import moment from '../moment/moment';
+import { DialogTitle } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     root: {},
@@ -22,29 +24,42 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: red[500],
     },
 }));
-const IndividualAnalysisCard = () => {
+const IndividualAnalysisCard = (props) => {
+    let title = '';
+    let date = '';
+    let text = '';
+    let companyName = '';
+    let image = null;
+    // to ensure that initial render of component shows blank, no error thrown. populate with correct data after analysis data is pulled
+    if (props.data !== null) {
+        title = props.data.title;
+        date = moment(props.data.created_date);
+        text = props.data.text;
+        companyName = props.data.stock;
+        if (props.data.images.length !== 0) {
+            image = props.data.images[0].image;
+        }
+    }
+
     const classes = useStyles();
+
     return (
         <Card className={classes.root}>
             <CardHeader
                 action={<Button style={{ color: '#8481B0' }}>Edit</Button>}
-                title="Shrimp"
+                title={title}
             />
-            <CardMedia
-                className={classes.media}
-                image="/static/images/cards/paella.jpg"
-                title="Paella dish"
-            />
+            <CardMedia className={classes.media} image={image} title={title} />
             <CardContent>
                 <Typography
                     color="textSecondary"
                     component="p"
                     style={{ fontSize: '0.7em' }}
                 >
-                    Last updated: 3 weeks ago
+                    {date}
                 </Typography>
                 <Typography variant="body1" color="textSecondary" component="p">
-                    This impressive paella
+                    {text.slice(0, 60) + '...'}
                 </Typography>
             </CardContent>
             <CardActions>

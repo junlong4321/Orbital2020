@@ -14,9 +14,10 @@ import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import moment from 'moment';
+import moment from '../../components/moment/moment';
 import AnalysisModal from '../../components/AnalysisModal/AnalysisModal';
 
+// styling of component
 const useStyles = makeStyles((theme) => ({
     root: {
         maxWidth: 345,
@@ -30,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+// truncate text longer than 130 words
 const truncateLongAnalysis = (text) => {
     let finalText = '';
     if (text.length > 130) {
@@ -43,23 +45,26 @@ const truncateLongAnalysis = (text) => {
 const AnalysisCard = (props) => {
     const classes = useStyles();
 
-    console.log(props.data.created_date);
-
     // change time format
-    const timeNow = moment(props.data.created_date).format('D MMMM YYYY');
+    const timeNow = moment(props.data.created_date);
 
+    // text after truncating
     const finalText = truncateLongAnalysis(props.data.text);
 
     // dialog handling
     const [open, setOpen] = React.useState(false);
 
+    // handles the opening and closing of the Card Modal
     const handleClickOpen = () => {
         setOpen(true);
     };
-
     const handleClose = () => {
         setOpen(false);
     };
+
+    // gets the first letter of the name
+    const name = props.data.name;
+    const firstLetter = name.slice(0, 1).toUpperCase();
 
     return (
         <React.Fragment>
@@ -67,7 +72,7 @@ const AnalysisCard = (props) => {
                 <CardHeader
                     avatar={
                         <Avatar aria-label="recipe" className={classes.avatar}>
-                            R
+                            {firstLetter}
                         </Avatar>
                     }
                     action={
@@ -75,7 +80,7 @@ const AnalysisCard = (props) => {
                             <MoreVertIcon />
                         </IconButton>
                     }
-                    title={props.data.stock}
+                    title={props.data.title}
                     subheader={timeNow}
                 />
                 <CardActionArea onClick={handleClickOpen}>
@@ -88,6 +93,14 @@ const AnalysisCard = (props) => {
                         }
                     />
                     <CardContent>
+                        <Typography
+                            variant="body2"
+                            color="primary"
+                            component="p"
+                            align="justify"
+                        >
+                            {props.data.stock}
+                        </Typography>
                         <Typography
                             variant="body2"
                             color="textSecondary"

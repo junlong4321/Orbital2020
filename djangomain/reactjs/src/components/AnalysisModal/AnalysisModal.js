@@ -21,6 +21,7 @@ const styles = (theme) => ({
     },
 });
 
+// title for modal, includes cross button
 const DialogTitle = withStyles(styles)((props) => {
     const { children, classes, onClose, ...other } = props;
     return (
@@ -46,11 +47,15 @@ const DialogContent = withStyles((theme) => ({
 }))(MuiDialogContent);
 
 const AnalysisModal = (props) => {
+    // handles the opening and closing of the modal
     const { onClose, open } = props;
-
     const handleClose = () => {
         onClose();
     };
+
+    // ensure that the application doesn't break when there is are no image in the database
+    const analysisImage =
+        props.data.images[0] == null ? null : props.data.images[0].image;
 
     return (
         <Dialog
@@ -61,26 +66,24 @@ const AnalysisModal = (props) => {
             maxWidth="lg"
         >
             <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-                {props.data.stock}
+                {props.data.title}
             </DialogTitle>
             <DialogContent dividers>
                 <Typography gutterBottom variant="h5">
                     {props.data.stock}
                 </Typography>
-                <img src={props.data.images[0].image} alt="blank" />
-                <Typography gutterBottom>{props.data.text}</Typography>
-                <Typography gutterBottom>
-                    Praesent commodo cursus magna, vel scelerisque nisl
-                    consectetur et. Vivamus sagittis lacus vel augue laoreet
-                    rutrum faucibus dolor auctor.
+                <img
+                    src={analysisImage}
+                    alt="blank"
+                    style={{
+                        maxWidth: '100%',
+                        maxHeight: '100%',
+                    }}
+                />
+                <Typography gutterBottom style={{ marginTop: '1em' }}>
+                    {props.data.text}
                 </Typography>
-                <Typography gutterBottom>
-                    Aenean lacinia bibendum nulla sed consectetur. Praesent
-                    commodo cursus magna, vel scelerisque nisl consectetur et.
-                    Donec sed odio dui. Donec ullamcorper nulla non metus auctor
-                    fringilla.
-                </Typography>
-                <Comments />
+                <Comments id={props.data.id} />
             </DialogContent>
         </Dialog>
     );

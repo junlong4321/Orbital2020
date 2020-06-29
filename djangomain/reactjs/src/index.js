@@ -10,12 +10,18 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import theme from './theme';
 import authReducer from './store/Reducers/AuthReducer';
 import analysisReducer from './store/Reducers/AnalysisReducer';
+import userProfile from './store/Reducers/UserProfile';
+import createAnalysis from './store/Reducers/CreateAnalysis';
+import comments from './store/Reducers/Comments';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
     auth: authReducer,
     analysis: analysisReducer,
+    profile: userProfile,
+    createAnalysis: createAnalysis,
+    comments: comments,
 });
 
 const store = createStore(
