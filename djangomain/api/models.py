@@ -36,7 +36,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 	# causes a lot of problems)
 	email = models.EmailField(max_length=225, unique=True, null=False)
 	name = models.CharField(max_length=225, unique=True, null=False)
-	biography = models.TextField(max_length=500, blank=True, null=True)
+	biography = models.TextField(blank=True, null=True)
 	linkedin = models.URLField(max_length=225, blank=True, null=True)
 	profile_picture = models.ImageField(blank=True, null=True)
 	# is_active is used to determine if the user is currently active in the system
@@ -98,6 +98,7 @@ class Comment(models.Model):
 	# A commenter is a person who commented on a stock analysis
 	commenter = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field='email')
 	analysis = models.ForeignKey(StockAnalysis, on_delete=models.CASCADE)
+	commenter_names = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field='name', related_name='commenter_names')
 	comment = models.TextField()
 	created_date = models.DateTimeField(default=timezone.now)
 	# Set number of upvotes to 0 by default
