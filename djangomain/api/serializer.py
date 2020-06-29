@@ -3,6 +3,8 @@ from .models import UserProfile, StockAnalysis, StockAnalysisImage, StockCounter
 
 
 # Converts User data to JSON
+# Implement PATCH request with PatchModelSerializer (ie users do not have to provide name, email,
+# and password when updating biography and linkedin)
 class UserProfileSerializer(serializers.ModelSerializer):
 	# Serialize metadata from UserProfile model
 	class Meta:
