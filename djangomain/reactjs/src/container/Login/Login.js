@@ -21,7 +21,6 @@ import { connect } from 'react-redux';
 
 const styles = (theme) => ({
     paper: {
-        marginTop: theme.spacing(8),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -53,6 +52,7 @@ class SignIn extends Component {
             },
         });
 
+        // redirects user to home page once authentication is successful
         if (this.props.auth) {
             this.props.history.replace('/home');
         }
@@ -61,6 +61,7 @@ class SignIn extends Component {
 
         return (
             <ThemeProvider theme={theme}>
+                <div style={{ height: '8vh' }} />
                 <Container
                     style={{ backgroundColor: 'rgba(0, 0, 0, 0.75)' }}
                     component="main"

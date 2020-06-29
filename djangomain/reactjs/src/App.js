@@ -13,6 +13,7 @@ import './App.css';
 import CreateAnalysis from './container/CreateAnalysis/CreateAnalysis';
 import GuardedRoute from './components/GuardedRoute/GuardedRoute';
 import * as actions from './store/Actions/Auth';
+import Copyright from './components/Copyright/Copyright';
 
 class App extends Component {
     componentDidMount() {
@@ -24,46 +25,45 @@ class App extends Component {
         return (
             <BrowserRouter>
                 <div className="App">
-                    <Switch>
-                        <Route path="/" exact component={Login} />
-                        <Route path="/signup" exact component={SignUp} />
-                        <GuardedRoute
-                            path="/home"
-                            component={Home}
-                            auth={auth}
-                            exact
-                        />
-                        <GuardedRoute
-                            path="/stocks"
-                            component={Stocks}
-                            auth={auth}
-                            exact
-                        />
-                        <GuardedRoute
-                            path="/News"
-                            component={News}
-                            auth={auth}
-                            exact
-                        />
-                        <GuardedRoute
-                            path="/profile"
-                            component={Profile}
-                            auth={auth}
-                            exact
-                        />
-                        <GuardedRoute
-                            path="/your-analysis"
-                            component={YourAnalysis}
-                            auth={auth}
-                            exact
-                        />
-                        <GuardedRoute
-                            path="/create-analysis"
-                            component={CreateAnalysis}
-                            auth={auth}
-                            exact
-                        />
-                    </Switch>
+                    <Route path="/" exact component={Login} />
+                    <Route path="/signup" exact component={SignUp} />
+                    <GuardedRoute
+                        path="/home"
+                        component={Home}
+                        auth={auth}
+                        exact
+                    />
+                    <GuardedRoute
+                        path="/stocks"
+                        component={Stocks}
+                        auth={auth}
+                        exact
+                    />
+                    <GuardedRoute
+                        path="/News"
+                        component={News}
+                        auth={auth}
+                        exact
+                    />
+                    <GuardedRoute
+                        path="/profile"
+                        component={Profile}
+                        auth={auth}
+                        exact
+                    />
+                    <GuardedRoute
+                        path="/your-analysis"
+                        component={YourAnalysis}
+                        auth={auth}
+                        exact
+                    />
+                    <GuardedRoute
+                        path="/create-analysis"
+                        component={CreateAnalysis}
+                        auth={auth}
+                        exact
+                    />
+                    <Copyright />
                 </div>
             </BrowserRouter>
         );

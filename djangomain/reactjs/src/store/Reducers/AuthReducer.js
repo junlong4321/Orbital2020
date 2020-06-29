@@ -5,6 +5,7 @@ const initialState = {
     auth: false,
     error: null,
     loading: false,
+    email: null,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -20,6 +21,7 @@ const authReducer = (state = initialState, action) => {
                 token: action.token,
                 auth: true,
                 loading: false,
+                email: action.email,
             };
         case actionTypes.AUTH_FAIL:
             return {
