@@ -1,4 +1,4 @@
-# <center>NUS Orbital Project 2020 - The Free Market [Difficulty : Apollo 11 (Advanced)] </center>
+# <center>NUS Orbital Project 2020 - The Free Market [Difficulty : Artemis (Extreme)] </center>
 
 # Set Up Instructions (**Frontend ReactJS**) :
 ### 1. Clone and pull git repository
@@ -210,23 +210,23 @@ http://127.0.0.1:8000/api/counters/
 ```
 [
     {
-       "id": 1,
-       "name": "3Cnergy",
-       "code": "502",
-       "RIC": "CNER.SI"
-   },
-   {
-       "id": 2,
-       "name": "8Telecom",
-       "code": "AZG",
-       "RIC": "ETEL.SI"
-   },
-   {
-       "id": 3,
-       "name": "A-Smart",
-       "code": "BQC",
-       "RIC": "ASMA.SI"
-   }
+        "id": 1,
+        "name": "Agilent Technologies",
+        "code": "A",
+        "exchange": "NYSE"
+    },
+    {
+        "id": 2,
+        "name": "Alcoa Corp",
+        "code": "AA",
+        "exchange": "NYSE"
+    },
+    {
+        "id": 3,
+        "name": "Aaron's Inc",
+        "code": "AAN",
+        "exchange": "NYSE"
+    }
 ]
 ```
 ###### Description : Name refers to name of stock, code refers to ticker symbol of stock. The Reuters Instrument Code, or RIC, is a ticker-like code used by Thomson Reuters to identify financial instruments and indices
@@ -237,18 +237,18 @@ http://127.0.0.1:8000/api/counters/
 ###### Parameters : Data (Body)
 ###### Request Example (HTML FORM) :
 ```
-name* : 3Cnergy
-code* : 502
-RIC : CNER.SI
+name* : Agilent Technologies
+code* : A
+exchange : NYSE
 (*) - Compulsory Field
 ```
 ###### Response Example :
 ```
 {
     "id": 1,
-    "name": "3Cnergy",
-    "code": "502",
-    "RIC": "CNER.SI"
+    "name": "Agilent Technologies",
+    "code": "A",
+    "exchange": "NYSE"
 }
 ```
 ###### Description : Name refers to name of stock, code refers to ticker symbol of stock. The Reuters Instrument Code, or RIC, is a ticker-like code used by Thomson Reuters to identify financial instruments and indices
@@ -265,9 +265,9 @@ http://127.0.0.1:8000/api/counters/1/
 ```
 {
     "id": 1,
-    "name": "3Cnergy",
-    "code": "502",
-    "RIC": "CNER.SI"
+    "name": "Agilent Technologies",
+    "code": "A",
+    "exchange": "NYSE"
 }
 ```
 ###### Description : Name refers to name of stock, code refers to ticker symbol of stock. The Reuters Instrument Code, or RIC, is a ticker-like code used by Thomson Reuters to identify financial instruments and indices
@@ -279,15 +279,15 @@ http://127.0.0.1:8000/api/counters/1/
 ###### Request Example (HTML FORM) :
 ```
 http://127.0.0.1:8000/api/counters/1/
-name : 3Cnergy - PUT REQUEST CALLED
+name : Agilent Technologies - PUT REQUEST CALLED
 ```
 ###### Response Example :
 ```
 {
     "id": 1,
-    "name": "3Cnergy - PUT REQUEST CALLED",
-    "code": "502",
-    "RIC": "CNER.SI"
+    "name": "Agilent Technologies - PUT REQUEST CALLED",
+    "code": "A",
+    "exchange": "NYSE"
 }
 ```
 ###### Description : Name refers to name of stock, code refers to ticker symbol of stock. The Reuters Instrument Code, or RIC, is a ticker-like code used by Thomson Reuters to identify financial instruments and indices

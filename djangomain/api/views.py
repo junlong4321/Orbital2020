@@ -42,7 +42,7 @@ class StockCounterViewSet(viewsets.ModelViewSet):
 	# WE DO NOT WANT NORMAL USERS TO EDIT ANY STOCK COUNTERS!
 	permission_classes = (IsSuperUser,)
 	filter_backends = (filters.SearchFilter,)
-	search_fields = ('name', 'code', 'RIC')
+	search_fields = ('name', 'code', 'exchange')
 
 
 # View API Stock Analyses list
