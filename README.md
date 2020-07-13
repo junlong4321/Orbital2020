@@ -41,15 +41,29 @@
 |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------|------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | When called with a username and password, returns an authentication token. This  authentication token is to be included in the request headers to access The Free Market site. | /api/auth/          | POST             | A POST request (Email + Password) has to be  made to the backend database when logging in to generate an  authentication token.                                                                                                                                                                                                                                                                                                          |
 | Shows username, password, and email information of all registered users.                                                                                                        | /api/users/         | GET, POST        | Password is hashed and hidden. Only authenticated users can make a GET request. Unauthenticated users can only make a POST request for registration. Users can be filtered using their names or emails in the search bar.                                                                                                                                                                                                                   |
-| Shows individual username, password, and email information of registered users.                                                                                                 | /api/users/{id}/    | GET, PUT, DELETE | Password is hashed and hidden. Unauthenticated users are not allowed to access this endpoint. Authenticated users can make a GET request. Authenticated users cannot make a PUT/DELETE request to amend any other users' profile apart from their own.                                                                                                                                                                                   |
+| Shows individual username, password, and email information of registered users.                                                                                                 | /api/users/{id}/    | GET, PUT, PATCH, DELETE | Password is hashed and hidden. Unauthenticated users are not allowed to access this endpoint. Authenticated users can make a GET request. Authenticated users cannot make a PUT/DELETE request to amend any other users' profile apart from their own.                                                                                                                                                                                   |
 | Contains a list of stock names, their associated ticker symbol, and the designated stock exchange that they are found in (e.g SGX, NYSE, NASDAQ, KRX, JPX, IDX, HKEX, etc)      | /api/counters/      | GET, POST        | Counters can be filtered by their name, code or RIC in the search bar. Access to this endpoint is restricted only to Admins.  We do not want logged in users to modify this information as the stock  counter information will be used in users' financial analysis  in the /api/analyses/ endpoint. If modified indiscriminately,  financial analyses articles written by users may incorrectly  reflect which stock user is analyzing. |
-| Contains name, ticker symbol, and the designated stock exchange of a specific stock.                                                                                            | /api/counters/{id}/ | GET, PUT, DELETE | Access is restricted only to Admins for reasons mentioned in /api/counters/ endpoint row's Remarks column.                                                                                                                                                                                                                                                                                                                               |
+| Contains name, ticker symbol, and the designated stock exchange of a specific stock.                                                                                            | /api/counters/{id}/ | GET, PUT, PATCH, DELETE | Access is restricted only to Admins for reasons mentioned in /api/counters/ endpoint row's Remarks column.                                                                                                                                                                                                                                                                                                                               |
 | Shows all financial analyses written by users.                                                                                                                                  | /api/analyses/      | GET, POST        | Unauthenticated users are not allowed to access this endpoint. Authenticated users are allowed to make a GET or POST request. Analyses can be filtered using the author's name or stock name in the search bar.                                                                                                                                                                                                                             |
-| Shows a specific financial analysis article written by a given user.                                                                                                                  | /api/analyses/{id}/ | GET, PUT, DELETE | Unauthenticated users are not allowed to access this endpoint. Authenticated users are allowed to make a GET request. However, authenticated users cannot make a PUT/DELETE request to amend any other users' analyses apart from their own analyses.                                                                                                                                                                                    |
+| Shows a specific financial analysis article written by a given user.                                                                                                                  | /api/analyses/{id}/ | GET, PUT, PATCH, DELETE | Unauthenticated users are not allowed to access this endpoint. Authenticated users are allowed to make a GET request. However, authenticated users cannot make a PUT/DELETE request to amend any other users' analyses apart from their own analyses.                                                                                                                                                                                    |
 | Shows all comments written by users on all financial analyses.                                                                                                                  | /api/comments/      | GET, POST        | Unauthenticated users are not allowed to access this endpoint. Authenticated users are allowed to make a GET or POST request. Comments can be filtered using the unique ID of each analysis in the search bar.                                                                                                                                                                                                                              |
-| Shows an individual comment written by a specific user on a specific financial analysis.                                                                                        | /api/comments/{id}/ | GET, PUT, DELETE | Unauthenticated users are not allowed to access this endpoint. Authenticated users are allowed to make a GET request. However, authenticated users cannot make a PUT/DELETE request to amend any other users' comments apart from their own comments.                                                                                                                                                                                    |
+| Shows an individual comment written by a specific user on a specific financial analysis.                                                                                        | /api/comments/{id}/ | GET, PUT, PATCH, DELETE | Unauthenticated users are not allowed to access this endpoint. Authenticated users are allowed to make a GET request. However, authenticated users cannot make a PUT/DELETE request to amend any other users' comments apart from their own comments.                                                                                                                                                                                    |
 | Shows all bookmarks by all users on all financial analyses.                                                                                                                     | /api/bookmarks/     | GET, POST        | Unauthenticated users are not allowed to access this endpoint. Authenticated users are allowed to make a GET or POST request. Bookmarks can be filtered using the email of the user that bookmarked the analysis in the search bar.                                                                                                                                                                                                         |
-| Shows an individual bookmark that a specific user bookmarked on a specific financial analysis.                                                                                  | /api/bookmarks/{id} | GET, PUT, DELETE | Unauthenticated users are not allowed to access this endpoint. Authenticated users are allowed to make a GET request. However, authenticated users cannot make a PUT/DELETE request to amend any other users' bookmarks apart from their own bookmarks.                                                                                                                                                                                  |
+| Shows an individual bookmark that a specific user bookmarked on a specific financial analysis.                                                                                  | /api/bookmarks/{id} | GET, PUT, PATCH, DELETE | Unauthenticated users are not allowed to access this endpoint. Authenticated users are allowed to make a GET request. However, authenticated users cannot make a PUT/DELETE request to amend any other users' bookmarks apart from their own bookmarks.                                                                                                                                                                                  |
+
+<!--Search/Filter results using endpoints -->
+### <ins><font color='red'>Search/Filter results using endpoints</font></ins>
+###### Here, we show how the endpoints can be used to filter specific search results.
+
+| Endpoint        | Filter By These JSON Fields | Example                                                                                                                                                                 | Remarks                                                                                                                                                                                                                         |
+|-----------------|-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| /api/auth/      | -                           | -                                                                                                                                                                       | -                                                                                                                                                                                                                               |
+| /api/users/     | name, email,                | http://127.0.0.1:8000/api/users/?search=admin http://127.0.0.1:8000/api/users/?search=admin%40gmail.com                                                                 | -                                                                                                                                                                                                                               |
+| /api/counters/  | name, code, exchange        | http://127.0.0.1:8000/api/counters/?search=abc http://127.0.0.1:8000/api/counters/?search=abc&limit=5 http://127.0.0.1:8000/api/counters/?search=abc&limit=5&offset=100 | abc can refer to the name or code of the stock, or the exchange the stock is located in. limit = 5 returns back the first 5 results of the search. offset = 100 means that we only take results with id=100 and above. |
+| /api/analyses/  | author__email, stock__name, | http://127.0.0.1:8000/api/analyses/?search=admin%40gmail.com http://127.0.0.1:8000/api/analyses/?search=AAPL                                                            | -                                                                                                                                                                                                                               |
+| /api/comments/  | analyis__id,                | http://127.0.0.1:8000/api/comments/?search=1 http://127.0.0.1:8000/api/comments/?search=2 http://127.0.0.1:8000/api/comments/?search=3                                  | search=1 means that we filter the comment with unique id=1                                                                                                                                                                   |
+| /api/bookmarks/ | user__email,                | http://127.0.0.1:8000/api/bookmarks/?search=admin%40gmail.com                                                                                                           | -                                                                                                                                                                                                                               |
+
 
 <!-- /api//auth/ - POST -->
 ### <ins><font color='red'>/api/auth/ - POST</font></ins>
@@ -171,7 +185,11 @@ http://127.0.0.1:8000/api/users/2/
 ###### Request Example (HTML FORM) :
 ```
 http://127.0.0.1:8000/api/users/2/
+email* : test1@gmail.com
+password* : test1
+name* : test1
 biography : Hi I am Tester 1, I made a PUT REQUEST!
+(*) - Compulsory Field
 ```
 ###### Response Example :
 ```
@@ -180,6 +198,30 @@ biography : Hi I am Tester 1, I made a PUT REQUEST!
     "email": "test1@gmail.com",
     "name": "test1",
     "biography": Hi I am Tester 1, I made a PUT REQUEST!,
+    "linkedin": "https://www.linkedin.com/in/test1",
+    "profile_picture": "http://127.0.0.1:8000/images/picture.jpg",
+    "total_upvotes": 0
+}
+```
+###### Description : ID in database is unique. Email and passwords are compulsory fields. Password is hashed and hidden.
+###### Response Item : id, email, name, biography, linkedin, profile_picture, total_upvotes
+###### Data Type : Integer, String, String, String, String, String, Integer
+
+<!-- /api/users/{id} - PATCH -->
+### <ins><font color='red'>/api/users/{id} - PATCH</font></ins>
+###### Parameters : id (Path) , Data (Body)
+###### Request Example (HTML FORM) :
+```
+http://127.0.0.1:8000/api/users/2/
+biography : Hi I am Tester 1, I made a PATCH REQUEST!
+```
+###### Response Example :
+```
+{
+    "id": 2,
+    "email": "test1@gmail.com",
+    "name": "test1",
+    "biography": Hi I am Tester 1, I made a PATCH REQUEST!,
     "linkedin": "https://www.linkedin.com/in/test1",
     "profile_picture": "http://127.0.0.1:8000/images/picture.jpg",
     "total_upvotes": 0
@@ -279,13 +321,35 @@ http://127.0.0.1:8000/api/counters/1/
 ###### Request Example (HTML FORM) :
 ```
 http://127.0.0.1:8000/api/counters/1/
-name : Agilent Technologies - PUT REQUEST CALLED
+name* : Agilent Technologies - PUT REQUEST CALLED
+code* : A
+(*) - Compulsory Field
 ```
 ###### Response Example :
 ```
 {
     "id": 1,
     "name": "Agilent Technologies - PUT REQUEST CALLED",
+    "code": "A",
+    "exchange": "NYSE"
+}
+```
+###### Description : Name refers to name of stock, code refers to ticker symbol of stock. The Reuters Instrument Code, or RIC, is a ticker-like code used by Thomson Reuters to identify financial instruments and indices
+###### Data Type : Integer, String, String, String
+
+<!-- /api/counters/{id}/ - PATCH -->
+### <ins><font color='red'>/api/counters/{id}/ - PATCH</font></ins>
+###### Parameters : id (Path)
+###### Request Example (HTML FORM) :
+```
+http://127.0.0.1:8000/api/counters/1/
+name : Agilent Technologies - PATCH REQUEST CALLED
+```
+###### Response Example :
+```
+{
+    "id": 1,
+    "name": "Agilent Technologies - PATCH REQUEST CALLED",
     "code": "A",
     "exchange": "NYSE"
 }
@@ -326,13 +390,13 @@ http://127.0.0.1:8000/api/analyses/
         "id": 3,
         "images": [
             {
-                "image": "http://127.0.0.1:8000/images/chiwawa_j6DIqJg.jpg"
+                "image": "http://127.0.0.1:8000/images/picture1.jpg"
             },
             {
-                "image": "http://127.0.0.1:8000/images/dachshund_Dt1x6no.jpg"
+                "image": "http://127.0.0.1:8000/images/picture2.jpg"
             },
             {
-                "image": "http://127.0.0.1:8000/images/husky_LCIplIJ.jpg"
+                "image": "http://127.0.0.1:8000/images/picture3.jpg"
             }
         ],
         "title": "Tester's First Analysis",
@@ -371,9 +435,9 @@ upvotes : 7
 author* : test1@gmail.com
 name* : test1
 stock : Beng Kuang
-image_1 : chiwawa.jpg
-image_2 : dachshund.jpg
-image_3 : husky.jpg
+image_1 : picture1.jpg
+image_2 : picture2.jpg
+image_3 : picture3.jpg
 (*) - Compulsory Field
 ```
 ###### Response Example :
@@ -382,13 +446,13 @@ image_3 : husky.jpg
     "id": 3,
     "images": [
         {
-            "image": "http://127.0.0.1:8000/images/chiwawa_j6DIqJg.jpg"
+            "image": "http://127.0.0.1:8000/images/picture1.jpg"
         },
         {
-            "image": "http://127.0.0.1:8000/images/dachshund_Dt1x6no.jpg"
+            "image": "http://127.0.0.1:8000/images/picture2.jpg"
         },
         {
-            "image": "http://127.0.0.1:8000/images/husky_LCIplIJ.jpg"
+            "image": "http://127.0.0.1:8000/images/picture3.jpg"
         }
     ],
     "title": "Tester's First Analysis",
@@ -417,13 +481,13 @@ http://127.0.0.1:8000/api/analyses/3/
     "id": 3,
     "images": [
         {
-            "image": "http://127.0.0.1:8000/images/chiwawa_j6DIqJg.jpg"
+            "image": "http://127.0.0.1:8000/images/picture1.jpg"
         },
         {
-            "image": "http://127.0.0.1:8000/images/dachshund_Dt1x6no.jpg"
+            "image": "http://127.0.0.1:8000/images/picture2.jpg"
         },
         {
-            "image": "http://127.0.0.1:8000/images/husky_LCIplIJ.jpg"
+            "image": "http://127.0.0.1:8000/images/picture3.jpg"
         }
     ],
     "title": "Tester's First Analysis",
@@ -445,6 +509,11 @@ http://127.0.0.1:8000/api/analyses/3/
 ###### Request Example (HTML FORM) :
 ```
 http://127.0.0.1:8000/api/analyses/3/
+title* : Tester's First Analysis
+text* : Hi This Is Tester 1's First Analysis
+upvotes : 7
+author* : test1@gmail.com
+name* : test1
 text : Hi This Is Tester 1's First Analysis, PUT REQUEST CALLED
 ```
 ###### Response Example :
@@ -453,17 +522,53 @@ text : Hi This Is Tester 1's First Analysis, PUT REQUEST CALLED
     "id": 3,
     "images": [
         {
-            "image": "http://127.0.0.1:8000/images/chiwawa_j6DIqJg.jpg"
+            "image": "http://127.0.0.1:8000/images/picture1.jpg"
         },
         {
-            "image": "http://127.0.0.1:8000/images/dachshund_Dt1x6no.jpg"
+            "image": "http://127.0.0.1:8000/images/picture2.jpg"
         },
         {
-            "image": "http://127.0.0.1:8000/images/husky_LCIplIJ.jpg"
+            "image": "http://127.0.0.1:8000/images/picture3.jpg"
         }
     ],
     "title": "Tester's First Analysis",
     "text": "Hi This Is Tester 1's First Analysis, PUT REQUEST CALLED",
+    "created_date": "2020-06-26T14:44:19.697000+08:00",
+    "upvotes": 7,
+    "author": "test1@gmail.com",
+    "name": "test1",
+    "stock": "Beng Kuang"
+}
+```
+###### Description : When queried, "images" key is made up of "image_1", "image_2", "image_3", .., "image_n" for n images (Though the key is reflected as "image" in the JSON response). created_date will be automatically filled. author takes in the unique email of the user writing the analysis.
+###### Response Item : id, images, title, text, created_date, upvotes, author, name, stock
+###### Data Type : Integer, List of Strings, String, String, String, Integer, String, String, String
+
+<!-- /api/analyses/{id}/ - PATCH -->
+### <ins><font color='red'>/api/analyses/{id}/ - PATCH</font></ins>
+###### Parameters : id (Path)
+###### Request Example (HTML FORM) :
+```
+http://127.0.0.1:8000/api/analyses/3/
+text : Hi This Is Tester 1's First Analysis, PATCH REQUEST CALLED
+```
+###### Response Example :
+```
+{
+    "id": 3,
+    "images": [
+        {
+            "image": "http://127.0.0.1:8000/images/picture1.jpg"
+        },
+        {
+            "image": "http://127.0.0.1:8000/images/picture2.jpg"
+        },
+        {
+            "image": "http://127.0.0.1:8000/images/picture3.jpg"
+        }
+    ],
+    "title": "Tester's First Analysis",
+    "text": "Hi This Is Tester 1's First Analysis, PATCH REQUEST CALLED",
     "created_date": "2020-06-26T14:44:19.697000+08:00",
     "upvotes": 7,
     "author": "test1@gmail.com",
@@ -579,13 +684,40 @@ http://127.0.0.1:8000/api/comments/7/
 ###### Request Example (HTML FORM) :
 ```
 http://127.0.0.1:8000/api/comments/7/
-comment : Tester 1's First Comment, PUT REQUEST CALLED
+commenter* : test1
+analysis* : admin's ETC Singapore Analysis
+comment* : Tester 1's First Comment, PUT REQUEST CALLED
+upvotes : 5
+(*) - Compulsory Field
 ```
 ###### Response Example :
 ```
 {
     "id": 7,
     "comment": "Tester 1's First Comment, PUT REQUEST CALLED",
+    "created_date": "2020-06-26T17:46:07.880053+08:00",
+    "upvotes": 5,
+    "commenter": "test1@gmail.com",
+    "analysis": 1
+}
+```
+###### Description : "analysis" key has a integer assigned to it representing the unique id of the analysis article from the /api/analyses/ endpoint. We need this key so that we can track which analysis article we should be rendering the comments written to.
+###### Response Item : id, comment, created_date, upvotes, commenter, analysis
+###### Data Type : Integer, String, String, Integer, String, Integer
+
+<!-- /api/comments/{id}/ - PATCH -->
+### <ins><font color='red'>/api/comments/{id}/ - PATCH</font></ins>
+###### Parameters : id (Path)
+###### Request Example (HTML FORM) :
+```
+http://127.0.0.1:8000/api/comments/7/
+comment : Tester 1's First Comment, PATCH REQUEST CALLED
+```
+###### Response Example :
+```
+{
+    "id": 7,
+    "comment": "Tester 1's First Comment, PATCH REQUEST CALLED",
     "created_date": "2020-06-26T17:46:07.880053+08:00",
     "upvotes": 5,
     "commenter": "test1@gmail.com",
@@ -689,6 +821,28 @@ http://127.0.0.1:8000/api/bookmarks/8/
 
 <!-- /api/bookmarks/{id}/ - PUT -->
 ### <ins><font color='red'>/api/bookmarks/{id}/ - PUT</font></ins>
+###### Parameters : id (Path)
+###### Request Example (HTML FORM) :
+```
+http://127.0.0.1:8000/api/bookmarks/8/
+user* : test1
+analysis* : <Analysis with id=4>
+(*) - Compulsory Field
+```
+###### Response Example :
+```
+{
+    "id": 8,
+    "user": "test1@gmail.com",
+    "analysis": 4
+}
+```
+###### Description : "analysis" key has a integer assigned to it representing the unique id of the analysis article from the /api/analyses endpoint. We need this key so that we can know specifically which article a given user bookmarked.
+###### Response Item : id, user, analysis
+###### Data Type : Integer, String, Integer
+
+<!-- /api/bookmarks/{id}/ - PATCH -->
+### <ins><font color='red'>/api/bookmarks/{id}/ - PATCH</font></ins>
 ###### Parameters : id (Path)
 ###### Request Example (HTML FORM) :
 ```

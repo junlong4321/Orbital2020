@@ -16,7 +16,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Link to ReactJS's template html and static css / js files
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'reactjs/build')
-# STATIC_DIR = os.path.join(BASE_DIR, 'reactjs/build/static')
+STATIC_DIR = os.path.join(BASE_DIR, 'reactjs/build/static')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -49,6 +49,10 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
 }
 
 MIDDLEWARE = [
@@ -84,7 +88,7 @@ WSGI_APPLICATION = 'djangomain.wsgi.application'
 
 # Whitelist localhost:3000 so that ReactJS can call the Django backend API
 CORS_ORIGIN_WHITELIST = [
-    "http://localhost:3000"
+    "http://localhost:3000",
 ]
 
 # Database
@@ -148,10 +152,13 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/images/'
 
+# Static files for ReactJS
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
+    STATIC_DIR,
 ]
 
+# Media Root for Django Images (E.g Images in Analyses)
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 
 # Tells Django to use our Custom UserProfile Model for user registration
