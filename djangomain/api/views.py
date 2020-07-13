@@ -3,10 +3,11 @@ from rest_framework.authentication import TokenAuthentication
 from .serializer import UserProfileSerializer, StockAnalysisSerializer, StockCounterSerializer, CommentSerializer, \
 	BookmarkSerializer
 from .models import UserProfile, StockAnalysis, StockCounter, Comment, Bookmark
-from .permissions import UserPermissions, IsSuperUser, IsUser, StockAnalysisPermissions, CommentPermissions, \
+from .permissions import UserPermissions, IsSuperUser, StockAnalysisPermissions, CommentPermissions, \
 	BookmarkPermissions
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.pagination import LimitOffsetPagination
 
 
 # View API User list
@@ -42,7 +43,7 @@ class StockCounterViewSet(viewsets.ModelViewSet):
 	# WE DO NOT WANT NORMAL USERS TO EDIT ANY STOCK COUNTERS!
 	permission_classes = (IsSuperUser,)
 	filter_backends = (filters.SearchFilter,)
-	search_fields = ('name', 'code', 'RIC')
+	search_fields = ('name', 'code', 'exchange')
 
 
 # View API Stock Analyses list
@@ -50,7 +51,7 @@ class StockAnalysisViewSet(viewsets.ModelViewSet):
 	serializer_class = StockAnalysisSerializer
 	queryset = StockAnalysis.objects.all()
 	authentication_classes = (TokenAuthentication,)
-	permission_classes = (IsUser, StockAnalysisPermissions)
+	permission_classes = (StockAnalysisPermissions,)
 	filter_backends = (filters.SearchFilter,)
 	search_fields = ('author__email', 'stock__name')
 
@@ -58,9 +59,10 @@ class StockAnalysisViewSet(viewsets.ModelViewSet):
 # View API Comment list
 class CommentViewSet(viewsets.ModelViewSet):
 	serializer_class = CommentSerializer
+	pagination_class = LimitOffsetPagination
 	queryset = Comment.objects.all()
 	authentication_classes = (TokenAuthentication,)
-	permission_classes = (IsUser, CommentPermissions)
+	permission_classes = (CommentPermissions,)
 	filter_backends = (filters.SearchFilter,)
 	search_fields = ['analysis__id']
 
@@ -70,6 +72,6 @@ class BookmarkViewSet(viewsets.ModelViewSet):
 	serializer_class = BookmarkSerializer
 	queryset = Bookmark.objects.all()
 	authentication_classes = (TokenAuthentication,)
-	permission_classes = (IsUser, BookmarkPermissions)
+	permission_classes = (BookmarkPermissions,)
 	filter_backends = (filters.SearchFilter,)
 	search_fields = ['user__email']

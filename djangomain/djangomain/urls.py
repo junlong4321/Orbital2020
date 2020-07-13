@@ -22,20 +22,20 @@ from django.views.generic import TemplateView
 from rest_framework_swagger.views import get_swagger_view
 
 # Create swagger UI view
-schema_view = get_swagger_view(title='Django Backend APIs - The Free Market')
+# schema_view = get_swagger_view(title='Django Backend APIs - The Free Market')
 
 urlpatterns = [
 	# 127.0.0.1:8000/admin/
 	path('admin/', admin.site.urls),
 
 	# 127.0.0.1:8000/ View all of our backend APIs on Swagger
-	path('', schema_view),
+	# path('', schema_view),
 
 	# Route all api/ endpoints to djangomain/api/urls.py
 	path('api/', include('api.urls')),
 
 	# 127.0.0.1:8000/ , currently linked to ReactJS's index.html
-	# path('', TemplateView.as_view(template_name='index.html')),
+	path('', TemplateView.as_view(template_name='index.html')),
 ]
 
 # 127.0.0.1:8000/images/{image}/ (This is for viewing individual image file in local filepath : djangomain/static/images)

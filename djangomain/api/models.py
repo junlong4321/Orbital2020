@@ -63,7 +63,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 class StockCounter(models.Model):
 	name = models.CharField(max_length=200, blank=False, unique=True)
 	code = models.CharField(max_length=10, blank=False)
-	RIC = models.CharField(max_length=200, blank=True)
+	exchange = models.CharField(max_length=200, blank=True)
 
 	def __str__(self):
 		return self.name
