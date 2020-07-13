@@ -22,6 +22,13 @@ export const individualAnalysisPull = (data) => {
     };
 };
 
+export const specificAnalysisPull = (data) => {
+    return {
+        type: actionTypes.SPECIFIC_ANALYSIS_PULL,
+        specificAnalysisData: data,
+    };
+};
+
 export const analysisData = (token) => {
     return (dispatch) => {
         const pullData = {
@@ -29,6 +36,25 @@ export const analysisData = (token) => {
         };
         axios
             .get('http://127.0.0.1:8000/api/analyses/', pullData)
+            .then((response) => {
+                dispatch(analysisPull(response.data));
+            })
+            .catch((error) => {
+                dispatch(analysisPullFail(error));
+            });
+    };
+};
+
+export const specificAnalysisData = (token, company) => {
+    return (dispatch) => {
+        const pullData = {
+            Authorization: 'Token ' + { token },
+        };
+        axios
+            .get(
+                `http://127.0.0.1:8000/api/analyses/?search=${company}`,
+                pullData
+            )
             .then((response) => {
                 dispatch(analysisPull(response.data));
             })

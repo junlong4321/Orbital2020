@@ -57,6 +57,23 @@ class SignIn extends Component {
             this.props.history.replace('/home');
         }
 
+        let errorMessage = null;
+        if (this.props.error !== null) {
+            errorMessage = (
+                <Grid item container justify="center">
+                    <Typography
+                        variant="body2"
+                        style={{
+                            color: 'red',
+                            margin: '0em 0em -0.5em 0em',
+                        }}
+                    >
+                        Incorrect Username or Password
+                    </Typography>
+                </Grid>
+            );
+        }
+
         const { classes } = this.props;
 
         return (
@@ -108,6 +125,7 @@ class SignIn extends Component {
                                 }
                                 label="Remember me"
                             />
+                            {errorMessage}
                             <Button
                                 type="submit"
                                 fullWidth
@@ -154,6 +172,7 @@ const mapStateToProps = (state) => {
     return {
         token: state.auth.token,
         auth: state.auth.auth,
+        error: state.auth.signInError,
     };
 };
 

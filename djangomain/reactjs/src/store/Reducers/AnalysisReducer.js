@@ -26,6 +26,11 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 individualAnalysisData: action.individualAnalysisData,
             };
+        case actionTypes.SPECIFIC_ANALYSIS_PULL:
+            return {
+                ...state,
+                specificAnalysisData: action.specificAnalysisData,
+            };
         default:
             return state;
     }

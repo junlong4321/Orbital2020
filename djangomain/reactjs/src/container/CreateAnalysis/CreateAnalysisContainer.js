@@ -8,6 +8,7 @@ import SearchBar from '../../components/UI/SearchBar/SearchBar';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import * as actions from '../../store/Actions/CreateAnalysis';
+import { withSnackbar } from 'notistack';
 
 const styles = (theme) => ({
     containerBackground: {
@@ -37,12 +38,16 @@ class AnalysisContainer extends Component {
             localStorage.getItem('name'),
             'DBS'
         );
+        this.props.enqueueSnackbar('Analysis successfully created', {
+            variant: 'success',
+        });
     };
 
     render() {
         const { classes } = this.props;
         if (this.props.analysisPostSuccess) {
             document.getElementById('createAnalysisForm').reset();
+            window.location.reload(false);
         }
         return (
             <React.Fragment>
@@ -158,4 +163,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withStyles(styles)(AnalysisContainer));
+)(withStyles(styles)(withSnackbar(AnalysisContainer)));

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Navbar from '../../components/UI/Navbar/Navbar';
 import Grid from '@material-ui/core/Grid';
 import CreateAnalysisContainer from './CreateAnalysisContainer';
 
@@ -7,7 +6,6 @@ class CreateAnalysis extends Component {
     render() {
         return (
             <React.Fragment>
-                <Navbar />
                 <Grid
                     container
                     item

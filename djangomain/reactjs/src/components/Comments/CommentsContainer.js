@@ -7,6 +7,7 @@ import { withStyles } from '@material-ui/styles';
 import IndividualComments from './IndividualComments/IndividualComments';
 import { connect } from 'react-redux';
 import * as actions from '../../store/Actions/Comments';
+import { withSnackbar } from 'notistack';
 
 const styles = (theme) => ({
     commentsSpacing: {
@@ -30,11 +31,15 @@ class CommentsContainer extends Component {
         const commentText = event.target.text.value;
         this.props.onCommentsPost(
             localStorage.getItem('email'),
+            localStorage.getItem('name'),
             this.props.id,
             commentText,
             localStorage.getItem('token')
         );
         document.getElementById('commentForm').reset();
+        this.props.enqueueSnackbar('Comment posted', {
+            variant: 'success',
+        });
     };
 
     render() {
@@ -81,6 +86,7 @@ class CommentsContainer extends Component {
 const mapStateToProps = (state) => {
     return {
         commentsData: state.comments.commentsData,
+        commentsPostSuccess: state.comments.commentsPostSuccess,
     };
 };
 
@@ -88,12 +94,12 @@ const mapDispatchToProps = (dispatch) => {
     return {
         onCommentsPull: (id, token) =>
             dispatch(actions.commentsPull(id, token)),
-        onCommentsPost: (name, id, commentText, token) =>
-            dispatch(actions.commentsPost(name, id, commentText, token)),
+        onCommentsPost: (email, name, id, commentText, token) =>
+            dispatch(actions.commentsPost(email, name, id, commentText, token)),
     };
 };
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withStyles(styles)(CommentsContainer));
+)(withStyles(styles)(withSnackbar(CommentsContainer)));

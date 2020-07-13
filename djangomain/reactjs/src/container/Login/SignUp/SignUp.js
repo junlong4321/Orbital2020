@@ -50,6 +50,23 @@ class SignUp extends Component {
             },
         });
 
+        let errorMessage = null;
+        if (this.props.error !== null) {
+            errorMessage = (
+                <Grid item container justify="center">
+                    <Typography
+                        variant="body2"
+                        style={{
+                            color: 'red',
+                            margin: '1em 0em -1em 0em',
+                        }}
+                    >
+                        Email already exists
+                    </Typography>
+                </Grid>
+            );
+        }
+
         // redirects user to home page once sign up is successful
         if (this.props.auth) {
             this.props.history.replace('/home');
@@ -107,6 +124,7 @@ class SignUp extends Component {
                                     />
                                 </Grid>
                             </Grid>
+                            {errorMessage}
                             <Button
                                 type="submit"
                                 fullWidth
@@ -147,6 +165,7 @@ const mapStateToProps = (state) => {
     return {
         token: state.auth.token,
         auth: state.auth.auth,
+        error: state.auth.signUpError,
     };
 };
 

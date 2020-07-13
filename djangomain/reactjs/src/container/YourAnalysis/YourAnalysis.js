@@ -1,12 +1,10 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
-import Navbar from '../../components/UI/Navbar/Navbar';
 import AnalysisContainer from '../../components/AnalysisContainer/AnalysisContainer';
 
 const YourAnalysis = () => {
     return (
         <React.Fragment>
-            <Navbar />
             <Grid
                 container
                 item

@@ -1,25 +1,56 @@
 import React, { Component } from 'react';
 import Grid from '@material-ui/core/Grid';
-import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
+import FindInPage from '@material-ui/icons/FindInPage';
 import { connect } from 'react-redux';
-
-import Navbar from '../../components/UI/Navbar/Navbar';
 import DataTitle from '../../components/DataTitle/DataTitle';
 import AnalysisCard from '../../components/AnalysisCard/AnalysisCard';
 import SearchBar from '../../components/UI/SearchBar/SearchBar';
 import styles from './Stocks.module.css';
+import StockInfo from '../../components/StockInfo/StockInfo';
+import { Route, withRouter } from 'react-router-dom';
+import * as actions from '../../store/Actions/Analysis';
 
 class Stocks extends Component {
+    state = {
+        search: '',
+        company: '',
+    };
+
+    onSearchChange = (event) => {
+        this.setState({ search: event.target.value });
+    };
+
     componentDidMount() {
-        // if (this.props.analysisData == null) {
-        //     this.props.history.replace('/home');
-        // }
+        const company = this.props.history.location.pathname.split('/')[2];
+        this.setState({ company: company });
+        if (company == undefined) {
+            this.props.onPullAnalysis(this.props.token);
+        } else {
+            this.props.onPullSpecificAnalysis(this.props.token, company);
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        const company = this.props.history.location.pathname.split('/')[2];
+        console.log(prevState.company);
+        if (prevState.company !== company) {
+            this.props.onPullSpecificAnalysis(this.props.token, company);
+            this.setState({ company: company });
+        }
     }
 
     render() {
+        console.log(this.props.analysisData);
         let analysisCard = null;
+        const { search } = this.state;
         if (this.props.analysisData !== null) {
-            analysisCard = this.props.analysisData.map((data) => {
+            const filteredAnalysis = this.props.analysisData.filter((data) => {
+                return (
+                    data.stock.toLowerCase().indexOf(search.toLowerCase()) !==
+                    -1
+                );
+            });
+            analysisCard = filteredAnalysis.map((data) => {
                 return (
                     <Grid
                         key={data.id}
@@ -37,11 +68,12 @@ class Stocks extends Component {
         }
         return (
             <React.Fragment>
-                <Navbar />
-                <Grid
-                    container
-                    style={{ marginTop: '3em', marginBottom: '2em' }}
-                >
+                <Route
+                    exact
+                    path="/stocks/:company"
+                    component={withRouter(StockInfo)}
+                />
+                <Grid container style={{ marginTop: '3em' }}>
                     <Grid container item md={1} />
                     <Grid
                         className={styles.tableBackground}
@@ -59,7 +91,7 @@ class Stocks extends Component {
                                 <Grid item xs={6} md={8}>
                                     <DataTitle
                                         icon={
-                                            <LibraryBooksIcon
+                                            <FindInPage
                                                 color="primary"
                                                 style={{ paddingRight: '10px' }}
                                             />
@@ -78,7 +110,7 @@ class Stocks extends Component {
                                     alignItems="center"
                                     className={styles.searchBar}
                                 >
-                                    <SearchBar />
+                                    <SearchBar onChange={this.onSearchChange} />
                                 </Grid>
                             </Grid>
                             <Grid container className={styles.cardSpacing}>
@@ -97,7 +129,16 @@ const mapStatetoProps = (state) => {
     return {
         token: state.auth.token,
         analysisData: state.analysis.analysisData,
+        analysisDataLoading: state.analysis.loading,
     };
 };
 
-export default connect(mapStatetoProps)(Stocks);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onPullSpecificAnalysis: (token, company) =>
+            dispatch(actions.specificAnalysisData(token, company)),
+        onPullAnalysis: (token) => dispatch(actions.analysisData(token)),
+    };
+};
+
+export default connect(mapStatetoProps, mapDispatchToProps)(Stocks);

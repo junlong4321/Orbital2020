@@ -3,7 +3,6 @@ import Table from '@material-ui/core/Table';
 import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import Navbar from '../../components/UI/Navbar/Navbar';
 import DataTitle from '../../components/DataTitle/DataTitle';
 import SummaryTableHead from '../../components/Tables/SummaryTableHead';
 import SummaryTableBody from '../../components/Tables/SummaryTableBody';
@@ -15,7 +14,7 @@ import * as actions from '../../store/Actions/Analysis';
 
 class Home extends Component {
     state = {
-        marketSummaryDataName: ['SPY', 'DBSM.SI'],
+        marketSummaryDataName: ['SPY', 'AAPL'],
         marketSummaryData1: null,
         marketSummaryData2: null,
         analysisSummaryData: null,
@@ -53,9 +52,7 @@ class Home extends Component {
             });
 
         // pulls the analysis data to home page
-        if (this.props.analysisData == null) {
-            this.props.onPullAnalysis(this.props.token);
-        }
+        this.props.onPullAnalysis(this.props.token);
     }
 
     render() {
@@ -71,8 +68,12 @@ class Home extends Component {
         if (!this.state.marketSummaryDataError) {
             const marketSummaryData1 = this.state.marketSummaryData1;
             const marketSummaryData2 = this.state.marketSummaryData2;
-            if (marketSummaryData1 === null || marketSummaryData2 == null) {
-            } else {
+            if (
+                marketSummaryData1 !== undefined &&
+                marketSummaryData2 !== undefined &&
+                marketSummaryData1 !== null &&
+                marketSummaryData2 !== null
+            ) {
                 rows = [
                     createData(
                         0,
@@ -115,7 +116,6 @@ class Home extends Component {
 
         return (
             <React.Fragment>
-                <Navbar />
                 <Grid container style={{ marginTop: '20px' }}>
                     <Grid container item md={1} />
                     <Grid
@@ -143,10 +143,7 @@ class Home extends Component {
                     <Grid container item md={4} />
                     <Grid container item md={1} />
                 </Grid>
-                <Grid
-                    container
-                    style={{ marginTop: '20px', marginBottom: '2em' }}
-                >
+                <Grid container style={{ marginTop: '20px' }}>
                     <Grid container item md={1} />
                     <Grid
                         className={styles.tableBackground}

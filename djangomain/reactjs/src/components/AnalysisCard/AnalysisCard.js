@@ -23,8 +23,8 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: 345,
     },
     media: {
-        height: 0,
-        paddingTop: '56.25%', // 16:9
+        height: '100%',
+        paddingTop: '60%', // 16:9
     },
     avatar: {
         backgroundColor: red[500],
@@ -132,4 +132,4 @@ const AnalysisCard = (props) => {
     );
 };
 
-export default AnalysisCard;
+export default React.memo(AnalysisCard);

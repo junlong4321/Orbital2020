@@ -5,6 +5,7 @@ const initialState = {
     commentsPullError: null,
     commentsPullLoading: false,
     commentsPostError: null,
+    commentsPostSuccess: false,
     commentsPostLoading: false,
 };
 
@@ -31,17 +32,20 @@ const commentsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 commentsPullLoading: true,
+                commentsPostSuccess: false,
             };
         case actionTypes.COMMENT_POST_SUCCESS:
             return {
                 ...state,
                 commentsPostLoading: false,
+                commentsPostSuccess: true,
             };
         case actionTypes.COMMENT_POST_FAILURE:
             return {
                 ...state,
                 commentsPostError: action.error,
                 commentsPostLoading: false,
+                commentsPostSuccess: false,
             };
         default:
             return state;

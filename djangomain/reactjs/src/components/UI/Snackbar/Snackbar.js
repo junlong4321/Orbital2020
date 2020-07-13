@@ -1,44 +1,32 @@
 import React from 'react';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
-import { makeStyles } from '@material-ui/core/styles';
+import { SnackbarProvider, useSnackbar } from 'notistack';
 
-function Alert(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        width: '100%',
-        '& > * + *': {
-            marginTop: theme.spacing(2),
-        },
-    },
-}));
-
-export default function CustomizedSnackbars() {
-    const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
+const Snackbar = (props) => {
+    const { enqueueSnackbar } = useSnackbar();
 
     const handleClick = () => {
-        setOpen(true);
+        enqueueSnackbar('I love snacks.');
     };
 
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        setOpen(false);
+    const handleClickVariant = (variant) => () => {
+        // variant could be success, error, warning, info, or default
+        enqueueSnackbar('This is a success message!', { variant });
     };
+    handleClickVariant('success');
+    //   return (
+    //     <React.Fragment>
+    //       <Button onClick={handleClick}>Show snackbar</Button>
+    //       <Button onClick={handleClickVariant('success')}>Show success snackbar</Button>
+    //     </React.Fragment>
+    //   );
+};
 
-    return (
-        <div className={classes.root}>
-            <Snackbar open={true} autoHideDuration={6000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity="success">
-                    This is a success message!
-                </Alert>
-            </Snackbar>
-        </div>
-    );
-}
+export default Snackbar;
+
+// export default function IntegrationNotistack() {
+//   return (
+//     <SnackbarProvider maxSnack={3}>
+//       <MyApp />
+//     </SnackbarProvider>
+//   );
+// }

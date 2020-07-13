@@ -22,6 +22,13 @@ export const authFail = (error) => {
     };
 };
 
+export const signUpFail = (error) => {
+    return {
+        type: actionTypes.SIGN_UP_FAIL,
+        error: error,
+    };
+};
+
 export const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('email');
@@ -61,7 +68,7 @@ export const signUp = (email, password, username) => {
                     });
             })
             .catch((error) => {
-                dispatch(authFail(error));
+                dispatch(signUpFail(error));
             });
     };
 };

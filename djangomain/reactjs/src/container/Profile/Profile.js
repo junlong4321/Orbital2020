@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import Grid from '@material-ui/core/Grid';
-
-import Navbar from '../../components/UI/Navbar/Navbar';
 import UserProfileContainer from '../../components/UserProfileContainer/UserProfileContainer';
 
 class Profile extends Component {
     render() {
         return (
             <React.Fragment>
-                <Navbar />
                 <Grid
                     container
                     item

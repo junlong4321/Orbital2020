@@ -4,7 +4,7 @@ import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 
-const SearchBar = (props) => {
+const NavbarSearch = (props) => {
     const useStyles = makeStyles((theme) => ({
         search: {
             position: 'relative',
@@ -64,6 +64,7 @@ const SearchBar = (props) => {
                 placeholder="Search…"
                 onChange={props.onChange}
                 value={props.search}
+                onKeyDown={props.keyPress}
                 classes={{
                     root: classes.inputRoot,
                     input: classes.inputInput,
@@ -77,4 +78,4 @@ const SearchBar = (props) => {
     );
 };
 
-export default SearchBar;
+export default NavbarSearch;

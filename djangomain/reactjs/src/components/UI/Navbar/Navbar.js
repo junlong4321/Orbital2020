@@ -19,7 +19,7 @@ import Select from '@material-ui/core/Select';
 import Grid from '@material-ui/core/Grid';
 import pic from '../../../assets/the-free-market-logo.png';
 import styles from './Navbar.module.css';
-import SearchBar from '../SearchBar/SearchBar';
+import NavbarSearch from './NavbarSearch/SearchBar2';
 import { useDispatch } from 'react-redux';
 import * as actions from '../../../store/Actions/Auth';
 
@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Navbar = () => {
+const Navbar = (props) => {
     const classes = useStyles();
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -204,24 +204,31 @@ const Navbar = () => {
                     <Grid
                         container
                         direction="row"
-                        justify="flex-end"
+                        justify="center"
                         alignItems="center"
                     >
-                        <FormControl className={classes.formControl}>
-                            <Select
-                                labelId="demo-controlled-open-select-label"
-                                id="demo-controlled-open-select"
-                                open={open}
-                                onClose={handleSelectClose}
-                                onOpen={handleSelectOpen}
-                                onChange={handleSelectChange}
-                                defaultValue={10}
-                            >
-                                <MenuItem value={10}>Ticker</MenuItem>
-                                <MenuItem value={20}>User</MenuItem>
-                            </Select>
-                        </FormControl>
-                        <SearchBar />
+                        <Grid container item md={3}>
+                            <FormControl className={classes.formControl}>
+                                <Select
+                                    labelId="demo-controlled-open-select-label"
+                                    id="demo-controlled-open-select"
+                                    open={open}
+                                    onClose={handleSelectClose}
+                                    onOpen={handleSelectOpen}
+                                    onChange={handleSelectChange}
+                                    defaultValue={10}
+                                >
+                                    <MenuItem value={10}>Ticker</MenuItem>
+                                    <MenuItem value={20}>User</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid container item md={9}>
+                            <NavbarSearch
+                                onChange={props.onSearchChange}
+                                keyPress={props.keyPress}
+                            />
+                        </Grid>
                     </Grid>
                     {/* User Profile Menu */}
                     <Grid

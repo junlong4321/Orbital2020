@@ -58,11 +58,12 @@ export const commentsPull = (id, token) => {
     };
 };
 
-export const commentsPost = (name, id, commentText, token) => {
+export const commentsPost = (email, name, id, commentText, token) => {
     return (dispatch) => {
         dispatch(commentsPostStart());
         const postData = {
-            commenter: name,
+            commenter: email,
+            commenter_names: name,
             analysis: id,
             comment: commentText,
         };
@@ -71,6 +72,7 @@ export const commentsPost = (name, id, commentText, token) => {
                 Authorization: 'Token ' + { token },
             },
         };
+        console.log(name, id, commentText, token);
         axios
             .post('http://127.0.0.1:8000/api/comments/', postData, config)
             .then((response) => {

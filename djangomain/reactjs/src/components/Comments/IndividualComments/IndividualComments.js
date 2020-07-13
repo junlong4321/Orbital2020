@@ -15,7 +15,7 @@ const IndividualComments = (props) => {
             <Card variant="outlined" style={{ margin: '0.5em 0em 0.5em 0em' }}>
                 <CardHeader
                     avatar={<Avatar src={userImage} />}
-                    title={props.data.commenter}
+                    title={props.data.commenter_names}
                     subheader={date}
                 />
                 <CardContent>
