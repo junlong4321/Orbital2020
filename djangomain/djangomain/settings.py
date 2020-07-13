@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_swagger',
-    'corsheaders',
+    # 'corsheaders',
     'api',
     'django_extensions',
 ]
@@ -58,7 +58,7 @@ REST_FRAMEWORK = {
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    # 'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -86,10 +86,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'djangomain.wsgi.application'
 
-# Whitelist localhost:3000 so that ReactJS can call the Django backend API
-CORS_ORIGIN_WHITELIST = [
-    "http://localhost:3000",
-]
+# # Whitelist localhost:3000 so that ReactJS can call the Django backend API
+# CORS_ORIGIN_WHITELIST = [
+#     "http://localhost:3000",
+# ]
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
