@@ -25,7 +25,8 @@ STATIC_DIR = os.path.join(BASE_DIR, 'reactjs/build/static')
 SECRET_KEY = 'o+90*xk-t9n9l61fe8n^fgvn$5dd^ilod*pn=8u3&cbr=!&+ll'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -57,6 +58,7 @@ REST_FRAMEWORK = {
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -150,11 +152,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = '/images/'
 
-# Static files for ReactJS
+# Extra places for collectstatic to find static files.
 STATICFILES_DIRS = [
+    # Django Static Files
     os.path.join(BASE_DIR, 'static'),
+    # ReactJS Static Files
     STATIC_DIR,
 ]
 
@@ -163,3 +168,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 
 # Tells Django to use our Custom UserProfile Model for user registration
 AUTH_USER_MODEL = 'api.UserProfile'
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

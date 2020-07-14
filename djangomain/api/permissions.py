@@ -3,7 +3,7 @@ from rest_framework import permissions
 
 # Allow users to edit their own profile
 class UserPermissions(permissions.BasePermission):
-	# Allows anyone to get data (ie view profiles) if its a safe HTTP request (e.g GET)
+	# Allows anyone to get data (ie view profiles) if its a safe HTTP request (e.g GET, OPTIONS, HEAD)
 	def has_object_permission(self, request, view, obj):
 		if request.method in permissions.SAFE_METHODS:
 			return True
@@ -19,7 +19,7 @@ class IsSuperUser(permissions.IsAdminUser):
 
 # Allow authors to edit their own stock analysis
 class StockAnalysisPermissions(permissions.BasePermission):
-	# Allows anyone to get data (ie view profiles) if its a safe HTTP request (e.g GET)
+	# Allows anyone to get data (ie view profiles) if its a safe HTTP request (e.g GET, OPTIONS, HEAD)
 	def has_object_permission(self, request, view, obj):
 		if request.method in permissions.SAFE_METHODS:
 			return True
@@ -28,9 +28,18 @@ class StockAnalysisPermissions(permissions.BasePermission):
 		return obj.author == request.user or request.user.is_superuser
 
 
+# Allow users to search for stocks
+class StockCounterPermissions(permissions.BasePermission):
+	# Allows anyone to get data (ie view profiles) if its a safe HTTP request (ie GET)
+	# If it is not a safe HTTP request (e.g POST / Update data), we don't allow users to do anything.
+	# (We don't want users to update, delete, or create new stock counters)
+	def has_permission(self, request, view):
+		return request.method == 'GET'
+
+
 # Allow commenters to edit their own comments
 class CommentPermissions(permissions.BasePermission):
-	# Allows anyone to get data (ie view profiles) if its a safe HTTP request (e.g GET)
+	# Allows anyone to get data (ie view profiles) if its a safe HTTP request (e.g GET, OPTIONS, HEAD)
 	def has_object_permission(self, request, view, obj):
 		if request.method in permissions.SAFE_METHODS:
 			return True
@@ -41,7 +50,7 @@ class CommentPermissions(permissions.BasePermission):
 
 # Allow users to edit their own bookmarks
 class BookmarkPermissions(permissions.BasePermission):
-	# Allows anyone to get data (ie view profiles) if its a safe HTTP request (e.g GET)
+	# Allows anyone to get data (ie view profiles) if its a safe HTTP request (e.g GET, OPTIONS, HEAD)
 	def has_object_permission(self, request, view, obj):
 		if request.method in permissions.SAFE_METHODS:
 			return True
