@@ -3,8 +3,8 @@ from rest_framework.authentication import TokenAuthentication
 from .serializer import UserProfileSerializer, StockAnalysisSerializer, StockCounterSerializer, CommentSerializer, \
 	BookmarkSerializer
 from .models import UserProfile, StockAnalysis, StockCounter, Comment, Bookmark
-from .permissions import UserPermissions, IsSuperUser, StockAnalysisPermissions, CommentPermissions, \
-	BookmarkPermissions
+from .permissions import UserPermissions, StockAnalysisPermissions, CommentPermissions, \
+	BookmarkPermissions, StockCounterPermissions, IsSuperUser
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.pagination import LimitOffsetPagination
@@ -37,11 +37,12 @@ class LoginViewSet(viewsets.ViewSet):
 # Shows list of stocks available
 class StockCounterViewSet(viewsets.ModelViewSet):
 	serializer_class = StockCounterSerializer
+	pagination_class = LimitOffsetPagination
 	queryset = StockCounter.objects.all()
 	authentication_classes = (TokenAuthentication,)
-	# NOTE THAT WE ONLY ALLOW STOCK COUNTERS TO BE VIEWED BY SUPER USERS! (ie IsSuperUser)
-	# WE DO NOT WANT NORMAL USERS TO EDIT ANY STOCK COUNTERS!
-	permission_classes = (IsSuperUser,)
+	# NOTE THAT WE ONLY ALLOW STOCK COUNTERS TO BE EDITED BY SUPER USERS! (ie IsSuperUser)
+	# WE DO NOT WANT NORMAL USERS TO EDIT ANY STOCK COUNTERS! (Normal users can only view stock counter)
+	permission_classes = [IsSuperUser|StockCounterPermissions]
 	filter_backends = (filters.SearchFilter,)
 	search_fields = ('name', 'code', 'exchange')
 
@@ -59,7 +60,6 @@ class StockAnalysisViewSet(viewsets.ModelViewSet):
 # View API Comment list
 class CommentViewSet(viewsets.ModelViewSet):
 	serializer_class = CommentSerializer
-	pagination_class = LimitOffsetPagination
 	queryset = Comment.objects.all()
 	authentication_classes = (TokenAuthentication,)
 	permission_classes = (CommentPermissions,)
