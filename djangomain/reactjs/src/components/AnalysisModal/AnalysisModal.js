@@ -7,6 +7,7 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Comments from '../../components/Comments/CommentsContainer';
+import DialogContentText from '@material-ui/core/DialogContentText';
 
 const styles = (theme) => ({
     root: {
@@ -53,6 +54,9 @@ const AnalysisModal = (props) => {
         onClose();
     };
 
+    // ensures formatting of text
+    let text = props.data.text;
+
     // ensure that the application doesn't break when there is are no image in the database
     const analysisImage =
         props.data.images[0] == null ? null : props.data.images[0].image;
@@ -80,9 +84,18 @@ const AnalysisModal = (props) => {
                         maxHeight: '100%',
                     }}
                 />
-                <Typography gutterBottom style={{ marginTop: '1em' }}>
-                    {props.data.text}
-                </Typography>
+                {/* <Typography
+                    gutterBottom
+                    style={{
+                        marginTop: '1em',
+                        whiteSpace: 'pre',
+                    }}
+                >
+                    {text}
+                </Typography> */}
+                <DialogContentText style={{ whiteSpace: 'break-spaces' }}>
+                    {text}
+                </DialogContentText>
                 <Comments id={props.data.id} />
             </DialogContent>
         </Dialog>

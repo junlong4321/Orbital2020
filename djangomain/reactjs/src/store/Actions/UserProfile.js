@@ -59,7 +59,7 @@ export const userProfilePush = (biography, linkedin, token, userId) => {
         dispatch(userProfilePushStart());
         const postData = {
             biography: biography,
-            linkedin: linkedin,
+            linkedin: 'https://' + linkedin,
         };
         const config = {
             headers: {
@@ -67,7 +67,11 @@ export const userProfilePush = (biography, linkedin, token, userId) => {
             },
         };
         axios
-            .put(`http://127.0.0.1:8000/api/users/${userId}/`, postData, config)
+            .patch(
+                `http://127.0.0.1:8000/api/users/${userId}/`,
+                postData,
+                config
+            )
             .then((response) => {
                 console.log(response);
                 dispatch(userProfilePushSuccess());

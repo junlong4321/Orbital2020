@@ -32,7 +32,6 @@ class Stocks extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         const company = this.props.history.location.pathname.split('/')[2];
-        console.log(prevState.company);
         if (prevState.company !== company) {
             this.props.onPullSpecificAnalysis(this.props.token, company);
             this.setState({ company: company });
@@ -40,7 +39,6 @@ class Stocks extends Component {
     }
 
     render() {
-        console.log(this.props.analysisData);
         let analysisCard = null;
         const { search } = this.state;
         if (this.props.analysisData !== null) {

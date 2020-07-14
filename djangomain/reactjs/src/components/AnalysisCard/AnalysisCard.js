@@ -1,5 +1,5 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useEffect, useState } from 'react';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -9,13 +9,15 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
+import BookmarkIcon from '@material-ui/icons/Bookmark';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import moment from '../../components/moment/moment';
 import AnalysisModal from '../../components/AnalysisModal/AnalysisModal';
+import CommentIcon from '@material-ui/icons/Comment';
+import axios from 'axios';
+import Tooltip from '@material-ui/core/Tooltip';
+import { Link } from 'react-router-dom';
 
 // styling of component
 const useStyles = makeStyles((theme) => ({
@@ -30,6 +32,16 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: red[500],
     },
 }));
+
+const HtmlTooltip = withStyles((theme) => ({
+    tooltip: {
+        backgroundColor: '#f5f5f9',
+        color: 'rgba(0, 0, 0, 0.87)',
+        maxWidth: 220,
+        fontSize: theme.typography.pxToRem(12),
+        border: '1px solid #dadde9',
+    },
+}))(Tooltip);
 
 // truncate text longer than 130 words
 const truncateLongAnalysis = (text) => {
@@ -62,23 +74,61 @@ const AnalysisCard = (props) => {
         setOpen(false);
     };
 
+    // toggles the like button state
+    const [like, setLike] = React.useState(false);
+    const onLikeHandler = () => {
+        setLike(!like);
+    };
+
+    // calls the number of comments to be displayed
+    const [numOfComments, setNumOfComments] = useState(0);
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const pullData = {
+            Authorization: 'Token ' + { token },
+        };
+        axios
+            .get(
+                `http://127.0.0.1:8000/api/comments/?search=${props.data.id}`,
+                pullData
+            )
+            .then((response) => setNumOfComments(response.data.length))
+            .catch((error) => console.log(error));
+    });
+
     // gets the first letter of the name
     const name = props.data.name;
     const firstLetter = name.slice(0, 1).toUpperCase();
+    const params = like
+        ? {
+              color: 'error',
+          }
+        : {};
 
     return (
         <React.Fragment>
             <Card className={classes.root}>
                 <CardHeader
                     avatar={
-                        <Avatar aria-label="recipe" className={classes.avatar}>
-                            {firstLetter}
-                        </Avatar>
-                    }
-                    action={
-                        <IconButton aria-label="settings">
-                            <MoreVertIcon />
-                        </IconButton>
+                        <Link to={'/user/' + props.data.name}>
+                            <HtmlTooltip
+                                title={
+                                    <React.Fragment>
+                                        <Typography color="inherit">
+                                            {props.data.name}
+                                        </Typography>
+                                        <b>{'Community Verified'}</b>
+                                    </React.Fragment>
+                                }
+                            >
+                                <Avatar
+                                    aria-label="recipe"
+                                    className={classes.avatar}
+                                >
+                                    {firstLetter}
+                                </Avatar>
+                            </HtmlTooltip>
+                        </Link>
                     }
                     title={props.data.title}
                     subheader={timeNow}
@@ -112,14 +162,30 @@ const AnalysisCard = (props) => {
                     </CardContent>
                 </CardActionArea>
                 <CardActions disableSpacing>
-                    <IconButton aria-label="add to favorites">
-                        <FavoriteIcon />
+                    <Typography
+                        variant="body1"
+                        style={{ paddingLeft: '0.5em', fontSize: '0.8em' }}
+                    >
+                        {props.data.upvotes}
+                    </Typography>
+                    <IconButton
+                        aria-label="add to favorites"
+                        style={{ marginLeft: '-0.4em' }}
+                        onClick={onLikeHandler}
+                    >
+                        <FavoriteIcon {...params} />
                     </IconButton>
-                    <IconButton aria-label="share">
-                        <ShareIcon />
+                    <Typography
+                        variant="body1"
+                        style={{ paddingLeft: '0.5em', fontSize: '0.8em' }}
+                    >
+                        {numOfComments}
+                    </Typography>
+                    <IconButton style={{ marginLeft: '-0.4em' }}>
+                        <CommentIcon />
                     </IconButton>
                     <IconButton>
-                        <ExpandMoreIcon />
+                        <BookmarkIcon />
                     </IconButton>
                 </CardActions>
             </Card>

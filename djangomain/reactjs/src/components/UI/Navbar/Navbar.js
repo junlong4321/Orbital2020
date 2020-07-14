@@ -238,7 +238,11 @@ const Navbar = (props) => {
                         alignItems="center"
                     >
                         <div>
-                            <Avatar style={{ float: 'left' }}></Avatar>
+                            <Avatar
+                                alt={signedInUsername}
+                                src={localStorage.getItem('profilePicture')}
+                                style={{ float: 'left' }}
+                            ></Avatar>
                             <Button
                                 aria-controls="simple-menu"
                                 aria-haspopup="true"

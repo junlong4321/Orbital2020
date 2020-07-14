@@ -23,7 +23,7 @@ class News extends Component {
     componentDidMount() {
         axios
             .get(
-                'https://newsapi.org/v2/top-headlines?country=sg&category=business&pageSize=5&apiKey=3d12e390ed3442689f8733c641ba3f66'
+                'https://newsapi.org/v2/top-headlines?country=us&category=business&pageSize=5&apiKey=3d12e390ed3442689f8733c641ba3f66'
             )
             .then((response) => {
                 this.setState({ newsData: response.data.articles });
@@ -39,7 +39,7 @@ class News extends Component {
                 this.state.search === '' ? '' : `&q=${this.state.search}`;
             axios
                 .get(
-                    `https://newsapi.org/v2/top-headlines?country=sg&category=business&pageSize=${this.state.newsToPull}${query}&apiKey=3d12e390ed3442689f8733c641ba3f66`
+                    `https://newsapi.org/v2/top-headlines?country=us&category=business&pageSize=${this.state.newsToPull}${query}&apiKey=3d12e390ed3442689f8733c641ba3f66`
                 )
                 .then((response) => {
                     this.setState({ newsData: response.data.articles });
@@ -52,7 +52,7 @@ class News extends Component {
         if (prevState.search !== this.state.search) {
             axios
                 .get(
-                    `https://newsapi.org/v2/top-headlines?country=sg&category=business&pageSize=${this.state.newsToPull}&q=${this.state.search}&apiKey=3d12e390ed3442689f8733c641ba3f66`
+                    `https://newsapi.org/v2/top-headlines?country=us&category=business&pageSize=${this.state.newsToPull}&q=${this.state.search}&apiKey=3d12e390ed3442689f8733c641ba3f66`
                 )
                 .then((response) => {
                     this.setState({ newsData: response.data.articles });
