@@ -25,8 +25,7 @@ STATIC_DIR = os.path.join(BASE_DIR, 'reactjs/build/static')
 SECRET_KEY = 'o+90*xk-t9n9l61fe8n^fgvn$5dd^ilod*pn=8u3&cbr=!&+ll'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
