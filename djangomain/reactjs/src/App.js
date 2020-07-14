@@ -13,7 +13,7 @@ import './App.css';
 import CreateAnalysis from './container/CreateAnalysis/CreateAnalysis';
 import GuardedRoute from './components/GuardedRoute/GuardedRoute';
 import * as actions from './store/Actions/Auth';
-import Copyright from './components/Copyright/Copyright';
+import User from './container/User/User';
 import Navbar from './components/UI/Navbar/Navbar';
 
 class App extends Component {
@@ -79,6 +79,7 @@ class App extends Component {
                     auth={auth}
                     exact
                 />
+                <GuardedRoute path="/user" component={User} auth={auth} />
             </div>
         );
     }

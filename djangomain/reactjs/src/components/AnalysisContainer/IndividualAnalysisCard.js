@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -13,6 +13,7 @@ import Button from '@material-ui/core/Button';
 import CommentIcon from '@material-ui/icons/Comment';
 import moment from '../moment/moment';
 import { DialogTitle } from '@material-ui/core';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
     root: {},
@@ -25,6 +26,20 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 const IndividualAnalysisCard = (props) => {
+    const [numOfComments, setNumOfComments] = useState(0);
+    const token = localStorage.getItem('token');
+    useEffect(() => {
+        const pullData = {
+            Authorization: 'Token ' + { token },
+        };
+        axios
+            .get(
+                `http://127.0.0.1:8000/api/comments/?search=${props.data.id}`,
+                pullData
+            )
+            .then((response) => setNumOfComments(response.data.length))
+            .catch((error) => console.log(error));
+    });
     let title = '';
     let date = '';
     let text = '';
@@ -64,11 +79,11 @@ const IndividualAnalysisCard = (props) => {
             </CardContent>
             <CardActions>
                 <IconButton disabled>
-                    <Typography>12</Typography>
+                    <Typography>{props.data.upvotes}</Typography>
                     <FavoriteIcon />
                 </IconButton>
-                <IconButton>
-                    <Typography>2</Typography>
+                <IconButton disabled>
+                    <Typography>{numOfComments}</Typography>
                     <CommentIcon />
                 </IconButton>
             </CardActions>
