@@ -45,7 +45,7 @@ export const createAnalysis = (
             name: name,
             stock: stockName,
         };
-        // console.log(analysisData);
+        console.log(analysisData);
         // console.log(token, 'token');
         axios
             .post('http://127.0.0.1:8000/api/analyses/', analysisData, config)

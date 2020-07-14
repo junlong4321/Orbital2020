@@ -48,7 +48,7 @@ class UserProfile extends Component {
             this.biography.current.value,
             this.linkedin.current.value,
             localStorage.getItem('token'),
-            localStorage.getItem('id')
+            localStorage.getItem('userId')
         );
     }
 

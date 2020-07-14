@@ -87,13 +87,18 @@ export const auth = (email, password) => {
                 axios
                     .get(`http://127.0.0.1:8000/api/users/?search=${email}`)
                     .then((response1) => {
+                        console.log(response1);
                         const name = response1.data[0].name;
                         const id = response1.data[0].id;
                         const userToken = response.data.token;
+                        const profilePicture =
+                            response1.data[0].profile_picture;
+                        console.log(profilePicture);
                         localStorage.setItem('token', userToken);
                         localStorage.setItem('email', email);
                         localStorage.setItem('name', name);
                         localStorage.setItem('userId', id);
+                        localStorage.setItem('profilePicture', profilePicture);
                         dispatch(authSuccess(userToken, email));
                     })
                     .catch((error) => dispatch(authFail(error)));
