@@ -4,7 +4,6 @@ import { withStyles } from '@material-ui/styles';
 import { Typography } from '@material-ui/core';
 import { connect } from 'react-redux';
 import UserProfileNavigation from '../../components/UserProfileNavigation/UserProfileNavigation';
-import SearchBar from '../../components/UI/SearchBar/SearchBar';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import * as actions from '../../store/Actions/CreateAnalysis';
@@ -32,15 +31,18 @@ class AnalysisContainer extends Component {
     };
     sumbitHandler = (event) => {
         event.preventDefault(); // prevent reloading of the page, when form is submitted.
+        const image = event.target.image.files[0];
+        const title = event.target.title.value;
+        const text = event.target.text.value;
+        const ticker = this.state.selectedTicker;
         console.log(event.target.image.files[0]);
         this.props.onCreateAnalysis(
-            localStorage.getItem('token'),
-            event.target.image.files[0],
-            event.target.title.value,
-            event.target.text.value,
+            image,
+            title,
+            text,
             localStorage.getItem('email'),
             localStorage.getItem('name'),
-            'DBS'
+            ticker
         );
         this.props.enqueueSnackbar('Analysis successfully created', {
             variant: 'success',
@@ -53,8 +55,8 @@ class AnalysisContainer extends Component {
         }
     };
 
-    onSelectCompany = (value) => {
-        this.setState({ selectedCompany: value });
+    onSelectCompany = (code, name) => {
+        this.setState({ selectedCompany: name, selectedTicker: code });
     };
 
     render() {
@@ -92,7 +94,6 @@ class AnalysisContainer extends Component {
                         onSubmit={this.sumbitHandler}
                         className={classes.form}
                         id="createAnalysisForm"
-                        onKeyPress={this.onKeyPress}
                     >
                         <Grid container justify="center">
                             <Grid
@@ -137,6 +138,7 @@ class AnalysisContainer extends Component {
                                 placeholder="Title"
                                 style={{ margin: '1em 1em 1em 1em' }}
                                 name="title"
+                                onKeyPress={this.onKeyPress}
                             />
                             <TextField
                                 variant="outlined"

@@ -7,6 +7,7 @@ import NewsCard from '../../components/NewsCard/NewsCard';
 import Button from '@material-ui/core/Button';
 import SearchBar from '../../components/UI/SearchBar/SearchBar';
 import Filter from '../../components/Filter/Filter';
+import axiosNews from '../../components/axios/axiosNews';
 
 class News extends Component {
     state = {
@@ -21,10 +22,8 @@ class News extends Component {
     };
 
     componentDidMount() {
-        axios
-            .get(
-                'https://newsapi.org/v2/top-headlines?country=us&category=business&pageSize=5&apiKey=3d12e390ed3442689f8733c641ba3f66'
-            )
+        axiosNews
+            .get('5&apiKey=3d12e390ed3442689f8733c641ba3f66')
             .then((response) => {
                 this.setState({ newsData: response.data.articles });
             })
@@ -37,9 +36,9 @@ class News extends Component {
         if (prevState.newsToPull !== this.state.newsToPull) {
             const query =
                 this.state.search === '' ? '' : `&q=${this.state.search}`;
-            axios
+            axiosNews
                 .get(
-                    `https://newsapi.org/v2/top-headlines?country=us&category=business&pageSize=${this.state.newsToPull}${query}&apiKey=3d12e390ed3442689f8733c641ba3f66`
+                    `${this.state.newsToPull}${query}&apiKey=3d12e390ed3442689f8733c641ba3f66`
                 )
                 .then((response) => {
                     this.setState({ newsData: response.data.articles });
@@ -50,9 +49,9 @@ class News extends Component {
         }
 
         if (prevState.search !== this.state.search) {
-            axios
+            axiosNews
                 .get(
-                    `https://newsapi.org/v2/top-headlines?country=us&category=business&pageSize=${this.state.newsToPull}&q=${this.state.search}&apiKey=3d12e390ed3442689f8733c641ba3f66`
+                    `${this.state.newsToPull}&q=${this.state.search}&apiKey=3d12e390ed3442689f8733c641ba3f66`
                 )
                 .then((response) => {
                     this.setState({ newsData: response.data.articles });

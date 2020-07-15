@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import axios from 'axios';
+import axiosDb from '../../../axios/axiosDb';
 
 export default function FreeSoloCreateOption(props) {
     const history = useHistory();
@@ -20,10 +20,8 @@ export default function FreeSoloCreateOption(props) {
     const onSearchChangeHandler = (event) => {
         const stockSearch = event.target.value;
         if (stockSearch !== '') {
-            axios
-                .get(
-                    `http://127.0.0.1:8000/api/counters/?search=${stockSearch}&limit=5`
-                )
+            axiosDb
+                .get(`/api/counters/?search=${stockSearch}&limit=5`)
                 .then((response) => {
                     setTickers(response.data.results);
                 })

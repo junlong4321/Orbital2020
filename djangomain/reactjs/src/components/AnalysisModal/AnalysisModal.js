@@ -84,15 +84,6 @@ const AnalysisModal = (props) => {
                         maxHeight: '100%',
                     }}
                 />
-                {/* <Typography
-                    gutterBottom
-                    style={{
-                        marginTop: '1em',
-                        whiteSpace: 'pre',
-                    }}
-                >
-                    {text}
-                </Typography> */}
                 <DialogContentText style={{ whiteSpace: 'break-spaces' }}>
                     {text}
                 </DialogContentText>

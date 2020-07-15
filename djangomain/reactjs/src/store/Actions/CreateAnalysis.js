@@ -1,5 +1,5 @@
 import * as actionTypes from './ActionTypes';
-import axios from 'axios';
+import axiosDb from '../../components/axios/axiosDb';
 
 export const createAnalysisStart = () => {
     return {
@@ -21,34 +21,19 @@ export const createAnalysisFailure = (error) => {
     };
 };
 
-export const createAnalysis = (
-    token,
-    image,
-    title,
-    text,
-    email,
-    name,
-    stockName
-) => {
+export const createAnalysis = (image, title, text, email, name, ticker) => {
     return (dispatch) => {
         dispatch(createAnalysisStart());
-        const config = {
-            headers: {
-                Authorization: 'Token ' + { token },
-            },
-        };
         const analysisData = {
             images: image,
             title: title,
             text: text,
             author: email,
             name: name,
-            stock: stockName,
+            ticker: ticker,
         };
-        console.log(analysisData);
-        // console.log(token, 'token');
-        axios
-            .post('http://127.0.0.1:8000/api/analyses/', analysisData, config)
+        axiosDb
+            .post('/api/analyses/', analysisData)
             .then((response) => {
                 dispatch(createAnalysisSuccess(response));
                 // console.log(response);

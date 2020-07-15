@@ -269,7 +269,7 @@ const Navbar = (props) => {
                                 anchorEl={anchorEl1}
                                 keepMounted
                                 open={Boolean(anchorEl1)}
-                                onClose={handleUserMenuClose}
+                                onClick={handleUserMenuClose}
                             >
                                 <Link to="/profile">
                                     <MenuItem>

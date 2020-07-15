@@ -1,5 +1,6 @@
 import * as actionTypes from './ActionTypes';
-import axios from 'axios';
+import axiosAuth from '../../components/axios/axiosAuth';
+import axiosDb from '../../components/axios/axiosDb';
 
 export const authStart = () => {
     return {
@@ -49,11 +50,11 @@ export const signUp = (email, password, username) => {
             username: email,
             password: password,
         };
-        axios
-            .post('http://127.0.0.1:8000/api/users/', signUpData)
+        axiosAuth
+            .post('/api/users/', signUpData)
             .then((response) => {
-                axios
-                    .post('http://127.0.0.1:8000/api/auth/', authData)
+                axiosAuth
+                    .post('/api/auth/', authData)
                     .then((response1) => {
                         const userToken = response1.data.token;
                         const id = response.data.id;
@@ -81,16 +82,22 @@ export const auth = (email, password) => {
             username: email,
             password: password,
         };
-        axios
-            .post('http://127.0.0.1:8000/api/auth/', authData)
+        axiosAuth
+            .post('/api/auth/', authData)
             .then((response) => {
-                axios
-                    .get(`http://127.0.0.1:8000/api/users/?search=${email}`)
+                const userToken = response.data.token;
+                const config = {
+                    headers: {
+                        Authorization: 'Token ' + userToken,
+                    },
+                };
+                axiosAuth
+                    .get(`/api/users/?search=${email}`, config)
                     .then((response1) => {
+                        console.log('searching for email');
                         console.log(response1);
                         const name = response1.data[0].name;
                         const id = response1.data[0].id;
-                        const userToken = response.data.token;
                         const profilePicture =
                             response1.data[0].profile_picture;
                         console.log(profilePicture);

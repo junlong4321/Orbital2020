@@ -1,5 +1,5 @@
 import * as actionTypes from './ActionTypes';
-import axios from 'axios';
+import axiosDb from '../../components/axios/axiosDb';
 
 export const analysisPull = (data) => {
     return {
@@ -31,11 +31,8 @@ export const specificAnalysisPull = (data) => {
 
 export const analysisData = (token) => {
     return (dispatch) => {
-        const pullData = {
-            Authorization: 'Token ' + { token },
-        };
-        axios
-            .get('http://127.0.0.1:8000/api/analyses/', pullData)
+        axiosDb
+            .get('/api/analyses/')
             .then((response) => {
                 dispatch(analysisPull(response.data));
             })
@@ -47,14 +44,8 @@ export const analysisData = (token) => {
 
 export const specificAnalysisData = (token, company) => {
     return (dispatch) => {
-        const pullData = {
-            Authorization: 'Token ' + { token },
-        };
-        axios
-            .get(
-                `http://127.0.0.1:8000/api/analyses/?search=${company}`,
-                pullData
-            )
+        axiosDb
+            .get(`/api/analyses/?search=${company}`)
             .then((response) => {
                 dispatch(analysisPull(response.data));
             })
@@ -66,14 +57,8 @@ export const specificAnalysisData = (token, company) => {
 
 export const individualAnalysisData = (token, email) => {
     return (dispatch) => {
-        const pullData = {
-            Authorization: 'Token ' + { token },
-        };
-        axios
-            .get(
-                `http://127.0.0.1:8000/api/analyses/?search=${email}`,
-                pullData
-            )
+        axiosDb
+            .get(`/api/analyses/?search=${email}`)
             .then((response) => {
                 dispatch(individualAnalysisPull(response.data));
             })
