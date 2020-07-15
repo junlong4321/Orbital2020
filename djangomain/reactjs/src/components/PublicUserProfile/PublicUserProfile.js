@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
-import axios from 'axios';
+import axiosDb from '../axios/axiosDb';
 import CommentIcon from '@material-ui/icons/Comment';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -19,8 +19,8 @@ const PublicUserProfile = (props) => {
 
     // pull the data
     useEffect(() => {
-        axios
-            .get(`http://127.0.0.1:8000/api/users/?search=${name}`)
+        axiosDb
+            .get(`/api/users/?search=${name}`)
             .then((response) => {
                 const data = response.data[0];
                 setBiography(data.biography);
@@ -31,8 +31,8 @@ const PublicUserProfile = (props) => {
             .catch((error) => {
                 console.log(error);
             });
-        axios
-            .get(`http://127.0.0.1:8000/api/analyses/?search=${name}`)
+        axiosDb
+            .get(`/api/analyses/?search=${name}`)
             .then((response) => {
                 const data = response.data;
                 setAnalyses(data);

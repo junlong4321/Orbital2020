@@ -1,5 +1,5 @@
 import * as actionTypes from './ActionTypes';
-import axios from 'axios';
+import axiosDb from '../../components/axios/axiosDb';
 
 export const commentsPullStart = () => {
     return {
@@ -43,12 +43,9 @@ export const commentsPostFailure = (error) => {
 export const commentsPull = (id, token) => {
     return (dispatch) => {
         dispatch(commentsPullStart());
-        const pullData = {
-            Authorization: 'Token ' + { token },
-        };
 
-        axios
-            .get(`http://127.0.0.1:8000/api/comments/?search=${id}`, pullData)
+        axiosDb
+            .get(`/api/comments/?search=${id}`)
             .then((response) => {
                 dispatch(commentsPullSuccess(response.data));
             })
@@ -67,14 +64,8 @@ export const commentsPost = (email, name, id, commentText, token) => {
             analysis: id,
             comment: commentText,
         };
-        const config = {
-            headers: {
-                Authorization: 'Token ' + { token },
-            },
-        };
-        console.log(name, id, commentText, token);
-        axios
-            .post('http://127.0.0.1:8000/api/comments/', postData, config)
+        axiosDb
+            .post('/api/comments/', postData)
             .then((response) => {
                 dispatch(commentsPostSuccess());
                 dispatch(commentsPull(id, token));

@@ -1,5 +1,5 @@
 import * as actionTypes from '../Actions/ActionTypes';
-import axios from 'axios';
+import axiosDb from '../../components/axios/axiosDb';
 
 export const userProfilePullStart = () => {
     return {
@@ -43,8 +43,8 @@ export const userProfilePushFail = (error) => {
 export const userProfilePull = (email) => {
     return (dispatch) => {
         dispatch(userProfilePullStart());
-        axios
-            .get(`http://127.0.0.1:8000/api/users/?search=${email}`)
+        axiosDb
+            .get(`/api/users/?search=${email}`)
             .then((response) => {
                 dispatch(userProfilePullSuccess(response.data));
             })
@@ -59,25 +59,19 @@ export const userProfilePush = (biography, linkedin, token, userId) => {
         dispatch(userProfilePushStart());
         const postData = {
             biography: biography,
-            linkedin: 'https://' + linkedin,
+            linkedin: linkedin,
         };
         const config = {
             headers: {
-                Authorization: 'Token ' + { token },
+                Authorization: 'Token ' + token,
             },
         };
-        axios
-            .patch(
-                `http://127.0.0.1:8000/api/users/${userId}/`,
-                postData,
-                config
-            )
+        axiosDb
+            .patch(`/api/users/${userId}/`, postData, config)
             .then((response) => {
-                console.log(response);
                 dispatch(userProfilePushSuccess());
             })
             .catch((error) => {
-                console.log(error);
                 dispatch(userProfilePushFail(error));
             });
     };

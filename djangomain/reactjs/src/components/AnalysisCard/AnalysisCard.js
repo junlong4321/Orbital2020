@@ -15,9 +15,9 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import moment from '../../components/moment/moment';
 import AnalysisModal from '../../components/AnalysisModal/AnalysisModal';
 import CommentIcon from '@material-ui/icons/Comment';
-import axios from 'axios';
 import Tooltip from '@material-ui/core/Tooltip';
 import { Link } from 'react-router-dom';
+import axiosDb from '../axios/axiosDb';
 
 // styling of component
 const useStyles = makeStyles((theme) => ({
@@ -82,17 +82,18 @@ const AnalysisCard = (props) => {
 
     // calls the number of comments to be displayed
     const [numOfComments, setNumOfComments] = useState(0);
+    const [analysisAuthorImage, setAnalysisAuthorImage] = useState(null);
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        const pullData = {
-            Authorization: 'Token ' + { token },
-        };
-        axios
-            .get(
-                `http://127.0.0.1:8000/api/comments/?search=${props.data.id}`,
-                pullData
-            )
+        axiosDb
+            .get(`/api/comments/?search=${props.data.id}`)
             .then((response) => setNumOfComments(response.data.length))
+            .catch((error) => console.log(error));
+
+        axiosDb
+            .get(`/api/users/?search=${props.data.name}`)
+            .then((response) => {
+                setAnalysisAuthorImage(response.data[0].profile_picture);
+            })
             .catch((error) => console.log(error));
     });
 
@@ -124,9 +125,8 @@ const AnalysisCard = (props) => {
                                 <Avatar
                                     aria-label="recipe"
                                     className={classes.avatar}
-                                >
-                                    {firstLetter}
-                                </Avatar>
+                                    src={analysisAuthorImage}
+                                />
                             </HtmlTooltip>
                         </Link>
                     }

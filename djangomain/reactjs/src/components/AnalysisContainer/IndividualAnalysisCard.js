@@ -13,7 +13,7 @@ import Button from '@material-ui/core/Button';
 import CommentIcon from '@material-ui/icons/Comment';
 import moment from '../moment/moment';
 import { DialogTitle } from '@material-ui/core';
-import axios from 'axios';
+import axiosDb from '../axios/axiosDb';
 
 const useStyles = makeStyles((theme) => ({
     root: {},
@@ -29,14 +29,8 @@ const IndividualAnalysisCard = (props) => {
     const [numOfComments, setNumOfComments] = useState(0);
     const token = localStorage.getItem('token');
     useEffect(() => {
-        const pullData = {
-            Authorization: 'Token ' + { token },
-        };
-        axios
-            .get(
-                `http://127.0.0.1:8000/api/comments/?search=${props.data.id}`,
-                pullData
-            )
+        axiosDb
+            .get(`/api/comments/?search=${props.data.id}`)
             .then((response) => setNumOfComments(response.data.length))
             .catch((error) => console.log(error));
     });

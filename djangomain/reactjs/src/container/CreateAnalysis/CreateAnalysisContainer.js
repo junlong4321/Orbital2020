@@ -4,11 +4,11 @@ import { withStyles } from '@material-ui/styles';
 import { Typography } from '@material-ui/core';
 import { connect } from 'react-redux';
 import UserProfileNavigation from '../../components/UserProfileNavigation/UserProfileNavigation';
-import SearchBar from '../../components/UI/SearchBar/SearchBar';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import * as actions from '../../store/Actions/CreateAnalysis';
 import { withSnackbar } from 'notistack';
+import CreateAnalysisSearchbar from '../../components/UI/SearchBar/CreateAnalysisSearchbar';
 
 const styles = (theme) => ({
     containerBackground: {
@@ -26,21 +26,37 @@ const styles = (theme) => ({
 });
 
 class AnalysisContainer extends Component {
+    state = {
+        selectedCompany: '',
+    };
     sumbitHandler = (event) => {
         event.preventDefault(); // prevent reloading of the page, when form is submitted.
+        const image = event.target.image.files[0];
+        const title = event.target.title.value;
+        const text = event.target.text.value;
+        const ticker = this.state.selectedTicker;
         console.log(event.target.image.files[0]);
         this.props.onCreateAnalysis(
-            localStorage.getItem('token'),
-            event.target.image.files[0],
-            event.target.title.value,
-            event.target.text.value,
+            image,
+            title,
+            text,
             localStorage.getItem('email'),
             localStorage.getItem('name'),
-            'DBS'
+            ticker
         );
         this.props.enqueueSnackbar('Analysis successfully created', {
             variant: 'success',
         });
+    };
+
+    onKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+        }
+    };
+
+    onSelectCompany = (code, name) => {
+        this.setState({ selectedCompany: name, selectedTicker: code });
     };
 
     render() {
@@ -85,8 +101,22 @@ class AnalysisContainer extends Component {
                                 item
                                 md={12}
                                 style={{ margin: '1em 1em 1em 1em' }}
+                                direction="column"
+                                alignItems="flex-start"
                             >
-                                <SearchBar />
+                                <Typography color="secondary" style={{}}>
+                                    Company
+                                </Typography>
+                                <CreateAnalysisSearchbar
+                                    onSelectCompany={this.onSelectCompany}
+                                />
+                                <Typography
+                                    color="primary"
+                                    variant="h6"
+                                    style={{ paddingTop: '1em' }}
+                                >
+                                    {this.state.selectedCompany}
+                                </Typography>
                             </Grid>
                             <Grid
                                 container
@@ -108,12 +138,13 @@ class AnalysisContainer extends Component {
                                 placeholder="Title"
                                 style={{ margin: '1em 1em 1em 1em' }}
                                 name="title"
+                                onKeyPress={this.onKeyPress}
                             />
                             <TextField
                                 variant="outlined"
                                 fullWidth={true}
                                 multiline={true}
-                                rows={10}
+                                rows={20}
                                 placeholder="Start writing..."
                                 name="text"
                                 style={{ margin: '1em 1em 1em 1em' }}

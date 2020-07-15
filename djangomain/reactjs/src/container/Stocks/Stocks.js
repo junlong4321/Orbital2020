@@ -44,7 +44,7 @@ class Stocks extends Component {
         if (this.props.analysisData !== null) {
             const filteredAnalysis = this.props.analysisData.filter((data) => {
                 return (
-                    data.stock.toLowerCase().indexOf(search.toLowerCase()) !==
+                    data.ticker.toLowerCase().indexOf(search.toLowerCase()) !==
                     -1
                 );
             });

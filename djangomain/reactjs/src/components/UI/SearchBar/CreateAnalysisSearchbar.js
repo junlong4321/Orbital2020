@@ -2,21 +2,21 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import axiosDb from '../../../axios/axiosDb';
+import axiosDb from '../../axios/axiosDb';
 
 export default function FreeSoloCreateOption(props) {
     const history = useHistory();
     const [value, setValue] = React.useState(null);
-    const onSearchHandler = (company) => {
-        if (company != null) {
-            history.push(`/stocks/${company}`);
-        }
-    };
 
     // axios request to pull stock ticker symbols every time a change happens in the bar
     const [tickerError, setTickerError] = React.useState(null);
     const [tickers, setTickers] = React.useState([]);
     let companies = [];
+    const onKeyPress = (event) => {
+        if (event.key == 'Enter') {
+            event.preventDefault();
+        }
+    };
     const onSearchChangeHandler = (event) => {
         const stockSearch = event.target.value;
         if (stockSearch !== '') {
@@ -41,12 +41,12 @@ export default function FreeSoloCreateOption(props) {
             value={value}
             onChange={(event, newValue) => {
                 if (typeof newValue === 'string') {
-                    onSearchHandler(newValue);
+                    props.onSelectCompany(newValue, null);
                 } else if (newValue && newValue.inputValue) {
                     // Create a new value from the user input
-                    onSearchHandler(newValue.inputValue);
+                    props.onSelectCompany(newValue.inputValue, null);
                 } else {
-                    onSearchHandler(newValue.code);
+                    props.onSelectCompany(newValue.code, newValue.name);
                 }
             }}
             onInputChange={(value) => {
@@ -68,10 +68,6 @@ export default function FreeSoloCreateOption(props) {
                 // Add "xxx" option created dynamically
                 if (option.inputValue) {
                     return option.inputValue;
-                }
-                if (props.searchType == 'Ticker') {
-                    // Regular option
-                    return option.code;
                 } else {
                     return option.name;
                 }
@@ -86,7 +82,11 @@ export default function FreeSoloCreateOption(props) {
             size="small"
             freeSolo
             renderInput={(params) => (
-                <TextField {...params} variant="outlined" />
+                <TextField
+                    {...params}
+                    variant="outlined"
+                    onKeyPress={onKeyPress}
+                />
             )}
         />
     );
