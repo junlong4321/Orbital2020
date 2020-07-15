@@ -3,6 +3,11 @@ from rest_framework import permissions
 
 # Allow users to edit their own profile
 class UserPermissions(permissions.BasePermission):
+	def has_permission(self, request, view):
+		if request.user.is_authenticated or request.user.is_superuser:
+			return True
+		return request.method == 'POST'
+
 	# Allows anyone to get data (ie view profiles) if its a safe HTTP request (e.g GET, OPTIONS, HEAD)
 	def has_object_permission(self, request, view, obj):
 		if request.method in permissions.SAFE_METHODS:
