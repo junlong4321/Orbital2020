@@ -15,8 +15,8 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Link to ReactJS's template html and static css / js files
-TEMPLATE_DIR = os.path.join(BASE_DIR, 'reactjs/build')
-STATIC_DIR = os.path.join(BASE_DIR, 'reactjs/build/static')
+# TEMPLATE_DIR = os.path.join(BASE_DIR, 'reactjs/build')
+# STATIC_DIR = os.path.join(BASE_DIR, 'reactjs/build/static')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -27,7 +27,7 @@ SECRET_KEY = 'o+90*xk-t9n9l61fe8n^fgvn$5dd^ilod*pn=8u3&cbr=!&+ll'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS =  ['localhost', '127.0.0.1', 'https://thefreemarket-production.herokuapp.com/', 'junlong321.pythonanywhere.com']
 
 
 # Application definition
@@ -72,7 +72,8 @@ ROOT_URLCONF = 'djangomain.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATE_DIR,],
+        # TEMPLATE_DIR,
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -151,7 +152,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = '/home/junlong321/Orbital2020/djangomain/staticfiles'
 MEDIA_URL = '/images/'
 
 # Extra places for collectstatic to find static files.
@@ -159,7 +161,7 @@ STATICFILES_DIRS = [
     # Django Static Files
     os.path.join(BASE_DIR, 'static'),
     # ReactJS Static Files
-    STATIC_DIR,
+    # STATIC_DIR,
 ]
 
 # Media Root for Django Images (E.g Images in Analyses)
