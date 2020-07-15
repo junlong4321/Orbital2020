@@ -7,11 +7,6 @@ import axios from 'axios';
 export default function FreeSoloCreateOption(props) {
     const history = useHistory();
     const [value, setValue] = React.useState(null);
-    const onSearchHandler = (company) => {
-        if (company != null) {
-            history.push(`/stocks/${company}`);
-        }
-    };
 
     // axios request to pull stock ticker symbols every time a change happens in the bar
     const [tickerError, setTickerError] = React.useState(null);
@@ -43,12 +38,12 @@ export default function FreeSoloCreateOption(props) {
             value={value}
             onChange={(event, newValue) => {
                 if (typeof newValue === 'string') {
-                    onSearchHandler(newValue);
+                    props.onSelectCompany(newValue);
                 } else if (newValue && newValue.inputValue) {
                     // Create a new value from the user input
-                    onSearchHandler(newValue.inputValue);
+                    props.onSelectCompany(newValue.inputValue);
                 } else {
-                    onSearchHandler(newValue.code);
+                    props.onSelectCompany(newValue.name);
                 }
             }}
             onInputChange={(value) => {
@@ -75,7 +70,7 @@ export default function FreeSoloCreateOption(props) {
                     // Regular option
                     return option.code;
                 } else {
-                    return option.name;
+                    return option.code;
                 }
             }}
             renderOption={(option) => {

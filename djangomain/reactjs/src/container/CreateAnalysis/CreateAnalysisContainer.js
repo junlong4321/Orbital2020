@@ -9,6 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import * as actions from '../../store/Actions/CreateAnalysis';
 import { withSnackbar } from 'notistack';
+import CreateAnalysisSearchbar from '../../components/UI/SearchBar/CreateAnalysisSearchbar';
 
 const styles = (theme) => ({
     containerBackground: {
@@ -26,6 +27,9 @@ const styles = (theme) => ({
 });
 
 class AnalysisContainer extends Component {
+    state = {
+        selectedCompany: '',
+    };
     sumbitHandler = (event) => {
         event.preventDefault(); // prevent reloading of the page, when form is submitted.
         console.log(event.target.image.files[0]);
@@ -41,6 +45,16 @@ class AnalysisContainer extends Component {
         this.props.enqueueSnackbar('Analysis successfully created', {
             variant: 'success',
         });
+    };
+
+    onKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+        }
+    };
+
+    onSelectCompany = (value) => {
+        this.setState({ selectedCompany: value });
     };
 
     render() {
@@ -78,6 +92,7 @@ class AnalysisContainer extends Component {
                         onSubmit={this.sumbitHandler}
                         className={classes.form}
                         id="createAnalysisForm"
+                        onKeyPress={this.onKeyPress}
                     >
                         <Grid container justify="center">
                             <Grid
@@ -85,8 +100,22 @@ class AnalysisContainer extends Component {
                                 item
                                 md={12}
                                 style={{ margin: '1em 1em 1em 1em' }}
+                                direction="column"
+                                alignItems="flex-start"
                             >
-                                <SearchBar />
+                                <Typography color="secondary" style={{}}>
+                                    Company
+                                </Typography>
+                                <CreateAnalysisSearchbar
+                                    onSelectCompany={this.onSelectCompany}
+                                />
+                                <Typography
+                                    color="primary"
+                                    variant="h6"
+                                    style={{ paddingTop: '1em' }}
+                                >
+                                    {this.state.selectedCompany}
+                                </Typography>
                             </Grid>
                             <Grid
                                 container
@@ -113,7 +142,7 @@ class AnalysisContainer extends Component {
                                 variant="outlined"
                                 fullWidth={true}
                                 multiline={true}
-                                rows={10}
+                                rows={20}
                                 placeholder="Start writing..."
                                 name="text"
                                 style={{ margin: '1em 1em 1em 1em' }}

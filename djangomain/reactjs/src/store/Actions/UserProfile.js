@@ -59,11 +59,11 @@ export const userProfilePush = (biography, linkedin, token, userId) => {
         dispatch(userProfilePushStart());
         const postData = {
             biography: biography,
-            linkedin: 'https://' + linkedin,
+            linkedin: linkedin,
         };
         const config = {
             headers: {
-                Authorization: 'Token ' + { token },
+                Authorization: 'Token ' + token,
             },
         };
         axios
@@ -73,11 +73,9 @@ export const userProfilePush = (biography, linkedin, token, userId) => {
                 config
             )
             .then((response) => {
-                console.log(response);
                 dispatch(userProfilePushSuccess());
             })
             .catch((error) => {
-                console.log(error);
                 dispatch(userProfilePushFail(error));
             });
     };

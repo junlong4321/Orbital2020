@@ -140,7 +140,11 @@ const Navbar = (props) => {
     // understand what this does
     const [open, setOpen] = React.useState(false);
 
-    const handleSelectChange = (event) => {};
+    // tracks the state of search type (either company or ticker)
+    const [searchType, setSearchType] = React.useState('Ticker');
+    const handleSelectChange = (event) => {
+        setSearchType(event.target.value);
+    };
 
     const handleSelectClose = () => {
         setOpen(false);
@@ -189,6 +193,7 @@ const Navbar = (props) => {
                         direction="row"
                         justify="flex-start"
                         alignItems="center"
+                        style={{ marginLeft: '-10em' }}
                     >
                         <li>
                             <NavLink to="/home">Home</NavLink>
@@ -206,6 +211,7 @@ const Navbar = (props) => {
                         direction="row"
                         justify="center"
                         alignItems="center"
+                        style={{ marginRight: '-20em' }}
                     >
                         <Grid container item md={3}>
                             <FormControl className={classes.formControl}>
@@ -216,10 +222,12 @@ const Navbar = (props) => {
                                     onClose={handleSelectClose}
                                     onOpen={handleSelectOpen}
                                     onChange={handleSelectChange}
-                                    defaultValue={10}
+                                    defaultValue={'Ticker'}
                                 >
-                                    <MenuItem value={10}>Ticker</MenuItem>
-                                    <MenuItem value={20}>User</MenuItem>
+                                    <MenuItem value={'Ticker'}>Ticker</MenuItem>
+                                    <MenuItem value={'Company'}>
+                                        Company
+                                    </MenuItem>
                                 </Select>
                             </FormControl>
                         </Grid>
@@ -227,6 +235,7 @@ const Navbar = (props) => {
                             <NavbarSearch
                                 onChange={props.onSearchChange}
                                 keyPress={props.keyPress}
+                                searchType={searchType}
                             />
                         </Grid>
                     </Grid>
@@ -262,12 +271,6 @@ const Navbar = (props) => {
                                 open={Boolean(anchorEl1)}
                                 onClose={handleUserMenuClose}
                             >
-                                <MenuItem>
-                                    <Avatar></Avatar>
-                                    <p style={{ paddingLeft: '0.6em' }}>
-                                        {signedInUsername}
-                                    </p>
-                                </MenuItem>
                                 <Link to="/profile">
                                     <MenuItem>
                                         <IconButton

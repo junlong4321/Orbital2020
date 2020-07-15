@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/styles';
 import { connect } from 'react-redux';
+import { withSnackbar } from 'notistack';
 import * as actions from '../../../store/Actions/UserProfile';
 
 const styles = (theme) => ({
@@ -44,12 +45,46 @@ class UserProfile extends Component {
 
     submitHandler(event) {
         event.preventDefault();
-        this.props.onUserProfilePush(
-            this.biography.current.value,
-            this.linkedin.current.value,
-            localStorage.getItem('token'),
-            localStorage.getItem('userId')
-        );
+        let linkedinValue = '';
+        let linkedinErrorChecker = false;
+        const linkedinCurrentValue = this.linkedin.current.value;
+        if (linkedinCurrentValue !== '') {
+            try {
+                if (linkedinCurrentValue.slice(0, 16) !== 'www.linkedin.com') {
+                    console.log(linkedinCurrentValue.slice(0, 16));
+                    linkedinErrorChecker = true;
+                }
+            } catch (error) {
+                linkedinErrorChecker = true;
+            }
+
+            linkedinValue = 'https://' + linkedinCurrentValue;
+        }
+
+        if (!linkedinErrorChecker) {
+            this.props.onUserProfilePush(
+                this.biography.current.value,
+                linkedinValue,
+                localStorage.getItem('token'),
+                localStorage.getItem('userId')
+            );
+            this.props.enqueueSnackbar('Profile successfully updated', {
+                variant: 'success',
+            });
+        } else {
+            this.props.enqueueSnackbar(
+                'Error updating profile, please check your linkedin url',
+                {
+                    variant: 'error',
+                }
+            );
+        }
+    }
+
+    keyPressHandler(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+        }
     }
 
     render() {
@@ -68,6 +103,9 @@ class UserProfile extends Component {
             name = rootData.name;
             biography = rootData.biography;
             linkedin = rootData.linkedin;
+            if (linkedin !== '') {
+                linkedin = linkedin.slice(8, linkedin.length);
+            }
         }
 
         return (
@@ -76,6 +114,7 @@ class UserProfile extends Component {
                 noValidate
                 autoComplete="off"
                 onSubmit={this.submitHandler}
+                onKeyPress={this.keyPressHandler}
             >
                 <Grid item md={12} className={classes.detailsContainer}>
                     <Typography variant="h5" color="primary">
@@ -110,7 +149,7 @@ class UserProfile extends Component {
                         id="standard-disabled"
                         label="Biography"
                         multiline
-                        rows={3}
+                        rows={10}
                         defaultValue={biography}
                         fullWidth="true"
                         inputRef={this.biography}
@@ -180,4 +219,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withStyles(styles)(UserProfile));
+)(withStyles(styles)(withSnackbar(UserProfile)));
