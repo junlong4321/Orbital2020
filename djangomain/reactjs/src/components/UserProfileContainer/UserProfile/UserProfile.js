@@ -103,7 +103,7 @@ class UserProfile extends Component {
             name = rootData.name;
             biography = rootData.biography;
             linkedin = rootData.linkedin;
-            if (linkedin !== '') {
+            if (linkedin !== '' && linkedin !== null) {
                 linkedin = linkedin.slice(8, linkedin.length);
             }
         }

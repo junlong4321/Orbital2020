@@ -33,6 +33,9 @@ export const signUpFail = (error) => {
 export const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('email');
+    localStorage.removeItem('name');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('profilePicture');
     return {
         type: actionTypes.LOGOUT,
     };
