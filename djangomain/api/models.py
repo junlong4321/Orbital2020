@@ -61,8 +61,8 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 # Details of stock counter (e.g What is the name / code of stock, and which exchange it belongs to)
 # E.g name=COMFORTDELGRO CORPORATION LTD, code=C52, exchange=SGX)
 class StockCounter(models.Model):
-	name = models.CharField(max_length=200, blank=False, unique=True)
-	code = models.CharField(max_length=10, blank=False)
+	name = models.CharField(max_length=200, blank=False)
+	code = models.CharField(max_length=10, blank=False, unique=True)
 	exchange = models.CharField(max_length=200, blank=True)
 
 	def __str__(self):
@@ -76,7 +76,7 @@ class StockAnalysis(models.Model):
 	author = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field='email', related_name='authors')
 	name = models.ForeignKey(UserProfile, on_delete=models.CASCADE, to_field='name', related_name='names')
 	title = models.CharField(max_length=200, blank=False)
-	stock = models.ForeignKey(StockCounter, on_delete=models.CASCADE, null=True, blank=False, to_field='name')
+	ticker = models.ForeignKey(StockCounter, on_delete=models.CASCADE, to_field='code')
 	text = models.TextField()
 	created_date = models.DateTimeField(default=timezone.now)
 	# Set number of upvotes to 0 by default
