@@ -84,9 +84,11 @@ const AnalysisModal = (props) => {
                         maxHeight: '100%',
                     }}
                 />
-                <DialogContentText style={{ whiteSpace: 'break-spaces' }}>
-                    {text}
-                </DialogContentText>
+                <DialogContentText
+                    style={{ whiteSpace: 'break-spaces' }}
+                    dangerouslySetInnerHTML={{ __html: text }}
+                />
+
                 <Comments id={props.data.id} />
             </DialogContent>
         </Dialog>
