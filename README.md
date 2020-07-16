@@ -3,9 +3,10 @@
 # Deployments :
 ### Frontend : https://thefreemarket-production.herokuapp.com/
 ### Backend : https://junlong321.pythonanywhere.com/api/
-#### Test Account (For https://thefreemarket-production.herokuapp.com/) :
-##### Username : drwealth@gmail.com
-##### Password : drwealth123
+### Test Account (For https://thefreemarket-production.herokuapp.com/) :
+#### Username : drwealth@gmail.com
+#### Password : drwealth123
+#### !!! Note that as we are using free servers, our deployments are unstable. Firstly, NewsAPI only can be used on local host, so news page in our deployment is blank. Secondly, press F5 to refresh the stock page if the stock analyses do not load. Backend calls from Pythonanywhere is slow and will sometimes cause faulty rendering on the stocks page.
 ### Jenkins Continuous Integration : https://34.87.166.226 (We do not provide test accounts as we do not want visitors to alter our continuous integration settings)
 
 # Set Up Instructions (**Frontend ReactJS**) :

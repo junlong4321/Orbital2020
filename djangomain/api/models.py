@@ -81,16 +81,17 @@ class StockAnalysis(models.Model):
 	created_date = models.DateTimeField(default=timezone.now)
 	# Set number of upvotes to 0 by default
 	upvotes = models.IntegerField(default=0)
+	cover_image = models.ImageField(blank=True, null=True)
 
 	def __str__(self):
 		return "%s's %s Analysis" % (self.author, self.ticker)
 
 
-# Stores images created in stock analyses
-class StockAnalysisImage(models.Model):
-	# related_name='images' allows us to display the image on our viewset
-	analysis = models.ForeignKey(StockAnalysis, related_name='images', on_delete=models.CASCADE)
-	image = models.ImageField()
+# # Stores images created in stock analyses
+# class StockAnalysisImage(models.Model):
+# 	# related_name='images' allows us to display the image on our viewset
+# 	analysis = models.ForeignKey(StockAnalysis, related_name='images', on_delete=models.CASCADE)
+# 	image = models.ImageField()
 
 
 # Create comments to be rendered in stock analysis page

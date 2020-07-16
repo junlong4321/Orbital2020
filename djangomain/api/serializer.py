@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import UserProfile, StockAnalysis, StockAnalysisImage, StockCounter, Comment, Bookmark
+from .models import UserProfile, StockAnalysis, StockCounter, Comment, Bookmark
 
 
 # Converts User data to JSON
@@ -54,35 +54,35 @@ class StockCounterSerializer(serializers.ModelSerializer):
 		fields = '__all__'
 
 
-# Helps to serialize multiple images
-# To be used in StockAnalysisSerializer
-class StockAnalysisImageSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = StockAnalysisImage
-		fields = ('image',)
+# # Helps to serialize multiple images
+# # To be used in StockAnalysisSerializer
+# class StockAnalysisImageSerializer(serializers.ModelSerializer):
+# 	class Meta:
+# 		model = StockAnalysisImage
+# 		fields = ('image',)
 
 
 # Converts analysis data to JSON
 class StockAnalysisSerializer(serializers.ModelSerializer):
 	# many=True tells serializer that there are multiple images to be serialized
-	images = StockAnalysisImageSerializer(many=True, required=False, read_only=True)
+	# images = StockAnalysisImageSerializer(many=True, required=False, read_only=True)
 
 	class Meta:
 		model = StockAnalysis
 		fields = '__all__'
 
-	def create(self, validated_data):
-		images_data = self.context.get('view').request.FILES
-		analysis = StockAnalysis.objects.create(**validated_data)
-		for image_data in images_data.values():
-			StockAnalysisImage.objects.create(analysis=analysis, image=image_data)
-		return analysis
-
-	def update(self, instance, validated_data):
-		images_data = self.context.get('view').request.FILES
-		for image in images_data.values():
-			StockAnalysisImage.objects.create(analysis=instance, image=image)
-		return super(StockAnalysisSerializer, self).update(instance, validated_data)
+	# def create(self, validated_data):
+	# 	images_data = self.context.get('view').request.FILES
+	# 	analysis = StockAnalysis.objects.create(**validated_data)
+	# 	for image_data in images_data.values():
+	# 		StockAnalysisImage.objects.create(analysis=analysis, image=image_data)
+	# 	return analysis
+	#
+	# def update(self, instance, validated_data):
+	# 	images_data = self.context.get('view').request.FILES
+	# 	for image in images_data.values():
+	# 		StockAnalysisImage.objects.create(analysis=instance, image=image)
+	# 	return super(StockAnalysisSerializer, self).update(instance, validated_data)
 
 
 class CommentSerializer(serializers.ModelSerializer):
