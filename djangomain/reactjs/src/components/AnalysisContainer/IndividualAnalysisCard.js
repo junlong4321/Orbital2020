@@ -45,9 +45,7 @@ const IndividualAnalysisCard = (props) => {
         date = moment(props.data.created_date);
         text = props.data.text;
         companyName = props.data.stock;
-        if (props.data.images.length !== 0) {
-            image = props.data.images[0].image;
-        }
+        image = props.data.cover_image;
     }
 
     const classes = useStyles();
@@ -67,9 +65,14 @@ const IndividualAnalysisCard = (props) => {
                 >
                     {date}
                 </Typography>
-                <Typography variant="body1" color="textSecondary" component="p">
-                    {text.slice(0, 60) + '...'}
-                </Typography>
+                <Typography
+                    variant="body1"
+                    color="textSecondary"
+                    component="p"
+                    dangerouslySetInnerHTML={{
+                        __html: text.slice(0, 60) + '...',
+                    }}
+                />
             </CardContent>
             <CardActions>
                 <IconButton disabled>

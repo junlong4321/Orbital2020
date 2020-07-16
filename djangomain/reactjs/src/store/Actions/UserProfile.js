@@ -54,20 +54,17 @@ export const userProfilePull = (email) => {
     };
 };
 
-export const userProfilePush = (biography, linkedin, token, userId) => {
+export const userProfilePush = (biography, linkedin, image, userId) => {
     return (dispatch) => {
         dispatch(userProfilePushStart());
-        const postData = {
-            biography: biography,
-            linkedin: linkedin,
-        };
-        const config = {
-            headers: {
-                Authorization: 'Token ' + token,
-            },
-        };
+        let form_data = new FormData();
+        form_data.append('biography', biography);
+        form_data.append('linkedin', linkedin);
+        form_data.append('profile_picture', image);
         axiosDb
-            .patch(`/api/users/${userId}/`, postData, config)
+            .patch(`/api/users/${userId}/`, form_data, {
+                headers: { 'content-type': 'multipart/form-data' },
+            })
             .then((response) => {
                 dispatch(userProfilePushSuccess());
             })

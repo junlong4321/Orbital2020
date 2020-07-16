@@ -10,6 +10,7 @@ import * as actions from '../../store/Actions/CreateAnalysis';
 import { withSnackbar } from 'notistack';
 import CreateAnalysisSearchbar from '../../components/UI/SearchBar/CreateAnalysisSearchbar';
 import { Editor } from '@tinymce/tinymce-react';
+import axios from 'axios';
 
 const styles = (theme) => ({
     containerBackground: {
@@ -29,25 +30,29 @@ const styles = (theme) => ({
 class AnalysisContainer extends Component {
     state = {
         selectedCompany: '',
+        financialRatios: null,
+        financialRatiosError: null,
+        allowTextEditor: false,
     };
     sumbitHandler = (event) => {
         event.preventDefault(); // prevent reloading of the page, when form is submitted.
         const image = event.target.image.files[0];
         const title = event.target.title.value;
-        const text = window.parent.tinymce.get('textEditor').getContent();
-        console.log(text);
-        const ticker = this.state.selectedTicker;
-        this.props.onCreateAnalysis(
-            image,
-            title,
-            text,
-            localStorage.getItem('email'),
-            localStorage.getItem('name'),
-            ticker
-        );
-        this.props.enqueueSnackbar('Analysis successfully created', {
-            variant: 'success',
-        });
+        if (this.state.allowTextEditor) {
+            const text = window.parent.tinymce.get('textEditor').getContent();
+            const ticker = this.state.selectedTicker;
+            this.props.onCreateAnalysis(
+                image,
+                title,
+                text,
+                localStorage.getItem('email'),
+                localStorage.getItem('name'),
+                ticker
+            );
+            this.props.enqueueSnackbar('Analysis successfully created', {
+                variant: 'success',
+            });
+        }
     };
 
     onKeyPress = (event) => {
@@ -58,11 +63,19 @@ class AnalysisContainer extends Component {
 
     onSelectCompany = (code, name) => {
         this.setState({ selectedCompany: name, selectedTicker: code });
-    };
-
-    // tinyMCE editor
-    handleEditorChange = (e) => {
-        console.log('Content was updated:', e.target.getContent());
+        axios
+            .get(
+                `https://finnhub.io/api/v1/stock/metric?symbol=${code}&metric=all&token=bs7uthfrh5r8i6g98tn0`
+            )
+            .then((response) => {
+                this.setState({
+                    financialRatios: response.data.metric,
+                    allowTextEditor: true,
+                });
+            })
+            .catch((error) => {
+                this.setState({ financialRatiosError: error });
+            });
     };
 
     render() {
@@ -71,6 +84,287 @@ class AnalysisContainer extends Component {
             document.getElementById('createAnalysisForm').reset();
             window.location.reload(false);
         }
+
+        // financial ratios
+        const textEditor = (
+            <Editor
+                apiKey="6mbivnl3zchjn9ue5p2if5g9piq4mh69dq8nt59i7o5ejsfb"
+                id="textEditor"
+                init={{
+                    height: 500,
+                    menubar: false,
+                    skin: 'oxide-dark',
+                    content_css: 'dark',
+                    width: '96%',
+                    readonly: 1,
+                    plugins: [
+                        'advlist autolink lists link image charmap print preview anchor',
+                        'searchreplace visualblocks code fullscreen',
+                        'insertdatetime media table paste code help wordcount',
+                    ],
+                    toolbar:
+                        'undo redo | formatselect | bold italic backcolor | \
+                    alignleft aligncenter alignright alignjustify | \
+                    bullist numlist outdent indent | ratios',
+
+                    setup: (editor) => {
+                        /* example, adding a toolbar menu button */
+                        editor.ui.registry.addMenuButton('ratios', {
+                            text: 'Financial Ratios',
+                            fetch: (callback) => {
+                                var items = [
+                                    {
+                                        type: 'nestedmenuitem',
+                                        text: 'Ratios (TTM)',
+                                        getSubmenuItems: () => {
+                                            return [
+                                                {
+                                                    type: 'menuitem',
+                                                    text: 'Asset Turnover',
+                                                    onAction: () => {
+                                                        editor.insertContent(
+                                                            this.state
+                                                                .financialRatios
+                                                                .assetTurnoverTTM !==
+                                                                null
+                                                                ? '&nbsp;<em>' +
+                                                                      this.state.financialRatios.assetTurnoverTTM.toString() +
+                                                                      '<em>'
+                                                                : '&nbsp;<em>Unavailable<em>'
+                                                        );
+                                                    },
+                                                },
+                                                {
+                                                    type: 'menuitem',
+                                                    text:
+                                                        'Book Value per Share',
+                                                    onAction: () => {
+                                                        editor.insertContent(
+                                                            this.state
+                                                                .financialRatios
+                                                                .bookValuePerShareAnnual !==
+                                                                null
+                                                                ? '&nbsp;<em>' +
+                                                                      this.state.financialRatios.bookValuePerShareAnnual.toString() +
+                                                                      '<em>'
+                                                                : '&nbsp;<em>Unavailable<em>'
+                                                        );
+                                                    },
+                                                },
+                                                {
+                                                    type: 'menuitem',
+                                                    text: 'Cash Flow per Share',
+                                                    onAction: () => {
+                                                        editor.insertContent(
+                                                            this.state
+                                                                .financialRatios
+                                                                .cashFlowPerShareTTM !==
+                                                                null
+                                                                ? '&nbsp;<em>' +
+                                                                      this.state.financialRatios.cashFlowPerShareTTM.toString() +
+                                                                      '<em>'
+                                                                : '&nbsp;<em>Unavailable<em>'
+                                                        );
+                                                    },
+                                                },
+                                                {
+                                                    type: 'menuitem',
+                                                    text:
+                                                        'Current Dividend Yield',
+                                                    onAction: () => {
+                                                        editor.insertContent(
+                                                            this.state
+                                                                .financialRatios
+                                                                .currentDividendYieldTTM !==
+                                                                null
+                                                                ? '&nbsp;<em>' +
+                                                                      this.state.financialRatios.currentDividendYieldTTM.toString() +
+                                                                      '<em>'
+                                                                : '&nbsp;<em>Unavailable<em>'
+                                                        );
+                                                    },
+                                                },
+                                                {
+                                                    type: 'menuitem',
+                                                    text: 'Free Cash Flow',
+                                                    onAction: () => {
+                                                        editor.insertContent(
+                                                            this.state
+                                                                .financialRatios
+                                                                .freeCashFlowTTM !==
+                                                                null
+                                                                ? '&nbsp;<em>' +
+                                                                      this.state.financialRatios.freeCashFlowTTM.toString() +
+                                                                      '<em>'
+                                                                : '&nbsp;<em>Unavailable<em>'
+                                                        );
+                                                    },
+                                                },
+                                                {
+                                                    type: 'menuitem',
+                                                    text: 'Dividends per Share',
+                                                    onAction: () => {
+                                                        editor.insertContent(
+                                                            this.state
+                                                                .financialRatios
+                                                                .dividendsPerShareTTM !==
+                                                                null
+                                                                ? '&nbsp;<em>' +
+                                                                      this.state.financialRatios.dividendsPerShareTTM.toString() +
+                                                                      '<em>'
+                                                                : '&nbsp;<em>Unavailable<em>'
+                                                        );
+                                                    },
+                                                },
+                                                {
+                                                    type: 'menuitem',
+                                                    text: 'Inventory Turnover',
+                                                    onAction: () => {
+                                                        editor.insertContent(
+                                                            this.state
+                                                                .financialRatios
+                                                                .inventoryTurnoverTTM !==
+                                                                null
+                                                                ? '&nbsp;<em>' +
+                                                                      this.state.financialRatios.inventoryTurnoverTTM.toString() +
+                                                                      '<em>'
+                                                                : '&nbsp;<em>Unavailable<em>'
+                                                        );
+                                                    },
+                                                },
+                                                {
+                                                    type: 'menuitem',
+                                                    text: 'Return on Equity',
+                                                    onAction: () => {
+                                                        editor.insertContent(
+                                                            this.state
+                                                                .financialRatios
+                                                                .roeTTM !== null
+                                                                ? '&nbsp;<em>' +
+                                                                      this.state.financialRatios.roeTTM.toString() +
+                                                                      '<em>'
+                                                                : '&nbsp;<em>Unavailable<em>'
+                                                        );
+                                                    },
+                                                },
+                                                {
+                                                    type: 'menuitem',
+                                                    text:
+                                                        'Return on Investment',
+                                                    onAction: () => {
+                                                        editor.insertContent(
+                                                            this.state
+                                                                .financialRatios
+                                                                .roiTTM !== null
+                                                                ? '&nbsp;<em>' +
+                                                                      this.state.financialRatios.roiTTM.toString() +
+                                                                      '<em>'
+                                                                : '&nbsp;<em>Unavailable<em>'
+                                                        );
+                                                    },
+                                                },
+                                                {
+                                                    type: 'menuitem',
+                                                    text: 'Revenue per Share',
+                                                    onAction: () => {
+                                                        editor.insertContent(
+                                                            this.state
+                                                                .financialRatios
+                                                                .revenuePerShareTTM !==
+                                                                null
+                                                                ? '&nbsp;<em>' +
+                                                                      this.state.financialRatios.revenuePerShareTTM.toString() +
+                                                                      '<em>'
+                                                                : '&nbsp;<em>Unavailable<em>'
+                                                        );
+                                                    },
+                                                },
+                                            ];
+                                        },
+                                    },
+                                    {
+                                        type: 'nestedmenuitem',
+                                        text: 'Other Ratios',
+                                        getSubmenuItems: () => {
+                                            return [
+                                                {
+                                                    type: 'menuitem',
+                                                    text:
+                                                        'Dividend Growth Rate (5Y)',
+                                                    onAction: () => {
+                                                        editor.insertContent(
+                                                            this.state
+                                                                .financialRatios
+                                                                .dividendGrowthRate5Y !==
+                                                                null
+                                                                ? '&nbsp;<em>' +
+                                                                      this.state.financialRatios.dividendGrowthRate5Y.toString() +
+                                                                      '<em>'
+                                                                : '&nbsp;<em>Unavailable<em>'
+                                                        );
+                                                    },
+                                                },
+                                                {
+                                                    type: 'menuitem',
+                                                    text: 'EPS Growth (5Y)',
+                                                    onAction: () => {
+                                                        editor.insertContent(
+                                                            this.state
+                                                                .financialRatios
+                                                                .epsGrowth5Y !==
+                                                                null
+                                                                ? '&nbsp;<em>' +
+                                                                      this.state.financialRatios.epsGrowth5Y.toString() +
+                                                                      '<em>'
+                                                                : '&nbsp;<em>Unavailable<em>'
+                                                        );
+                                                    },
+                                                },
+                                                {
+                                                    type: 'menuitem',
+                                                    text: 'Net Debt (Annual)',
+                                                    onAction: () => {
+                                                        editor.insertContent(
+                                                            this.state
+                                                                .financialRatios
+                                                                .netDebtAnnual !==
+                                                                null
+                                                                ? '&nbsp;<em>' +
+                                                                      this.state.financialRatios.netDebtAnnual.toString() +
+                                                                      '<em>'
+                                                                : '&nbsp;<em>Unavailable<em>'
+                                                        );
+                                                    },
+                                                },
+                                                {
+                                                    type: 'menuitem',
+                                                    text: 'Market Cap',
+                                                    onAction: () => {
+                                                        editor.insertContent(
+                                                            this.state
+                                                                .financialRatios
+                                                                .marketCapitalization !==
+                                                                null
+                                                                ? '&nbsp;<em>' +
+                                                                      this.state.financialRatios.marketCapitalization.toString() +
+                                                                      ' million' +
+                                                                      '<em>'
+                                                                : '&nbsp;<em>Unavailable<em>'
+                                                        );
+                                                    },
+                                                },
+                                            ];
+                                        },
+                                    },
+                                ];
+                                callback(items);
+                            },
+                        });
+                    },
+                }}
+                onChange={this.handleEditorChange}
+            />
+        );
         return (
             <React.Fragment>
                 <Grid
@@ -110,7 +404,7 @@ class AnalysisContainer extends Component {
                                 direction="column"
                                 alignItems="flex-start"
                             >
-                                <Typography color="secondary" style={{}}>
+                                <Typography color="secondary">
                                     Company
                                 </Typography>
                                 <CreateAnalysisSearchbar
@@ -128,13 +422,17 @@ class AnalysisContainer extends Component {
                                 container
                                 item
                                 md={12}
+                                direction="column"
                                 justify="flex-start"
-                                style={{ margin: '1em 1em 1em 1em' }}
+                                style={{ margin: '0em 1em 1em 1em' }}
                             >
+                                <Typography color="secondary">
+                                    Cover Image
+                                </Typography>
                                 <input
                                     type="file"
                                     accept="image/*"
-                                    style={{ margin: '1em 1em 1em 1em' }}
+                                    style={{ marginTop: '0.4em' }}
                                     name="image"
                                 />
                             </Grid>
@@ -154,90 +452,7 @@ class AnalysisContainer extends Component {
                                 justify="center"
                                 style={{ marginTop: '1em' }}
                             >
-                                <Editor
-                                    apiKey="6mbivnl3zchjn9ue5p2if5g9piq4mh69dq8nt59i7o5ejsfb"
-                                    id="textEditor"
-                                    init={{
-                                        height: 500,
-                                        menubar: false,
-                                        skin: 'oxide-dark',
-                                        content_css: 'dark',
-                                        width: '96%',
-                                        plugins: [
-                                            'advlist autolink lists link image charmap print preview anchor',
-                                            'searchreplace visualblocks code fullscreen',
-                                            'insertdatetime media table paste code help wordcount',
-                                        ],
-                                        toolbar:
-                                            'undo redo | formatselect | bold italic backcolor | \
-                                            alignleft aligncenter alignright alignjustify | \
-                                            bullist numlist outdent indent | help |  ratios',
-
-                                        setup: function (editor) {
-                                            /* example, adding a toolbar menu button */
-                                            editor.ui.registry.addMenuButton(
-                                                'ratios',
-                                                {
-                                                    text: 'Financial Ratios',
-                                                    fetch: function (callback) {
-                                                        var items = [
-                                                            {
-                                                                type:
-                                                                    'menuitem',
-                                                                text:
-                                                                    'Menu item 1',
-                                                                onAction: function () {
-                                                                    editor.insertContent(
-                                                                        '&nbsp;<em>You clicked menu item 1!</em>'
-                                                                    );
-                                                                },
-                                                            },
-                                                            {
-                                                                type:
-                                                                    'nestedmenuitem',
-                                                                text:
-                                                                    'Menu item 2',
-                                                                icon: 'user',
-                                                                getSubmenuItems: function () {
-                                                                    return [
-                                                                        {
-                                                                            type:
-                                                                                'menuitem',
-                                                                            text:
-                                                                                'Sub menu item 1',
-                                                                            icon:
-                                                                                'unlock',
-                                                                            onAction: function () {
-                                                                                editor.insertContent(
-                                                                                    '&nbsp;<em>You clicked Sub menu item 1!</em>'
-                                                                                );
-                                                                            },
-                                                                        },
-                                                                        {
-                                                                            type:
-                                                                                'menuitem',
-                                                                            text:
-                                                                                'Sub menu item 2',
-                                                                            icon:
-                                                                                'lock',
-                                                                            onAction: function () {
-                                                                                editor.insertContent(
-                                                                                    '&nbsp;<em>You clicked Sub menu item 2!</em>'
-                                                                                );
-                                                                            },
-                                                                        },
-                                                                    ];
-                                                                },
-                                                            },
-                                                        ];
-                                                        callback(items);
-                                                    },
-                                                }
-                                            );
-                                        },
-                                    }}
-                                    onChange={this.handleEditorChange}
-                                />
+                                {this.state.allowTextEditor ? textEditor : null}
                             </Grid>
                             <Grid item container justify="center">
                                 <Button
@@ -268,10 +483,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onCreateAnalysis: (token, image, title, text, email, name, stockName) =>
+        onCreateAnalysis: (image, title, text, email, name, stockName) =>
             dispatch(
                 actions.createAnalysis(
-                    token,
                     image,
                     title,
                     text,

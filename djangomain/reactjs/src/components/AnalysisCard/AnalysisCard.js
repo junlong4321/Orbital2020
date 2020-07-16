@@ -118,7 +118,6 @@ const AnalysisCard = (props) => {
                                         <Typography color="inherit">
                                             {props.data.name}
                                         </Typography>
-                                        <b>{'Community Verified'}</b>
                                     </React.Fragment>
                                 }
                             >
@@ -137,9 +136,9 @@ const AnalysisCard = (props) => {
                     <CardMedia
                         className={classes.media}
                         image={
-                            props.data.images[0] == null
+                            props.data.cover_image == null
                                 ? null
-                                : props.data.images[0].image
+                                : props.data.cover_image
                         }
                     />
                     <CardContent>
@@ -156,9 +155,8 @@ const AnalysisCard = (props) => {
                             color="textSecondary"
                             component="p"
                             align="justify"
-                        >
-                            {finalText}
-                        </Typography>
+                            dangerouslySetInnerHTML={{ __html: finalText }}
+                        />
                     </CardContent>
                 </CardActionArea>
                 <CardActions disableSpacing>

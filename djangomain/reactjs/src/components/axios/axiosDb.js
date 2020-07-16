@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosDb = axios.create({
-    baseURL: 'https://junlong321.pythonanywhere.com',
+    baseURL: 'http://127.0.0.1:8000/',
 });
 
 axiosDb.defaults.headers.common['Authorization'] =

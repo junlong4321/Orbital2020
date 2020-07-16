@@ -7,6 +7,7 @@ import CommentIcon from '@material-ui/icons/Comment';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Tooltip from '@material-ui/core/Tooltip';
 import AnalysisCard from '../AnalysisCard/AnalysisCard';
+import placeholder from '../../assets/placeholder.jpg';
 
 const PublicUserProfile = (props) => {
     // get name of individual user through web url
@@ -79,7 +80,11 @@ const PublicUserProfile = (props) => {
                             minWidth: '200px',
                             padding: '2em 2em 2em 5.3em',
                         }}
-                        src={profilePicture}
+                        src={
+                            profilePicture == null
+                                ? placeholder
+                                : profilePicture
+                        }
                         variant="square"
                     ></Avatar>
                 </Grid>
