@@ -51,11 +51,9 @@ export const stockPageDataPull = () => {
 
 export const specificAnalysisData = (company) => {
     return (dispatch) => {
-        console.log(company);
         axiosDb
             .get(`/api/analyses/?search=${company}`)
             .then((response) => {
-                console.log(response.data);
                 dispatch(emptyStockPageAnalysisPull(response.data));
             })
             .catch((error) => {

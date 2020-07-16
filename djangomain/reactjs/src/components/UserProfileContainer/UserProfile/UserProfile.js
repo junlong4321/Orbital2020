@@ -45,6 +45,7 @@ class UserProfile extends Component {
 
     submitHandler(event) {
         event.preventDefault();
+        const image = event.target.image.files[0];
         let linkedinValue = '';
         let linkedinErrorChecker = false;
         const linkedinCurrentValue = this.linkedin.current.value;
@@ -65,7 +66,7 @@ class UserProfile extends Component {
             this.props.onUserProfilePush(
                 this.biography.current.value,
                 linkedinValue,
-                localStorage.getItem('token'),
+                image,
                 localStorage.getItem('userId')
             );
             this.props.enqueueSnackbar('Profile successfully updated', {
@@ -177,7 +178,7 @@ class UserProfile extends Component {
                         Profile Picture
                     </Typography>
                     <Grid item md={12}>
-                        <input type="file" accept="image/*" />
+                        <input type="file" accept="image/*" name="image" />
                     </Grid>
                 </Grid>
                 <Grid
@@ -209,9 +210,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         onUserProfilePull: (email) => dispatch(actions.userProfilePull(email)),
-        onUserProfilePush: (biography, linkedin, token, userId) =>
+        onUserProfilePush: (biography, linkedin, image, userId) =>
             dispatch(
-                actions.userProfilePush(biography, linkedin, token, userId)
+                actions.userProfilePush(biography, linkedin, image, userId)
             ),
     };
 };

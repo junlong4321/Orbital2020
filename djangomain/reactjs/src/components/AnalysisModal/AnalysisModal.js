@@ -59,7 +59,7 @@ const AnalysisModal = (props) => {
 
     // ensure that the application doesn't break when there is are no image in the database
     const analysisImage =
-        props.data.images[0] == null ? null : props.data.images[0].image;
+        props.data.cover_image == null ? null : props.data.cover_image;
 
     return (
         <Dialog
