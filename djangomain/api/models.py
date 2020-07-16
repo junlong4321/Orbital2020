@@ -83,7 +83,7 @@ class StockAnalysis(models.Model):
 	upvotes = models.IntegerField(default=0)
 
 	def __str__(self):
-		return "%s's %s Analysis" % (self.author, self.stock)
+		return "%s's %s Analysis" % (self.author, self.ticker)
 
 
 # Stores images created in stock analyses

@@ -89,9 +89,11 @@ TEMPLATES = [
 WSGI_APPLICATION = 'djangomain.wsgi.application'
 
 # Whitelist localhost:3000 so that ReactJS can call the Django backend API
-CORS_ORIGIN_WHITELIST = [
-    "http://localhost:3000",
-]
+# CORS_ORIGIN_WHITELIST = [
+#     "http://localhost:3000",
+# ]
+CORS_ORIGIN_ALLOW_ALL = True
+
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
