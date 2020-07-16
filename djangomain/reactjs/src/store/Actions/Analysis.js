@@ -29,12 +29,19 @@ export const specificAnalysisPull = (data) => {
     };
 };
 
-export const analysisData = (token) => {
+export const emptyStockPageAnalysisPull = (data) => {
+    return {
+        type: actionTypes.EMPTY_STOCK_PAGE_ANALYSIS_PULL,
+        analysisData: data,
+    };
+};
+
+export const stockPageDataPull = () => {
     return (dispatch) => {
         axiosDb
             .get('/api/analyses/')
             .then((response) => {
-                dispatch(analysisPull(response.data));
+                dispatch(emptyStockPageAnalysisPull(response.data));
             })
             .catch((error) => {
                 dispatch(analysisPullFail(error));
@@ -42,10 +49,25 @@ export const analysisData = (token) => {
     };
 };
 
-export const specificAnalysisData = (token, company) => {
+export const specificAnalysisData = (company) => {
     return (dispatch) => {
+        console.log(company);
         axiosDb
             .get(`/api/analyses/?search=${company}`)
+            .then((response) => {
+                console.log(response.data);
+                dispatch(emptyStockPageAnalysisPull(response.data));
+            })
+            .catch((error) => {
+                dispatch(analysisPullFail(error));
+            });
+    };
+};
+
+export const analysisData = () => {
+    return (dispatch) => {
+        axiosDb
+            .get('/api/analyses/')
             .then((response) => {
                 dispatch(analysisPull(response.data));
             })

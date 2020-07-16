@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import * as actions from '../../store/Actions/CreateAnalysis';
 import { withSnackbar } from 'notistack';
 import CreateAnalysisSearchbar from '../../components/UI/SearchBar/CreateAnalysisSearchbar';
+import { Editor } from '@tinymce/tinymce-react';
 
 const styles = (theme) => ({
     containerBackground: {
@@ -33,9 +34,9 @@ class AnalysisContainer extends Component {
         event.preventDefault(); // prevent reloading of the page, when form is submitted.
         const image = event.target.image.files[0];
         const title = event.target.title.value;
-        const text = event.target.text.value;
+        const text = window.parent.tinymce.get('textEditor').getContent();
+        console.log(text);
         const ticker = this.state.selectedTicker;
-        console.log(event.target.image.files[0]);
         this.props.onCreateAnalysis(
             image,
             title,
@@ -57,6 +58,11 @@ class AnalysisContainer extends Component {
 
     onSelectCompany = (code, name) => {
         this.setState({ selectedCompany: name, selectedTicker: code });
+    };
+
+    // tinyMCE editor
+    handleEditorChange = (e) => {
+        console.log('Content was updated:', e.target.getContent());
     };
 
     render() {
@@ -132,32 +138,118 @@ class AnalysisContainer extends Component {
                                     name="image"
                                 />
                             </Grid>
-                            <TextField
-                                variant="outlined"
-                                fullWidth={true}
-                                placeholder="Title"
-                                style={{ margin: '1em 1em 1em 1em' }}
-                                name="title"
-                                onKeyPress={this.onKeyPress}
-                            />
-                            <TextField
-                                variant="outlined"
-                                fullWidth={true}
-                                multiline={true}
-                                rows={20}
-                                placeholder="Start writing..."
-                                name="text"
-                                style={{ margin: '1em 1em 1em 1em' }}
-                            />
-                            <Button
-                                type="submit"
-                                style={{
-                                    backgroundColor: '#1B1661',
-                                    margin: '1.5em 1em 1.5em 0em',
-                                }}
+                            <Grid item container>
+                                <TextField
+                                    variant="outlined"
+                                    fullWidth={true}
+                                    placeholder="Title"
+                                    style={{ margin: '1em 1em 1em 1em' }}
+                                    name="title"
+                                    onKeyPress={this.onKeyPress}
+                                />
+                            </Grid>
+                            <Grid
+                                item
+                                container
+                                justify="center"
+                                style={{ marginTop: '1em' }}
                             >
-                                Post
-                            </Button>
+                                <Editor
+                                    apiKey="6mbivnl3zchjn9ue5p2if5g9piq4mh69dq8nt59i7o5ejsfb"
+                                    id="textEditor"
+                                    init={{
+                                        height: 500,
+                                        menubar: false,
+                                        skin: 'oxide-dark',
+                                        content_css: 'dark',
+                                        width: '96%',
+                                        plugins: [
+                                            'advlist autolink lists link image charmap print preview anchor',
+                                            'searchreplace visualblocks code fullscreen',
+                                            'insertdatetime media table paste code help wordcount',
+                                        ],
+                                        toolbar:
+                                            'undo redo | formatselect | bold italic backcolor | \
+                                            alignleft aligncenter alignright alignjustify | \
+                                            bullist numlist outdent indent | help |  ratios',
+
+                                        setup: function (editor) {
+                                            /* example, adding a toolbar menu button */
+                                            editor.ui.registry.addMenuButton(
+                                                'ratios',
+                                                {
+                                                    text: 'Financial Ratios',
+                                                    fetch: function (callback) {
+                                                        var items = [
+                                                            {
+                                                                type:
+                                                                    'menuitem',
+                                                                text:
+                                                                    'Menu item 1',
+                                                                onAction: function () {
+                                                                    editor.insertContent(
+                                                                        '&nbsp;<em>You clicked menu item 1!</em>'
+                                                                    );
+                                                                },
+                                                            },
+                                                            {
+                                                                type:
+                                                                    'nestedmenuitem',
+                                                                text:
+                                                                    'Menu item 2',
+                                                                icon: 'user',
+                                                                getSubmenuItems: function () {
+                                                                    return [
+                                                                        {
+                                                                            type:
+                                                                                'menuitem',
+                                                                            text:
+                                                                                'Sub menu item 1',
+                                                                            icon:
+                                                                                'unlock',
+                                                                            onAction: function () {
+                                                                                editor.insertContent(
+                                                                                    '&nbsp;<em>You clicked Sub menu item 1!</em>'
+                                                                                );
+                                                                            },
+                                                                        },
+                                                                        {
+                                                                            type:
+                                                                                'menuitem',
+                                                                            text:
+                                                                                'Sub menu item 2',
+                                                                            icon:
+                                                                                'lock',
+                                                                            onAction: function () {
+                                                                                editor.insertContent(
+                                                                                    '&nbsp;<em>You clicked Sub menu item 2!</em>'
+                                                                                );
+                                                                            },
+                                                                        },
+                                                                    ];
+                                                                },
+                                                            },
+                                                        ];
+                                                        callback(items);
+                                                    },
+                                                }
+                                            );
+                                        },
+                                    }}
+                                    onChange={this.handleEditorChange}
+                                />
+                            </Grid>
+                            <Grid item container justify="center">
+                                <Button
+                                    type="submit"
+                                    style={{
+                                        backgroundColor: '#1B1661',
+                                        margin: '1.5em 1em 1.5em 0em',
+                                    }}
+                                >
+                                    Post
+                                </Button>
+                            </Grid>
                         </Grid>
                     </form>
                 </Grid>
