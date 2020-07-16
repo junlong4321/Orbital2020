@@ -24,16 +24,18 @@ class Stocks extends Component {
         const company = this.props.history.location.pathname.split('/')[2];
         this.setState({ company: company });
         if (company == undefined) {
+            // load stock page by clicking the stock page button
+            // pulling replaces the home page
             this.props.onPullAnalysis(this.props.token);
         } else {
-            this.props.onPullSpecificAnalysis(this.props.token, company);
+            this.props.onPullSpecificAnalysis(company);
         }
     }
 
     componentDidUpdate(prevProps, prevState) {
         const company = this.props.history.location.pathname.split('/')[2];
         if (prevState.company !== company) {
-            this.props.onPullSpecificAnalysis(this.props.token, company);
+            this.props.onPullSpecificAnalysis(company);
             this.setState({ company: company });
         }
     }
@@ -126,16 +128,16 @@ class Stocks extends Component {
 const mapStatetoProps = (state) => {
     return {
         token: state.auth.token,
-        analysisData: state.analysis.analysisData,
+        analysisData: state.analysis.stockPageAnalysisData,
         analysisDataLoading: state.analysis.loading,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onPullSpecificAnalysis: (token, company) =>
-            dispatch(actions.specificAnalysisData(token, company)),
-        onPullAnalysis: (token) => dispatch(actions.analysisData(token)),
+        onPullSpecificAnalysis: (company) =>
+            dispatch(actions.specificAnalysisData(company)),
+        onPullAnalysis: () => dispatch(actions.stockPageDataPull()),
     };
 };
 
