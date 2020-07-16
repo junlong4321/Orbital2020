@@ -1,5 +1,13 @@
 # <center>NUS Orbital Project 2020 - The Free Market [Difficulty : Artemis (Extreme)] </center>
 
+# Deployments :
+### Frontend : https://thefreemarket-production.herokuapp.com/
+### Backend : https://junlong321.pythonanywhere.com/api/
+#### Test Account (For https://thefreemarket-production.herokuapp.com/) :
+##### Username : drwealth@gmail.com
+##### Password : drwealth123
+### Jenkins Continuous Integration : https://34.87.166.226 (We do not provide test accounts as we do not want visitors to alter our continuous integration settings)
+
 # Set Up Instructions (**Frontend ReactJS**) :
 ### 1. Clone and pull git repository
 ### 2. Check package.json file and ensure scripts are notated as below
@@ -58,11 +66,11 @@
 | Endpoint        | Filter By These JSON Fields | Example                                                                                                                                                                 | Remarks                                                                                                                                                                                                                         |
 |-----------------|-----------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | /api/auth/      | -                           | -                                                                                                                                                                       | -                                                                                                                                                                                                                               |
-| /api/users/     | name, email,                | http://127.0.0.1:8000/api/users/?search=admin <br/><br/> http://127.0.0.1:8000/api/users/?search=admin%40gmail.com                                                                 | -                                                                                                                                                                                                                               |
-| /api/counters/  | name, code, exchange        | http://127.0.0.1:8000/api/counters/?search=abc <br/><br/> http://127.0.0.1:8000/api/counters/?search=abc&limit=5 <br/><br/> http://127.0.0.1:8000/api/counters/?search=abc&limit=5&offset=100 | abc can refer to the name or code of the stock, or the exchange the stock is located in. limit = 5 returns back the first 5 results of the search. offset = 100 means that we only take results with id=100 and above. |
-| /api/analyses/  | author__email, stock__name, | http://127.0.0.1:8000/api/analyses/?search=admin%40gmail.com <br/><br/> http://127.0.0.1:8000/api/analyses/?search=AAPL                                                            | -                                                                                                                                                                                                                               |
-| /api/comments/  | analysis__id,                | http://127.0.0.1:8000/api/comments/?search=1 <br/><br/> http://127.0.0.1:8000/api/comments/?search=2 <br/><br/> http://127.0.0.1:8000/api/comments/?search=3                                  | search=1 means that we filter the comment with unique id=1                                                                                                                                                                   |
-| /api/bookmarks/ | user__email,                | http://127.0.0.1:8000/api/bookmarks/?search=admin%40gmail.com                                                                                                           | -                                                                                                                                                                                                                               |
+| /api/users/     | name, email,                | https://junlong321.pythonanywhere.com/api/users/?search=admin <br/><br/> https://junlong321.pythonanywhere.com/api/users/?search=admin%40gmail.com                                                                 | -                                                                                                                                                                                                                               |
+| /api/counters/  | name, code, exchange        | https://junlong321.pythonanywhere.com/api/counters/?search=abc <br/><br/> https://junlong321.pythonanywhere.com/api/counters/?search=abc&limit=5 <br/><br/> https://junlong321.pythonanywhere.com/api/counters/?search=abc&limit=5&offset=100 | abc can refer to the name or code of the stock, or the exchange the stock is located in. limit = 5 returns back the first 5 results of the search. offset = 100 means that we only take results with id=100 and above. |
+| /api/analyses/  | author__email, stock__name, | https://junlong321.pythonanywhere.com/api/analyses/?search=admin%40gmail.com <br/><br/> https://junlong321.pythonanywhere.com/api/analyses/?search=AAPL                                                            | -                                                                                                                                                                                                                               |
+| /api/comments/  | analysis__id,                | https://junlong321.pythonanywhere.com/api/comments/?search=1 <br/><br/> https://junlong321.pythonanywhere.com/api/comments/?search=2 <br/><br/> https://junlong321.pythonanywhere.com/api/comments/?search=3                                  | search=1 means that we filter the comment with unique id=1                                                                                                                                                                   |
+| /api/bookmarks/ | user__email,                | https://junlong321.pythonanywhere.com/api/bookmarks/?search=admin%40gmail.com                                                                                                           | -                                                                                                                                                                                                                               |
 
 
 <!-- /api//auth/ - POST -->
@@ -89,7 +97,7 @@ password* : test1
 ###### Parameters : -
 ###### Request Example (HTML FORM) :
 ```
-http://127.0.0.1:8000/api/users/
+https://junlong321.pythonanywhere.com/api/users/
 ```
 ###### Response Example :
 ```
@@ -109,7 +117,7 @@ http://127.0.0.1:8000/api/users/
         "name": "test1",
         "biography": "Hi i am Tester 1",
         "linkedin": "https://www.linkedin.com/in/test1",
-        "profile_picture": "http://127.0.0.1:8000/images/picture.jpg",
+        "profile_picture": "https://junlong321.pythonanywhere.com/images/picture.jpg",
         "total_upvotes": 0
     },
     {
@@ -148,7 +156,7 @@ profile_picture : <Choose File>
     "name": "test1",
     "biography": "Hi i am Tester 1",
     "linkedin": "https://www.linkedin.com/in/test1",
-    "profile_picture": "http://127.0.0.1:8000/images/picture.jpg",
+    "profile_picture": "https://junlong321.pythonanywhere.com/images/picture.jpg",
     "total_upvotes": 0
 }
 ```
@@ -161,7 +169,7 @@ profile_picture : <Choose File>
 ###### Parameters : id (Path)
 ###### Request Example (HTML FORM) :
 ```
-http://127.0.0.1:8000/api/users/2/
+https://junlong321.pythonanywhere.com/api/users/2/
 ```
 ###### Response Example :
 ```
@@ -171,7 +179,7 @@ http://127.0.0.1:8000/api/users/2/
     "name": "test1",
     "biography": "Hi i am Tester 1",
     "linkedin": "https://www.linkedin.com/in/test1",
-    "profile_picture": "http://127.0.0.1:8000/images/picture.jpg",
+    "profile_picture": "https://junlong321.pythonanywhere.com/images/picture.jpg",
     "total_upvotes": 0
 }
 ```
@@ -184,7 +192,7 @@ http://127.0.0.1:8000/api/users/2/
 ###### Parameters : id (Path) , Data (Body)
 ###### Request Example (HTML FORM) :
 ```
-http://127.0.0.1:8000/api/users/2/
+https://junlong321.pythonanywhere.com/api/users/2/
 email* : test1@gmail.com
 password* : test1
 name* : test1
@@ -199,7 +207,7 @@ biography : Hi I am Tester 1, I made a PUT REQUEST!
     "name": "test1",
     "biography": Hi I am Tester 1, I made a PUT REQUEST!,
     "linkedin": "https://www.linkedin.com/in/test1",
-    "profile_picture": "http://127.0.0.1:8000/images/picture.jpg",
+    "profile_picture": "https://junlong321.pythonanywhere.com/images/picture.jpg",
     "total_upvotes": 0
 }
 ```
@@ -212,7 +220,7 @@ biography : Hi I am Tester 1, I made a PUT REQUEST!
 ###### Parameters : id (Path) , Data (Body)
 ###### Request Example (HTML FORM) :
 ```
-http://127.0.0.1:8000/api/users/2/
+https://junlong321.pythonanywhere.com/api/users/2/
 biography : Hi I am Tester 1, I made a PATCH REQUEST!
 ```
 ###### Response Example :
@@ -223,7 +231,7 @@ biography : Hi I am Tester 1, I made a PATCH REQUEST!
     "name": "test1",
     "biography": Hi I am Tester 1, I made a PATCH REQUEST!,
     "linkedin": "https://www.linkedin.com/in/test1",
-    "profile_picture": "http://127.0.0.1:8000/images/picture.jpg",
+    "profile_picture": "https://junlong321.pythonanywhere.com/images/picture.jpg",
     "total_upvotes": 0
 }
 ```
@@ -236,7 +244,7 @@ biography : Hi I am Tester 1, I made a PATCH REQUEST!
 ###### Parameters : id (Path)
 ###### Request Example (HTML FORM) :
 ```
-http://127.0.0.1:8000/api/users/2/
+https://junlong321.pythonanywhere.com/api/users/2/
 ```
 ###### Remarks :
 ###### Users can only send a DELETE request for deleting their own accounts.
@@ -246,7 +254,7 @@ http://127.0.0.1:8000/api/users/2/
 ###### Parameters : -
 ###### Request Example (HTML FORM) :
 ```
-http://127.0.0.1:8000/api/counters/
+https://junlong321.pythonanywhere.com/api/counters/
 ```
 ###### Response Example :
 ```
@@ -301,7 +309,7 @@ exchange : NYSE
 ###### Parameters : id (Path)
 ###### Request Example (HTML FORM) :
 ```
-http://127.0.0.1:8000/api/counters/1/
+https://junlong321.pythonanywhere.com/api/counters/1/
 ```
 ###### Response Example :
 ```
@@ -320,7 +328,7 @@ http://127.0.0.1:8000/api/counters/1/
 ###### Parameters : id (Path)
 ###### Request Example (HTML FORM) :
 ```
-http://127.0.0.1:8000/api/counters/1/
+https://junlong321.pythonanywhere.com/api/counters/1/
 name* : Agilent Technologies - PUT REQUEST CALLED
 code* : A
 (*) - Compulsory Field
@@ -342,7 +350,7 @@ code* : A
 ###### Parameters : id (Path)
 ###### Request Example (HTML FORM) :
 ```
-http://127.0.0.1:8000/api/counters/1/
+https://junlong321.pythonanywhere.com/api/counters/1/
 name : Agilent Technologies - PATCH REQUEST CALLED
 ```
 ###### Response Example :
@@ -362,7 +370,7 @@ name : Agilent Technologies - PATCH REQUEST CALLED
 ###### Parameters : id (Path)
 ###### Request Example (HTML FORM) :
 ```
-http://127.0.0.1:8000/api/counters/1/
+https://junlong321.pythonanywhere.com/api/counters/1/
 ```
 
 <!-- /api/analyses/ - GET -->
@@ -370,7 +378,7 @@ http://127.0.0.1:8000/api/counters/1/
 ###### Parameters : -
 ###### Request Example (HTML FORM) :
 ```
-http://127.0.0.1:8000/api/analyses/
+https://junlong321.pythonanywhere.com/api/analyses/
 ```
 ###### Response Example :
 ```
@@ -390,13 +398,13 @@ http://127.0.0.1:8000/api/analyses/
         "id": 3,
         "images": [
             {
-                "image": "http://127.0.0.1:8000/images/picture1.jpg"
+                "image": "https://junlong321.pythonanywhere.com/images/picture1.jpg"
             },
             {
-                "image": "http://127.0.0.1:8000/images/picture2.jpg"
+                "image": "https://junlong321.pythonanywhere.com/images/picture2.jpg"
             },
             {
-                "image": "http://127.0.0.1:8000/images/picture3.jpg"
+                "image": "https://junlong321.pythonanywhere.com/images/picture3.jpg"
             }
         ],
         "title": "Tester's First Analysis",
@@ -446,13 +454,13 @@ image_3 : picture3.jpg
     "id": 3,
     "images": [
         {
-            "image": "http://127.0.0.1:8000/images/picture1.jpg"
+            "image": "https://junlong321.pythonanywhere.com/images/picture1.jpg"
         },
         {
-            "image": "http://127.0.0.1:8000/images/picture2.jpg"
+            "image": "https://junlong321.pythonanywhere.com/images/picture2.jpg"
         },
         {
-            "image": "http://127.0.0.1:8000/images/picture3.jpg"
+            "image": "https://junlong321.pythonanywhere.com/images/picture3.jpg"
         }
     ],
     "title": "Tester's First Analysis",
@@ -473,7 +481,7 @@ image_3 : picture3.jpg
 ###### Parameters : id (Path)
 ###### Request Example (HTML FORM) :
 ```
-http://127.0.0.1:8000/api/analyses/3/
+https://junlong321.pythonanywhere.com/api/analyses/3/
 ```
 ###### Response Example :
 ```
@@ -481,13 +489,13 @@ http://127.0.0.1:8000/api/analyses/3/
     "id": 3,
     "images": [
         {
-            "image": "http://127.0.0.1:8000/images/picture1.jpg"
+            "image": "https://junlong321.pythonanywhere.com/images/picture1.jpg"
         },
         {
-            "image": "http://127.0.0.1:8000/images/picture2.jpg"
+            "image": "https://junlong321.pythonanywhere.com/images/picture2.jpg"
         },
         {
-            "image": "http://127.0.0.1:8000/images/picture3.jpg"
+            "image": "https://junlong321.pythonanywhere.com/images/picture3.jpg"
         }
     ],
     "title": "Tester's First Analysis",
@@ -508,7 +516,7 @@ http://127.0.0.1:8000/api/analyses/3/
 ###### Parameters : id (Path)
 ###### Request Example (HTML FORM) :
 ```
-http://127.0.0.1:8000/api/analyses/3/
+https://junlong321.pythonanywhere.com/api/analyses/3/
 title* : Tester's First Analysis
 text* : Hi This Is Tester 1's First Analysis
 upvotes : 7
@@ -522,13 +530,13 @@ text : Hi This Is Tester 1's First Analysis, PUT REQUEST CALLED
     "id": 3,
     "images": [
         {
-            "image": "http://127.0.0.1:8000/images/picture1.jpg"
+            "image": "https://junlong321.pythonanywhere.com/images/picture1.jpg"
         },
         {
-            "image": "http://127.0.0.1:8000/images/picture2.jpg"
+            "image": "https://junlong321.pythonanywhere.com/images/picture2.jpg"
         },
         {
-            "image": "http://127.0.0.1:8000/images/picture3.jpg"
+            "image": "https://junlong321.pythonanywhere.com/images/picture3.jpg"
         }
     ],
     "title": "Tester's First Analysis",
@@ -549,7 +557,7 @@ text : Hi This Is Tester 1's First Analysis, PUT REQUEST CALLED
 ###### Parameters : id (Path)
 ###### Request Example (HTML FORM) :
 ```
-http://127.0.0.1:8000/api/analyses/3/
+https://junlong321.pythonanywhere.com/api/analyses/3/
 text : Hi This Is Tester 1's First Analysis, PATCH REQUEST CALLED
 ```
 ###### Response Example :
@@ -558,13 +566,13 @@ text : Hi This Is Tester 1's First Analysis, PATCH REQUEST CALLED
     "id": 3,
     "images": [
         {
-            "image": "http://127.0.0.1:8000/images/picture1.jpg"
+            "image": "https://junlong321.pythonanywhere.com/images/picture1.jpg"
         },
         {
-            "image": "http://127.0.0.1:8000/images/picture2.jpg"
+            "image": "https://junlong321.pythonanywhere.com/images/picture2.jpg"
         },
         {
-            "image": "http://127.0.0.1:8000/images/picture3.jpg"
+            "image": "https://junlong321.pythonanywhere.com/images/picture3.jpg"
         }
     ],
     "title": "Tester's First Analysis",
@@ -585,7 +593,7 @@ text : Hi This Is Tester 1's First Analysis, PATCH REQUEST CALLED
 ###### Parameters : id (Path)
 ###### Request Example (HTML FORM) :
 ```
-http://127.0.0.1:8000/api/analyses/3/
+https://junlong321.pythonanywhere.com/api/analyses/3/
 ```
 ###### Remarks :
 ###### Users can only send a DELETE request for analyses that they have written themselves.
@@ -595,7 +603,7 @@ http://127.0.0.1:8000/api/analyses/3/
 ###### Parameters : -
 ###### Request Example (HTML FORM) :
 ```
-http://127.0.0.1:8000/api/comments/
+https://junlong321.pythonanywhere.com/api/comments/
 ```
 ###### Response Example :
 ```
@@ -661,7 +669,7 @@ upvotes : 5
 ###### Parameters : id (Path)
 ###### Request Example (HTML FORM) :
 ```
-http://127.0.0.1:8000/api/comments/7/
+https://junlong321.pythonanywhere.com/api/comments/7/
 ```
 ###### Response Example :
 ```
@@ -683,7 +691,7 @@ http://127.0.0.1:8000/api/comments/7/
 ###### Parameters : id (Path)
 ###### Request Example (HTML FORM) :
 ```
-http://127.0.0.1:8000/api/comments/7/
+https://junlong321.pythonanywhere.com/api/comments/7/
 commenter* : test1
 analysis* : admin's ETC Singapore Analysis
 comment* : Tester 1's First Comment, PUT REQUEST CALLED
@@ -710,7 +718,7 @@ upvotes : 5
 ###### Parameters : id (Path)
 ###### Request Example (HTML FORM) :
 ```
-http://127.0.0.1:8000/api/comments/7/
+https://junlong321.pythonanywhere.com/api/comments/7/
 comment : Tester 1's First Comment, PATCH REQUEST CALLED
 ```
 ###### Response Example :
@@ -733,7 +741,7 @@ comment : Tester 1's First Comment, PATCH REQUEST CALLED
 ###### Parameters : id (Path)
 ###### Request Example (HTML FORM) :
 ```
-http://127.0.0.1:8000/api/comments/7/
+https://junlong321.pythonanywhere.com/api/comments/7/
 ```
 ###### Remarks :
 ###### Users can only send a DELETE request for comments that they have written themselves.
@@ -743,7 +751,7 @@ http://127.0.0.1:8000/api/comments/7/
 ###### Parameters : -
 ###### Request Example (HTML FORM) :
 ```
-http://127.0.0.1:8000/api/bookmarks/
+https://junlong321.pythonanywhere.com/api/bookmarks/
 ```
 ###### Response Example :
 ```
@@ -805,7 +813,7 @@ analysis* : test1's Beng Kuan Analysis
 ###### Parameters : id (Path)
 ###### Request Example (HTML FORM) :
 ```
-http://127.0.0.1:8000/api/bookmarks/8/
+https://junlong321.pythonanywhere.com/api/bookmarks/8/
 ```
 ###### Response Example :
 ```
@@ -824,7 +832,7 @@ http://127.0.0.1:8000/api/bookmarks/8/
 ###### Parameters : id (Path)
 ###### Request Example (HTML FORM) :
 ```
-http://127.0.0.1:8000/api/bookmarks/8/
+https://junlong321.pythonanywhere.com/api/bookmarks/8/
 user* : test1
 analysis* : <Analysis with id=4>
 (*) - Compulsory Field
@@ -846,7 +854,7 @@ analysis* : <Analysis with id=4>
 ###### Parameters : id (Path)
 ###### Request Example (HTML FORM) :
 ```
-http://127.0.0.1:8000/api/bookmarks/8/
+https://junlong321.pythonanywhere.com/api/bookmarks/8/
 analysis : <Analysis with id=4>
 ```
 ###### Response Example :
@@ -866,7 +874,7 @@ analysis : <Analysis with id=4>
 ###### Parameters : id (Path)
 ###### Request Example (HTML FORM) :
 ```
-http://127.0.0.1:8000/api/bookmarks/7/
+https://junlong321.pythonanywhere.com/api/bookmarks/7/
 ```
 ###### Remarks :
 ###### Users can only send a DELETE request to remove their own bookmarks.
