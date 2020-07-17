@@ -55,6 +55,7 @@ class SignIn extends Component {
         // redirects user to home page once authentication is successful
         if (this.props.auth) {
             this.props.history.replace('/home');
+            window.location.reload(true);
         }
 
         let errorMessage = null;

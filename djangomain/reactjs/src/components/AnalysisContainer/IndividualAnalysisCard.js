@@ -12,8 +12,14 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import Button from '@material-ui/core/Button';
 import CommentIcon from '@material-ui/icons/Comment';
 import moment from '../moment/moment';
-import { DialogTitle } from '@material-ui/core';
 import axiosDb from '../axios/axiosDb';
+import Grid from '@material-ui/core/Grid';
+import { useHistory } from 'react-router-dom';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const useStyles = makeStyles((theme) => ({
     root: {},
@@ -27,7 +33,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 const IndividualAnalysisCard = (props) => {
     const [numOfComments, setNumOfComments] = useState(0);
-    const token = localStorage.getItem('token');
     useEffect(() => {
         axiosDb
             .get(`/api/comments/?search=${props.data.id}`)
@@ -37,54 +42,143 @@ const IndividualAnalysisCard = (props) => {
     let title = '';
     let date = '';
     let text = '';
-    let companyName = '';
     let image = null;
     // to ensure that initial render of component shows blank, no error thrown. populate with correct data after analysis data is pulled
     if (props.data !== null) {
         title = props.data.title;
         date = moment(props.data.created_date);
         text = props.data.text;
-        companyName = props.data.stock;
         image = props.data.cover_image;
     }
+    const analysisId = props.data.id;
+    const history = useHistory();
+    const onEditHandler = () => {
+        history.push(`/edit/${analysisId}`);
+        window.location.reload(true);
+    };
 
     const classes = useStyles();
 
+    // delete dialog button
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleDelete = () => {
+        axiosDb
+            .delete(`/api/analyses/${analysisId}/`)
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => console.log(error));
+        window.location.reload(true);
+    };
+
     return (
-        <Card className={classes.root}>
-            <CardHeader
-                action={<Button style={{ color: '#8481B0' }}>Edit</Button>}
-                title={title}
-            />
-            <CardMedia className={classes.media} image={image} title={title} />
-            <CardContent>
-                <Typography
-                    color="textSecondary"
-                    component="p"
-                    style={{ fontSize: '0.7em' }}
-                >
-                    {date}
-                </Typography>
-                <Typography
-                    variant="body1"
-                    color="textSecondary"
-                    component="p"
-                    dangerouslySetInnerHTML={{
-                        __html: text.slice(0, 60) + '...',
-                    }}
+        <React.Fragment>
+            <Card className={classes.root}>
+                <CardHeader
+                    action={
+                        <Grid
+                            item
+                            container
+                            direction="row"
+                            alignItems="center"
+                        >
+                            <Button
+                                style={{ color: '#8481B0' }}
+                                onClick={onEditHandler}
+                            >
+                                Edit
+                            </Button>
+                            <Button
+                                style={{ color: '#DC3545' }}
+                                onClick={handleClickOpen}
+                            >
+                                Delete
+                            </Button>
+                        </Grid>
+                    }
+                    title={title}
                 />
-            </CardContent>
-            <CardActions>
-                <IconButton disabled>
-                    <Typography>{props.data.upvotes}</Typography>
-                    <FavoriteIcon />
-                </IconButton>
-                <IconButton disabled>
-                    <Typography>{numOfComments}</Typography>
-                    <CommentIcon />
-                </IconButton>
-            </CardActions>
-        </Card>
+                <CardMedia
+                    className={classes.media}
+                    image={image}
+                    title={title}
+                />
+                <CardContent>
+                    <Typography
+                        color="textSecondary"
+                        component="p"
+                        style={{ fontSize: '0.7em' }}
+                    >
+                        {date}
+                    </Typography>
+                    <Typography
+                        variant="body2"
+                        color="primary"
+                        component="p"
+                        align="justify"
+                    >
+                        {props.data.ticker}
+                    </Typography>
+                    <Typography
+                        variant="body1"
+                        color="textSecondary"
+                        component="p"
+                        dangerouslySetInnerHTML={{
+                            __html: text.slice(0, 60) + '...',
+                        }}
+                    />
+                </CardContent>
+                <CardActions>
+                    <IconButton disabled>
+                        <Typography>{props.data.upvotes}</Typography>
+                        <FavoriteIcon />
+                    </IconButton>
+                    <IconButton disabled>
+                        <Typography>{numOfComments}</Typography>
+                        <CommentIcon />
+                    </IconButton>
+                </CardActions>
+            </Card>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {'Delete this Analysis'}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Are you sure? This action is irreversible.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="primary">
+                        Exit
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            handleClose();
+                            handleDelete();
+                        }}
+                        style={{ color: '#DC3545' }}
+                        autoFocus
+                    >
+                        Delete
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </React.Fragment>
     );
 };
 

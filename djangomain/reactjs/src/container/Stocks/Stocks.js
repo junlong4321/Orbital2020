@@ -23,7 +23,7 @@ class Stocks extends Component {
     componentDidMount() {
         const company = this.props.history.location.pathname.split('/')[2];
         this.setState({ company: company });
-        if (company == undefined) {
+        if (company === undefined) {
             // load stock page by clicking the stock page button
             // pulling replaces the home page
             this.props.onPullAnalysis(this.props.token);

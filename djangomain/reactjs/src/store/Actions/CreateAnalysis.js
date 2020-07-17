@@ -21,20 +21,44 @@ export const createAnalysisFailure = (error) => {
     };
 };
 
+export const editAnalysisStart = () => {
+    return {
+        type: actionTypes.EDIT_ANALYSIS_START,
+    };
+};
+
+export const editAnalysisSuccess = (response) => {
+    return {
+        type: actionTypes.EDIT_ANALYSIS_SUCCESS,
+        response: response,
+    };
+};
+
+export const editAnalysisFailure = (error) => {
+    return {
+        type: actionTypes.EDIT_ANALYSIS_FAILURE,
+        error: error,
+    };
+};
+
 export const createAnalysis = (image, title, text, email, name, ticker) => {
     return (dispatch) => {
         dispatch(createAnalysisStart());
         console.log(image);
-        const analysisData = {
-            images: image,
-            title: title,
-            text: text,
-            author: email,
-            name: name,
-            ticker: ticker,
-        };
+        let form_data = new FormData();
+        form_data.append('title', title);
+        form_data.append('text', text);
+        form_data.append('author', email);
+        form_data.append('name', name);
+        form_data.append('ticker', ticker);
+        if (image !== undefined) {
+            form_data.append('cover_image', image);
+        }
+        console.log(form_data);
         axiosDb
-            .post('/api/analyses/', analysisData)
+            .post('/api/analyses/', form_data, {
+                headers: { 'content-type': 'multipart/form-data' },
+            })
             .then((response) => {
                 dispatch(createAnalysisSuccess(response));
                 // console.log(response);
@@ -46,34 +70,26 @@ export const createAnalysis = (image, title, text, email, name, ticker) => {
     };
 };
 
-export const editAnalysis = (image, title, text, email, name, ticker) => {
+export const editAnalysis = (image, title, text, email, name, analysisId) => {
     return (dispatch) => {
-        dispatch(createAnalysisStart());
-        // const analysisData = {
-        //     images: image,
-        //     title: title,
-        //     text: text,
-        //     author: email,
-        //     name: name,
-        //     ticker: ticker,
-        // };
+        dispatch(editAnalysisStart());
         let form_data = new FormData();
-
         form_data.append('title', title);
         form_data.append('text', text);
-        form_data.append('cover_image', image);
         form_data.append('author', email);
         form_data.append('name', name);
-        form_data.append('ticker', ticker);
+        if (image !== undefined) {
+            form_data.append('cover_image', image);
+        }
         axiosDb
-            .post('/api/analyses/', form_data, {
+            .patch(`/api/analyses/${analysisId}/`, form_data, {
                 headers: { 'content-type': 'multipart/form-data' },
             })
             .then((response) => {
-                dispatch(createAnalysisSuccess(response));
+                dispatch(editAnalysisSuccess(response));
             })
             .catch((error) => {
-                dispatch(createAnalysisFailure(error));
+                dispatch(editAnalysisFailure(error));
             });
     };
 };

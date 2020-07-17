@@ -13,10 +13,8 @@ import analysisReducer from './store/Reducers/AnalysisReducer';
 import userProfile from './store/Reducers/UserProfile';
 import createAnalysis from './store/Reducers/CreateAnalysis';
 import comments from './store/Reducers/Comments';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { SnackbarProvider } from 'notistack';
-import Login from './container/Login/Login';
-import SignUp from './container/Login/SignUp/SignUp';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

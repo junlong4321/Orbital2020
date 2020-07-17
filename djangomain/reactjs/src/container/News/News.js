@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import Grid from '@material-ui/core/Grid';
 import DataTitle from '../../components/DataTitle/DataTitle';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import NewsCard from '../../components/NewsCard/NewsCard';
 import Button from '@material-ui/core/Button';
 import SearchBar from '../../components/UI/SearchBar/SearchBar';
-import Filter from '../../components/Filter/Filter';
 import axiosNews from '../../components/axios/axiosNews';
 
 class News extends Component {

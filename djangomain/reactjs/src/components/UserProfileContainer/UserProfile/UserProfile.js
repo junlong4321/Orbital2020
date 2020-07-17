@@ -7,6 +7,7 @@ import { withStyles } from '@material-ui/styles';
 import { connect } from 'react-redux';
 import { withSnackbar } from 'notistack';
 import * as actions from '../../../store/Actions/UserProfile';
+import axiosDb from '../../axios/axiosDb';
 
 const styles = (theme) => ({
     root: {
@@ -31,6 +32,7 @@ class UserProfile extends Component {
             name: '',
             biography: '',
             linkedin: '',
+            pushSuccess: false,
         };
         this.submitHandler = this.submitHandler.bind(this);
         this.biography = React.createRef();
@@ -40,6 +42,22 @@ class UserProfile extends Component {
     componentDidMount() {
         if (this.props.data == null) {
             this.props.onUserProfilePull(localStorage.getItem('email'));
+        }
+    }
+    componentDidUpdate(prevProps, prevState) {
+        console.log(this.state.pushSuccess);
+        if (this.state.pushSuccess) {
+            const userId = localStorage.getItem('userId');
+            if (this.props.pushSuccess) {
+                axiosDb.get(`/api/users/${userId}`).then((response) => {
+                    localStorage.setItem(
+                        'profilePicture',
+                        response.data.profile_picture
+                    );
+                    console.log(localStorage.getItem('profilePicture'));
+                    window.location.reload(true);
+                });
+            }
         }
     }
 
@@ -72,6 +90,7 @@ class UserProfile extends Component {
             this.props.enqueueSnackbar('Profile successfully updated', {
                 variant: 'success',
             });
+            this.setState({ pushSuccess: true });
         } else {
             this.props.enqueueSnackbar(
                 'Error updating profile, please check your linkedin url',
@@ -95,8 +114,6 @@ class UserProfile extends Component {
         let name = null;
         let biography = null;
         let linkedin = null;
-
-        console.log(this.props.data);
 
         if (this.props.data !== null) {
             const rootData = this.props.data[0];
@@ -190,7 +207,7 @@ class UserProfile extends Component {
                 >
                     <Button
                         color="primary"
-                        style={{ backgroundColor: '#797979' }}
+                        style={{ backgroundColor: '#1B1661' }}
                         type="submit"
                     >
                         Save
@@ -204,6 +221,7 @@ class UserProfile extends Component {
 const mapStateToProps = (state) => {
     return {
         data: state.profile.data,
+        pushSuccess: state.profile.pushSuccess,
     };
 };
 

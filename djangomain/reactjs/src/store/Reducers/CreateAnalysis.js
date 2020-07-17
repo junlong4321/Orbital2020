@@ -27,6 +27,24 @@ const createAnalysis = (state = initialState, action) => {
                 loading: false,
                 error: action.error,
             };
+        case actionTypes.EDIT_ANALYSIS_START:
+            return {
+                ...state,
+                loading: true,
+            };
+        case actionTypes.EDIT_ANALYSIS_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                success: true,
+                response: action.response,
+            };
+        case actionTypes.EDIT_ANALYSIS_FAILURE:
+            return {
+                ...state,
+                loading: false,
+                error: action.error,
+            };
         default:
             return state;
     }

@@ -58,9 +58,13 @@ export const userProfilePush = (biography, linkedin, image, userId) => {
     return (dispatch) => {
         dispatch(userProfilePushStart());
         let form_data = new FormData();
+
         form_data.append('biography', biography);
         form_data.append('linkedin', linkedin);
-        form_data.append('profile_picture', image);
+        if (image !== undefined) {
+            form_data.append('profile_picture', image);
+        }
+
         axiosDb
             .patch(`/api/users/${userId}/`, form_data, {
                 headers: { 'content-type': 'multipart/form-data' },

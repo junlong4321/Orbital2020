@@ -8,9 +8,10 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import * as actions from '../../store/Actions/CreateAnalysis';
 import { withSnackbar } from 'notistack';
-import CreateAnalysisSearchbar from '../../components/UI/SearchBar/CreateAnalysisSearchbar';
 import { Editor } from '@tinymce/tinymce-react';
 import axios from 'axios';
+import axiosDb from '../../components/axios/axiosDb';
+import { withRouter } from 'react-router-dom';
 
 const styles = (theme) => ({
     containerBackground: {
@@ -27,32 +28,30 @@ const styles = (theme) => ({
     },
 });
 
-class AnalysisContainer extends Component {
+class EditAnalysisContainer extends Component {
     state = {
         selectedCompany: '',
         financialRatios: null,
         financialRatiosError: null,
-        allowTextEditor: false,
+        analysisData: null,
     };
     sumbitHandler = (event) => {
         event.preventDefault(); // prevent reloading of the page, when form is submitted.
+        const analysisId = this.props.history.location.pathname.split('/')[2];
         const image = event.target.image.files[0];
         const title = event.target.title.value;
-        if (this.state.allowTextEditor) {
-            const text = window.parent.tinymce.get('textEditor').getContent();
-            const ticker = this.state.selectedTicker;
-            this.props.onCreateAnalysis(
-                image,
-                title,
-                text,
-                localStorage.getItem('email'),
-                localStorage.getItem('name'),
-                ticker
-            );
-            this.props.enqueueSnackbar('Analysis successfully created', {
-                variant: 'success',
-            });
-        }
+        const text = window.parent.tinymce.get('textEditor').getContent();
+        this.props.onEditAnalysis(
+            image,
+            title,
+            text,
+            localStorage.getItem('email'),
+            localStorage.getItem('name'),
+            analysisId
+        );
+        this.props.enqueueSnackbar('Analysis successfully edited', {
+            variant: 'success',
+        });
     };
 
     onKeyPress = (event) => {
@@ -61,22 +60,28 @@ class AnalysisContainer extends Component {
         }
     };
 
-    onSelectCompany = (code, name) => {
-        this.setState({ selectedCompany: name, selectedTicker: code });
-        axios
-            .get(
-                `https://finnhub.io/api/v1/stock/metric?symbol=${code}&metric=all&token=bs7uthfrh5r8i6g98tn0`
-            )
+    componentDidMount() {
+        const analysisId = this.props.history.location.pathname.split('/')[2];
+        axiosDb
+            .get(`/api/analyses/${analysisId}`)
             .then((response) => {
-                this.setState({
-                    financialRatios: response.data.metric,
-                    allowTextEditor: true,
-                });
+                const code = response.data.ticker;
+                this.setState({ analysisData: response.data });
+                axios
+                    .get(
+                        `https://finnhub.io/api/v1/stock/metric?symbol=${code}&metric=all&token=bs7uthfrh5r8i6g98tn0`
+                    )
+                    .then((response) => {
+                        this.setState({
+                            financialRatios: response.data.metric,
+                        });
+                    })
+                    .catch((error) => {
+                        this.setState({ financialRatiosError: error });
+                    });
             })
-            .catch((error) => {
-                this.setState({ financialRatiosError: error });
-            });
-    };
+            .catch((error) => console.log(error));
+    }
 
     render() {
         const { classes } = this.props;
@@ -88,6 +93,11 @@ class AnalysisContainer extends Component {
         // financial ratios
         const textEditor = (
             <Editor
+                initialValue={
+                    this.state.analysisData == null
+                        ? null
+                        : this.state.analysisData.text
+                }
                 apiKey="6mbivnl3zchjn9ue5p2if5g9piq4mh69dq8nt59i7o5ejsfb"
                 id="textEditor"
                 init={{
@@ -379,6 +389,7 @@ class AnalysisContainer extends Component {
                 onChange={this.handleEditorChange}
             />
         );
+
         return (
             <React.Fragment>
                 <Grid
@@ -389,7 +400,7 @@ class AnalysisContainer extends Component {
                     className={classes.typographyContainer}
                 >
                     <Typography variant="h3" color="primary" align="center">
-                        Create New Analysis
+                        Edit Analysis
                     </Typography>
                 </Grid>
                 <Grid container item md={1} />
@@ -421,15 +432,14 @@ class AnalysisContainer extends Component {
                                 <Typography color="secondary">
                                     Company
                                 </Typography>
-                                <CreateAnalysisSearchbar
-                                    onSelectCompany={this.onSelectCompany}
-                                />
                                 <Typography
                                     color="primary"
                                     variant="h6"
                                     style={{ paddingTop: '1em' }}
                                 >
-                                    {this.state.selectedCompany}
+                                    {this.state.analysisData == null
+                                        ? null
+                                        : this.state.analysisData.ticker}
                                 </Typography>
                             </Grid>
                             <Grid
@@ -443,20 +453,40 @@ class AnalysisContainer extends Component {
                                 <Typography color="secondary">
                                     Cover Image
                                 </Typography>
+                                {/* input with current image field */}
                                 <input
                                     type="file"
                                     accept="image/*"
                                     style={{ marginTop: '0.4em' }}
                                     name="image"
                                 />
+                                <img
+                                    alt="empty"
+                                    src={
+                                        this.state.analysisData == null
+                                            ? null
+                                            : this.state.analysisData
+                                                  .cover_image
+                                    }
+                                    style={{ width: '50%' }}
+                                />
                             </Grid>
                             <Grid item container>
+                                {/* populate with current title */}
                                 <TextField
+                                    key={`${Math.floor(
+                                        Math.random() * 1000
+                                    )}-min`}
                                     variant="outlined"
                                     fullWidth={true}
                                     placeholder="Title"
                                     style={{ margin: '1em 1em 1em 1em' }}
                                     name="title"
+                                    defaultValue={
+                                        this.state.analysisData == null
+                                            ? null
+                                            : this.state.analysisData.title
+                                    }
                                     onKeyPress={this.onKeyPress}
                                 />
                             </Grid>
@@ -466,7 +496,8 @@ class AnalysisContainer extends Component {
                                 justify="center"
                                 style={{ marginTop: '1em' }}
                             >
-                                {this.state.allowTextEditor ? textEditor : null}
+                                {/* poulate text editor with current text */}
+                                {textEditor}
                             </Grid>
                             <Grid item container justify="center">
                                 <Button
@@ -476,7 +507,7 @@ class AnalysisContainer extends Component {
                                         margin: '1.5em 1em 1.5em 0em',
                                     }}
                                 >
-                                    Post
+                                    Update
                                 </Button>
                             </Grid>
                         </Grid>
@@ -497,15 +528,16 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onCreateAnalysis: (image, title, text, email, name, stockName) =>
+        onEditAnalysis: (token, image, title, text, email, name, analysisId) =>
             dispatch(
-                actions.createAnalysis(
+                actions.editAnalysis(
+                    token,
                     image,
                     title,
                     text,
                     email,
                     name,
-                    stockName
+                    analysisId
                 )
             ),
     };
@@ -514,4 +546,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withStyles(styles)(withSnackbar(AnalysisContainer)));
+)(withStyles(styles)(withRouter(withSnackbar(EditAnalysisContainer))));
