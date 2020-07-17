@@ -1,11 +1,9 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import axiosDb from '../../axios/axiosDb';
 
-export default function FreeSoloCreateOption(props) {
-    const history = useHistory();
+export default function CreateAnalysisSearchbar(props) {
     const [value, setValue] = React.useState(null);
 
     // axios request to pull stock ticker symbols every time a change happens in the bar
@@ -13,7 +11,7 @@ export default function FreeSoloCreateOption(props) {
     const [tickers, setTickers] = React.useState([]);
     let companies = [];
     const onKeyPress = (event) => {
-        if (event.key == 'Enter') {
+        if (event.key === 'Enter') {
             event.preventDefault();
         }
     };

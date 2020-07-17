@@ -18,6 +18,7 @@ import CommentIcon from '@material-ui/icons/Comment';
 import Tooltip from '@material-ui/core/Tooltip';
 import { Link } from 'react-router-dom';
 import axiosDb from '../axios/axiosDb';
+import Grid from '@material-ui/core/Grid';
 
 // styling of component
 const useStyles = makeStyles((theme) => ({
@@ -99,7 +100,6 @@ const AnalysisCard = (props) => {
 
     // gets the first letter of the name
     const name = props.data.name;
-    const firstLetter = name.slice(0, 1).toUpperCase();
     const params = like
         ? {
               color: 'error',
@@ -148,8 +148,9 @@ const AnalysisCard = (props) => {
                             component="p"
                             align="justify"
                         >
-                            {props.data.stock}
+                            {props.data.ticker}
                         </Typography>
+
                         <Typography
                             variant="body2"
                             color="textSecondary"

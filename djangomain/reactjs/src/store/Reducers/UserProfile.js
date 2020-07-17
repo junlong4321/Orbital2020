@@ -4,6 +4,7 @@ const initialState = {
     data: null,
     pullLoading: false,
     pullError: null,
+    pushSuccess: false,
     pushLoading: false,
     pushError: null,
 };
@@ -35,6 +36,7 @@ const userProfile = (state = initialState, action) => {
         case actionTypes.USER_PROFILE_PUSH_SUCCESS:
             return {
                 ...state,
+                pushSuccess: true,
                 pushLoading: false,
             };
         case actionTypes.USER_PROFILE_PUSH_FAIL:

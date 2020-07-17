@@ -125,7 +125,7 @@ const PublicUserProfile = (props) => {
             </Grid>
             <Grid container item>
                 <Grid item container md={1} />
-                <Grid item container md={10}>
+                <Grid item container md={10} direction="column">
                     <Typography variant="h6" color="primary">
                         Biography:
                     </Typography>

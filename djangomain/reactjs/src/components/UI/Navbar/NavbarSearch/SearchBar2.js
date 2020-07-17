@@ -69,7 +69,7 @@ export default function FreeSoloCreateOption(props) {
                 if (option.inputValue) {
                     return option.inputValue;
                 }
-                if (props.searchType == 'Ticker') {
+                if (props.searchType === 'Ticker') {
                     // Regular option
                     return option.code;
                 } else {

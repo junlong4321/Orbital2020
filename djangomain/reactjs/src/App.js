@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Route, BrowserRouter } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import Login from './container/Login/Login';
@@ -15,6 +15,7 @@ import GuardedRoute from './components/GuardedRoute/GuardedRoute';
 import * as actions from './store/Actions/Auth';
 import User from './container/User/User';
 import Navbar from './components/UI/Navbar/Navbar';
+import EditAnalysis from './container/EditAnalysis/EditAnalysis';
 
 class App extends Component {
     state = {
@@ -36,7 +37,7 @@ class App extends Component {
     };
 
     keyPress = (e) => {
-        if (e.keyCode == 13) {
+        if (e.keyCode === 13) {
             this.setState({ help: true });
         }
     };
@@ -80,6 +81,11 @@ class App extends Component {
                     exact
                 />
                 <GuardedRoute path="/user" component={User} auth={auth} />
+                <GuardedRoute
+                    path="/edit/:id"
+                    component={withRouter(EditAnalysis)}
+                    auth={auth}
+                />
             </div>
         );
     }
