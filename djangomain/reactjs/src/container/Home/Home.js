@@ -118,6 +118,7 @@ class Home extends Component {
             <React.Fragment>
                 <Grid container style={{ marginTop: '20px' }}>
                     <Grid container item md={1} />
+                    <Grid container item md={2} />
                     <Grid
                         xs={12}
                         md={6}
@@ -140,7 +141,7 @@ class Home extends Component {
                             <SummaryTableBody bodyInfo={rows} />
                         </Table>
                     </Grid>
-                    <Grid container item md={4} />
+                    <Grid container item md={2} />
                     <Grid container item md={1} />
                 </Grid>
                 <Grid container style={{ marginTop: '20px' }}>
