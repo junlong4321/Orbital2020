@@ -11,6 +11,7 @@ import { withSnackbar } from 'notistack';
 import CreateAnalysisSearchbar from '../../components/UI/SearchBar/CreateAnalysisSearchbar';
 import { Editor } from '@tinymce/tinymce-react';
 import axios from 'axios';
+import './CreateAnalysisContainer.module.css';
 
 const styles = (theme) => ({
     containerBackground: {
@@ -361,7 +362,6 @@ class AnalysisContainer extends Component {
                                                                 ? '&nbsp;<em>' +
                                                                       'Market Capitalization: ' +
                                                                       this.state.financialRatios.marketCapitalization.toString() +
-                                                                      ' million' +
                                                                       '<em>'
                                                                 : '&nbsp;<em>Unavailable<em>'
                                                         );
@@ -448,6 +448,7 @@ class AnalysisContainer extends Component {
                                     accept="image/*"
                                     style={{ marginTop: '0.4em' }}
                                     name="image"
+                                    style={{ color: 'white' }}
                                 />
                             </Grid>
                             <Grid item container>

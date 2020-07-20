@@ -8,6 +8,9 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Comments from '../../components/Comments/CommentsContainer';
 import DialogContentText from '@material-ui/core/DialogContentText';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import BookmarkIcon from '@material-ui/icons/Bookmark';
+import Grid from '@material-ui/core/Grid';
 
 const styles = (theme) => ({
     root: {
@@ -88,7 +91,17 @@ const AnalysisModal = (props) => {
                     style={{ whiteSpace: 'break-spaces' }}
                     dangerouslySetInnerHTML={{ __html: text }}
                 />
-
+                <Grid container justify="flex-end">
+                    <IconButton
+                        aria-label="add to favorites"
+                        style={{ marginLeft: '-0.4em' }}
+                    >
+                        <FavoriteIcon />
+                    </IconButton>
+                    <IconButton>
+                        <BookmarkIcon />
+                    </IconButton>
+                </Grid>
                 <Comments id={props.data.id} />
             </DialogContent>
         </Dialog>

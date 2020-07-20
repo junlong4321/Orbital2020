@@ -12,6 +12,7 @@ import { Editor } from '@tinymce/tinymce-react';
 import axios from 'axios';
 import axiosDb from '../../components/axios/axiosDb';
 import { withRouter } from 'react-router-dom';
+import './EditAnalysis.module.css';
 
 const styles = (theme) => ({
     containerBackground: {
@@ -371,7 +372,6 @@ class EditAnalysisContainer extends Component {
                                                                 ? '&nbsp;<em>' +
                                                                       'Market Capitalization: ' +
                                                                       this.state.financialRatios.marketCapitalization.toString() +
-                                                                      ' million' +
                                                                       '<em>'
                                                                 : '&nbsp;<em>Unavailable<em>'
                                                         );
@@ -459,6 +459,7 @@ class EditAnalysisContainer extends Component {
                                     accept="image/*"
                                     style={{ marginTop: '0.4em' }}
                                     name="image"
+                                    style={{ color: 'white' }}
                                 />
                                 <img
                                     alt="empty"
