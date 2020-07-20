@@ -195,7 +195,12 @@ class UserProfile extends Component {
                         Profile Picture
                     </Typography>
                     <Grid item md={12}>
-                        <input type="file" accept="image/*" name="image" />
+                        <input
+                            type="file"
+                            accept="image/*"
+                            name="image"
+                            style={{ color: 'white' }}
+                        />
                     </Grid>
                 </Grid>
                 <Grid

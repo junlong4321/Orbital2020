@@ -5,7 +5,7 @@ import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import NewsCard from '../../components/NewsCard/NewsCard';
 import Button from '@material-ui/core/Button';
 import SearchBar from '../../components/UI/SearchBar/SearchBar';
-import axiosNews from '../../components/axios/axiosNews';
+import axios from 'axios';
 
 class News extends Component {
     state = {
@@ -20,8 +20,10 @@ class News extends Component {
     };
 
     componentDidMount() {
-        axiosNews
-            .get('5&apiKey=3d12e390ed3442689f8733c641ba3f66')
+        axios
+            .get(
+                'https://newsapi.org/v2/top-headlines?country=us&category=business&pageSize=5&apiKey=3d12e390ed3442689f8733c641ba3f66'
+            )
             .then((response) => {
                 this.setState({ newsData: response.data.articles });
             })
@@ -34,9 +36,9 @@ class News extends Component {
         if (prevState.newsToPull !== this.state.newsToPull) {
             const query =
                 this.state.search === '' ? '' : `&q=${this.state.search}`;
-            axiosNews
+            axios
                 .get(
-                    `${this.state.newsToPull}${query}&apiKey=3d12e390ed3442689f8733c641ba3f66`
+                    `https://newsapi.org/v2/top-headlines?country=us&category=business&pageSize=${this.state.newsToPull}${query}&apiKey=3d12e390ed3442689f8733c641ba3f66`
                 )
                 .then((response) => {
                     this.setState({ newsData: response.data.articles });
@@ -47,9 +49,9 @@ class News extends Component {
         }
 
         if (prevState.search !== this.state.search) {
-            axiosNews
+            axios
                 .get(
-                    `${this.state.newsToPull}&q=${this.state.search}&apiKey=3d12e390ed3442689f8733c641ba3f66`
+                    `https://newsapi.org/v2/top-headlines?country=us&category=business&pageSize=${this.state.newsToPull}&q=${this.state.search}&apiKey=3d12e390ed3442689f8733c641ba3f66`
                 )
                 .then((response) => {
                     this.setState({ newsData: response.data.articles });

@@ -70,6 +70,7 @@ class SignUp extends Component {
         // redirects user to home page once sign up is successful
         if (this.props.auth) {
             this.props.history.replace('/home');
+            window.location.reload(true);
         }
 
         return (

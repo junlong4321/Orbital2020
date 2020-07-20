@@ -17,39 +17,35 @@ const UserProfileNavigation = () => {
     return (
         <div className={classes.root}>
             <List component="nav">
-                <ListItem button>
-                    <NavLink
-                        exact
-                        activeStyle={{ color: '#fa923f' }}
-                        to="/profile"
-                    >
+                <NavLink exact activeStyle={{ color: '#fa923f' }} to="/profile">
+                    <ListItem button>
                         <ListItemText primary="User Profile" />
-                    </NavLink>
-                </ListItem>
-                <ListItem button>
-                    <NavLink
-                        exact
-                        activeStyle={{ color: '#fa923f' }}
-                        to="/your-analysis"
-                    >
+                    </ListItem>
+                </NavLink>
+                <NavLink
+                    exact
+                    activeStyle={{ color: '#fa923f' }}
+                    to="/your-analysis"
+                >
+                    <ListItem button>
                         <ListItemText primary="Your Analysis" />
-                    </NavLink>
-                </ListItem>
-                <ListItem button>
-                    <NavLink
-                        exact
-                        activeStyle={{ color: '#fa923f' }}
-                        to="/create-analysis"
-                    >
+                    </ListItem>
+                </NavLink>
+                <NavLink
+                    exact
+                    activeStyle={{ color: '#fa923f' }}
+                    to="/create-analysis"
+                >
+                    <ListItem button>
                         <ListItemText primary="Create New Analysis" />
-                    </NavLink>
-                </ListItem>
-                <ListItem button>
-                    <ListItemText
-                        primary="Bookmarked"
-                        style={{ color: 'white' }}
-                    />
-                </ListItem>
+                    </ListItem>
+                    <ListItem button>
+                        <ListItemText
+                            primary="Bookmarked"
+                            style={{ color: 'white' }}
+                        />
+                    </ListItem>
+                </NavLink>
             </List>
         </div>
     );
