@@ -1,5 +1,12 @@
 # <center>NUS Orbital Project 2020 - The Free Market [Difficulty : Artemis (Extreme)] </center>
 
+# Product Documentation :
+### https://docs.google.com/document/d/1wFkyn4SZh9oDJtUM8PjQoil9PXARbTNlkCVFNHGsxWw/edit?usp=sharing
+
+# Videos :
+### Advertising (Orbital Splashdown) : https://www.youtube.com/watch?v=C_ebTPTghHs&feature=youtu.be
+### Full Project : https://www.youtube.com/watch?v=NPXw0UQTv_s&feature=youtu.be
+
 # Deployments :
 ### Frontend : https://thefreemarket-production.herokuapp.com/
 ### Backend : https://junlong321.pythonanywhere.com/api/
