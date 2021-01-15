@@ -1,5 +1,9 @@
 # <center>NUS Orbital Project 2020 - The Free Market [Difficulty : Artemis (Extreme)] </center>
 
+# Team Members:
+### Wong Jun Long
+### Goh Jun Wei
+
 # Product Documentation :
 ### https://docs.google.com/document/d/1wFkyn4SZh9oDJtUM8PjQoil9PXARbTNlkCVFNHGsxWw/edit?usp=sharing
 
