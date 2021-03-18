@@ -3,6 +3,8 @@
 # Team Members:
 ### Wong Jun Long
 ### Goh Jun Wei
+### Artemis - https://credentials.nus.edu.sg/0062649d-d440-48c5-ae11-e30b20d3bf79 , https://credentials.nus.edu.sg/84f48d7a-455f-4fcd-a84c-e09b545a5f09
+### Judge's Choice - https://credentials.nus.edu.sg/0bbc1d11-405f-4637-8180-9e7a295abf28 , https://credentials.nus.edu.sg/892b3eb6-ecdd-4a54-8187-8781ae863af2
 
 # Product Documentation :
 ### https://docs.google.com/document/d/1wFkyn4SZh9oDJtUM8PjQoil9PXARbTNlkCVFNHGsxWw/edit?usp=sharing
